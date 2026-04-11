@@ -14,7 +14,7 @@ public class WaveManager : MonoBehaviour
     {
         if (pathManager.waypoints.Length == 0)
         {
-            Debug.LogError("Нет waypoints!");
+            Debug.LogError("No waypoints!");
             return;
         }
 
