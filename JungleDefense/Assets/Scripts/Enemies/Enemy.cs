@@ -4,6 +4,7 @@ public class Enemy : MonoBehaviour
 {
     public float speed = 2f;
     public int health = 5;
+    public int reward = 10;
 
     private int waypointIndex = 0;
     private Transform[] waypoints;
@@ -46,8 +47,9 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        GameManager.Instance.AddMoney(10);
+        GameManager.Instance.AddMoney(reward);
         Destroy(gameObject);
+        GameManager.Instance.AddScore(10); // Добавляем очки за убитого врага
     }
 
     void ReachEnd()
