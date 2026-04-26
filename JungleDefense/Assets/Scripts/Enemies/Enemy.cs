@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour
     private int waypointIndex = 0;
     private List<Transform> waypoints;
 
+    public System.Action onDeath;
+
     public void SetPath(List<Transform> waypoints)
     {
         this.waypoints = waypoints;
@@ -49,14 +51,16 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        GameManager.Instance.AddMoney(reward);
+        onDeath?.Invoke();
         Destroy(gameObject);
-        GameManager.Instance.AddScore(10); // Добавляем очки за убитого врага
+        GameManager.Instance.AddMoney(reward);
+        GameManager.Instance.AddScore(10);
     }
 
     void ReachEnd()
     {
         GameManager.Instance.LoseLife(1);
+        onDeath?.Invoke();
         Destroy(gameObject);
     }
 }

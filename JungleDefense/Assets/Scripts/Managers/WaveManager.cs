@@ -6,6 +6,9 @@ public class WaveManager : MonoBehaviour
     public LevelData levelData;
 
     private int currentWaveIndex = 0;
+    private int aliveEnemies = 0;
+
+    public GameObject victoryText;
 
     void Start()
     {
@@ -30,7 +33,15 @@ public class WaveManager : MonoBehaviour
             yield return new WaitForSeconds(3f);
         }
 
-        Debug.Log("¬—≈ ¬ŒÀÕ€ œ–Œ…ƒ≈Õ€");
+        Debug.Log("¬—≈ ¬ŒÀÕ€ «¿—œ¿¬Õ≈Õ€");
+
+        // Ê‰∏Ï ÔÓÍ‡ ‚ÒÂ ‚‡„Ë ÛÏÛÚ
+        while (aliveEnemies > 0)
+        {
+            yield return null;
+        }
+
+        Victory();
     }
 
     IEnumerator SpawnWave(Wave wave)
@@ -51,5 +62,23 @@ public class WaveManager : MonoBehaviour
 
         Enemy enemy = enemyGO.GetComponent<Enemy>();
         enemy.SetPath(PathManager.Instance.waypoints);
+        enemy.onDeath += OnEnemyDied;
+
+        aliveEnemies++;
+    }
+
+    void OnEnemyDied()
+    {
+        aliveEnemies--;
+    }
+
+    void Victory()
+    {
+        Debug.Log("œŒ¡≈ƒ¿!");
+
+        GameManager.Instance.isGameOver = true;
+
+        Time.timeScale = 0f;
+        victoryText.SetActive(true);
     }
 }
