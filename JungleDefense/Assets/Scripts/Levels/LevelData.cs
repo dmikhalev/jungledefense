@@ -7,4 +7,6 @@ public class LevelData : ScriptableObject
     public int height;
 
     public string[] rows;
+
+    public Wave[] waves;
 }

@@ -29,3 +29,10 @@ MonoBehaviour:
   - 000100P
   - 000100P
   - 000100P
+  waves:
+  - enemyPrefab: {fileID: 5259364767138579617, guid: 9ddbe96d68f25e0498383bf822b7dbd9, type: 3}
+    count: 5
+    delayBetweenEnemies: 1
+  - enemyPrefab: {fileID: 5259364767138579617, guid: 9ddbe96d68f25e0498383bf822b7dbd9, type: 3}
+    count: 10
+    delayBetweenEnemies: 0.7

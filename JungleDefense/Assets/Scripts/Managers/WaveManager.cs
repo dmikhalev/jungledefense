@@ -1,31 +1,55 @@
 using UnityEngine;
+using System.Collections;
 
 public class WaveManager : MonoBehaviour
 {
-    public GameObject enemyPrefab;
-    public PathManager pathManager;
+    public LevelData levelData;
+
+    private int currentWaveIndex = 0;
 
     void Start()
     {
-        InvokeRepeating(nameof(SpawnEnemy), 1f, 2f);
+        StartCoroutine(StartWaves());
     }
 
-    void SpawnEnemy()
+    IEnumerator StartWaves()
     {
-        if (pathManager.waypoints.Count == 0)
+        yield return new WaitForSeconds(1f);
+
+        while (currentWaveIndex < levelData.waves.Length)
         {
-            Debug.LogError("No waypoints!");
-            return;
+            Wave wave = levelData.waves[currentWaveIndex];
+
+            Debug.Log("Ñòàðò âîëíû: " + (currentWaveIndex + 1));
+
+            yield return StartCoroutine(SpawnWave(wave));
+
+            currentWaveIndex++;
+
+            // ïàóçà ìåæäó âîëíàìè
+            yield return new WaitForSeconds(3f);
         }
 
+        Debug.Log("ÂÑÅ ÂÎËÍÛ ÏÐÎÉÄÅÍÛ");
+    }
+
+    IEnumerator SpawnWave(Wave wave)
+    {
+        for (int i = 0; i < wave.count; i++)
+        {
+            SpawnEnemy(wave.enemyPrefab);
+
+            yield return new WaitForSeconds(wave.delayBetweenEnemies);
+        }
+    }
+
+    void SpawnEnemy(GameObject enemyPrefab)
+    {
         Transform start = PathManager.Instance.startPoint;
 
         GameObject enemyGO = Instantiate(enemyPrefab, start.position, Quaternion.identity);
 
         Enemy enemy = enemyGO.GetComponent<Enemy>();
         enemy.SetPath(PathManager.Instance.waypoints);
-
-        Enemy e = enemy.GetComponent<Enemy>();
-        e.SetPath(pathManager.waypoints);
     }
 }
