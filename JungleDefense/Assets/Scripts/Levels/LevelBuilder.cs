@@ -38,11 +38,17 @@ public class LevelBuilder : MonoBehaviour
 
                 if (c == '1')
                 {
-                    Instantiate(buildTilePrefab, pos, Quaternion.identity);
+                    GameObject tile = Instantiate(buildTilePrefab, pos, Quaternion.identity);
+
+                    Tile t = tile.AddComponent<Tile>();
+                    t.isBuildable = true;
                 }
                 else if (c == 'P')
                 {
-                    Instantiate(pathTilePrefab, pos, Quaternion.identity);
+                    GameObject tile = Instantiate(pathTilePrefab, pos, Quaternion.identity);
+
+                    Tile t = tile.AddComponent<Tile>();
+                    t.isBuildable = false;
 
                     pathPositions.Add(pos);
                 }

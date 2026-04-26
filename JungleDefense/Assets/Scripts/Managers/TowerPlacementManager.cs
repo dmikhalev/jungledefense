@@ -32,27 +32,39 @@ public class TowerPlacementManager : MonoBehaviour
 
     void TryPlaceTower(Vector2 screenPos)
     {
-        // если башн€ не выбрана Ч ничего не делаем
         if (selectedTowerPrefab == null)
             return;
 
         Vector3 world = cam.ScreenToWorldPoint(screenPos);
         world.z = 0;
 
-        // округл€ем позицию (чтобы ровно ставилось)
-        Vector3 buildPos = new Vector3(
-            Mathf.Round(world.x),
-            Mathf.Round(world.y),
-            0
-        );
+        Collider2D hit = Physics2D.OverlapPoint(world);
 
-        // проверка денег
-        if (!GameManager.Instance.SpendMoney(selectedTowerCost))
+        if (hit == null)
+            return;
+
+        Tile tile = hit.GetComponent<Tile>();
+
+        if (tile == null)
+            return;
+
+        if (!tile.isBuildable)
         {
-            Debug.Log("Ќедостаточно денег");
+            Debug.Log("Ќельз€ строить здесь");
             return;
         }
 
-        Instantiate(selectedTowerPrefab, buildPos, Quaternion.identity);
+        if (tile.isOccupied)
+        {
+            Debug.Log(" летка зан€та");
+            return;
+        }
+
+        if (!GameManager.Instance.SpendMoney(selectedTowerCost))
+            return;
+
+        Instantiate(selectedTowerPrefab, hit.transform.position, Quaternion.identity);
+
+        tile.isOccupied = true;
     }
 }

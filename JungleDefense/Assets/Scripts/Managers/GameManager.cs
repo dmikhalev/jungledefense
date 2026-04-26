@@ -5,8 +5,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public int money = 100;
-    public int lives = 10;
     public int score = 0; // Очки за убитых врагов
+    public int lives = 10;
+    public bool isGameOver = false;
 
     private void Awake()
     {
@@ -27,12 +28,26 @@ public class GameManager : MonoBehaviour
 
     public void LoseLife(int amount)
     {
+        if (isGameOver)
+            return;
+
         lives -= amount;
+
+        Debug.Log("Жизни: " + lives);
 
         if (lives <= 0)
         {
-            Debug.Log("Game Over");
+            GameOver();
         }
+    }
+
+    void GameOver()
+    {
+        isGameOver = true;
+
+        Debug.Log("GAME OVER");
+
+        Time.timeScale = 0f; // останавливает игру
     }
 
     public void AddScore(int amount)

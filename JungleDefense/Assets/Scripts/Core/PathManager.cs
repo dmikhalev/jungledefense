@@ -36,29 +36,43 @@ public class PathManager : MonoBehaviour
     {
         List<Vector3> result = new List<Vector3>();
 
-        // начинаем с первой точки (например самой левой)
-        Vector3 current = positions[0];
-        result.Add(current);
-
-        positions.Remove(current);
-
-        while (positions.Count > 0)
+        if (positions == null || positions.Count == 0)
         {
-            Vector3 next = positions[0];
-            float minDist = Vector3.Distance(current, next);
+            Debug.LogError("Путь пуст!");
+            return result;
+        }
 
-            foreach (var pos in positions)
+        // копия списка
+        List<Vector3> remaining = new List<Vector3>(positions);
+
+        Vector3 current = remaining[0];
+        result.Add(current);
+        remaining.Remove(current);
+
+        while (remaining.Count > 0)
+        {
+            Vector3 next = Vector3.zero;
+            bool found = false;
+
+            foreach (var pos in remaining)
             {
-                float dist = Vector3.Distance(current, pos);
-                if (dist < minDist)
+                // ищем соседнюю клетку (очень важно)
+                if (Vector3.Distance(current, pos) < 1.1f)
                 {
-                    minDist = dist;
                     next = pos;
+                    found = true;
+                    break;
                 }
             }
 
+            if (!found)
+            {
+                Debug.LogError("Путь разорван! Проверь P клетки");
+                break;
+            }
+
             result.Add(next);
-            positions.Remove(next);
+            remaining.Remove(next);
             current = next;
         }
 
