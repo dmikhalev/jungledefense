@@ -12,17 +12,18 @@ public class WaveManager : MonoBehaviour
 
     void SpawnEnemy()
     {
-        if (pathManager.waypoints.Length == 0)
+        if (pathManager.waypoints.Count == 0)
         {
             Debug.LogError("No waypoints!");
             return;
         }
 
-        GameObject enemy = Instantiate(
-            enemyPrefab,
-            pathManager.waypoints[0].position,
-            Quaternion.identity
-        );
+        Transform start = PathManager.Instance.startPoint;
+
+        GameObject enemyGO = Instantiate(enemyPrefab, start.position, Quaternion.identity);
+
+        Enemy enemy = enemyGO.GetComponent<Enemy>();
+        enemy.SetPath(PathManager.Instance.waypoints);
 
         Enemy e = enemy.GetComponent<Enemy>();
         e.SetPath(pathManager.waypoints);

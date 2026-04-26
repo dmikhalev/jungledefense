@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelBuilder : MonoBehaviour
@@ -8,6 +9,8 @@ public class LevelBuilder : MonoBehaviour
     public GameObject pathTilePrefab;
 
     public float tileSize = 1f;
+
+    private List<Vector3> pathPositions = new List<Vector3>();
 
     void Start()
     {
@@ -40,8 +43,18 @@ public class LevelBuilder : MonoBehaviour
                 else if (c == 'P')
                 {
                     Instantiate(pathTilePrefab, pos, Quaternion.identity);
+
+                    pathPositions.Add(pos);
                 }
             }
         }
+
+        // создаём объект PathManager если его нет
+        if (PathManager.Instance == null)
+        {
+            new GameObject("PathManager").AddComponent<PathManager>();
+        }
+
+        PathManager.Instance.SetPath(pathPositions);
     }
 }

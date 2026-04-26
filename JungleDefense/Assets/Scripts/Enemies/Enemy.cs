@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -7,16 +8,17 @@ public class Enemy : MonoBehaviour
     public int reward = 10;
 
     private int waypointIndex = 0;
-    private Transform[] waypoints;
+    private List<Transform> waypoints;
 
-    public void SetPath(Transform[] points)
+    public void SetPath(List<Transform> waypoints)
     {
-        waypoints = points;
+        this.waypoints = waypoints;
+        waypointIndex = 0;
     }
 
     void Update()
     {
-        if (waypoints == null || waypointIndex >= waypoints.Length)
+        if (waypoints == null || waypointIndex >= waypoints.Count)
             return;
 
         Transform target = waypoints[waypointIndex];
@@ -29,7 +31,7 @@ public class Enemy : MonoBehaviour
             waypointIndex++;
         }
 
-        if (waypointIndex >= waypoints.Length)
+        if (waypointIndex >= waypoints.Count)
         {
             ReachEnd();
         }
