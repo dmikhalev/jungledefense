@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("GAME OVER");
 
         Time.timeScale = 0f; // останавливает игру
+        FindObjectOfType<RestartManager>().ShowRestart();
     }
 
     public void AddScore(int amount)

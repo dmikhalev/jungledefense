@@ -80,5 +80,6 @@ public class WaveManager : MonoBehaviour
 
         Time.timeScale = 0f;
         victoryText.SetActive(true);
+        FindObjectOfType<RestartManager>().ShowRestart();
     }
 }
