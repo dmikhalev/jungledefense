@@ -16,19 +16,19 @@ MonoBehaviour:
   height: 14
   rows:
   - PPPPPP1
-  - 01111P1
-  - 01111P1
-  - 0PPPPP1
-  - 0P00000
-  - 0P11111
-  - 1P11111
+  - 00000P1
+  - 01110P1
+  - 00000P1
+  - 1PPPPP1
   - 1P00000
-  - 1P11111
+  - 1P01111
+  - 1P00000
   - 1PPPPPP
   - 000000P
+  - 001110P
+  - 001110P
+  - 001110P
   - 000000P
-  - 000110P
-  - 000110P
   waves:
   - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
     count: 15
