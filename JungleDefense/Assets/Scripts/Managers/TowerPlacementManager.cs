@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TowerPlacementManager : MonoBehaviour
 {
@@ -17,14 +18,21 @@ public class TowerPlacementManager : MonoBehaviour
 
     void Update()
     {
-        // ПК (мышка)
+        // РќРµ СЃС‚Р°РІРёРј Р±Р°С€РЅРё РїСЂРё РЅР°Р¶Р°С‚РёРё РЅР° UI
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
+        // Mouse (Editor)
         if (Input.GetMouseButtonDown(0))
         {
             TryPlaceTower(Input.mousePosition);
         }
 
-        // Мобилка (тач)
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        // Touch (iPhone)
+        if (Input.touchCount > 0 &&
+            Input.GetTouch(0).phase == TouchPhase.Began)
         {
             TryPlaceTower(Input.GetTouch(0).position);
         }
@@ -33,37 +41,50 @@ public class TowerPlacementManager : MonoBehaviour
     void TryPlaceTower(Vector2 screenPos)
     {
         if (selectedTowerPrefab == null)
+        {
             return;
+        }
 
         Vector3 world = cam.ScreenToWorldPoint(screenPos);
-        world.z = 0;
+        world.z = 0f;
 
         Collider2D hit = Physics2D.OverlapPoint(world);
 
         if (hit == null)
+        {
             return;
+        }
 
         Tile tile = hit.GetComponent<Tile>();
 
         if (tile == null)
+        {
             return;
+        }
 
         if (!tile.isBuildable)
         {
-            Debug.Log("Нельзя строить здесь");
+            Debug.Log("РќРµР»СЊР·СЏ СЃС‚СЂРѕРёС‚СЊ РЅР° СЌС‚РѕР№ РєР»РµС‚РєРµ");
             return;
         }
 
         if (tile.isOccupied)
         {
-            Debug.Log("Клетка занята");
+            Debug.Log("РљР»РµС‚РєР° СѓР¶Рµ Р·Р°РЅСЏС‚Р°");
             return;
         }
 
         if (!GameManager.Instance.SpendMoney(selectedTowerCost))
+        {
+            Debug.Log("РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РґРµРЅРµРі");
             return;
+        }
 
-        Instantiate(selectedTowerPrefab, hit.transform.position, Quaternion.identity);
+        Instantiate(
+            selectedTowerPrefab,
+            hit.transform.position,
+            Quaternion.identity
+        );
 
         tile.isOccupied = true;
     }
