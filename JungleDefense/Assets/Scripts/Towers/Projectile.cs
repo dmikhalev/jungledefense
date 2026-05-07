@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Попадание в: " + collision.name);
+        Debug.Log("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ: " + collision.name);
 
         if (collision.CompareTag("Enemy"))
         {
@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
 
             if (enemy != null)
             {
-                Debug.Log("Наносим урон");
+                Debug.Log("Enemy took damage: " + damage);
                 enemy.TakeDamage(damage);
             }
 

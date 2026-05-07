@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float speed = 2f;
-    public int health = 5;
+    private float currentHealth;
     public int reward = 10;
+    public EnemyData data;
+    public GameObject deathEffect;
 
     private int waypointIndex = 0;
     private List<Transform> waypoints;
@@ -18,6 +19,13 @@ public class Enemy : MonoBehaviour
         waypointIndex = 0;
     }
 
+    void Start()
+    {
+        currentHealth = data.maxHealth;
+
+        GetComponent<SpriteRenderer>().color = data.color;
+    }
+
     void Update()
     {
         if (waypoints == null || waypointIndex >= waypoints.Count)
@@ -26,7 +34,7 @@ public class Enemy : MonoBehaviour
         Transform target = waypoints[waypointIndex];
         Vector3 dir = (target.position - transform.position).normalized;
 
-        transform.position += dir * speed * Time.deltaTime;
+        transform.position += dir * data.speed * Time.deltaTime;
 
         if (Vector3.Distance(transform.position, target.position) < 0.1f)
         {
@@ -39,11 +47,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        health -= damage;
+        currentHealth -= damage;
 
-        if (health <= 0)
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -51,10 +59,16 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        GameManager.Instance.AddMoney(data.reward);
+
         onDeath?.Invoke();
+
+        if (deathEffect != null)
+        {
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
+        }
+
         Destroy(gameObject);
-        GameManager.Instance.AddMoney(reward);
-        GameManager.Instance.AddScore(10);
     }
 
     void ReachEnd()
