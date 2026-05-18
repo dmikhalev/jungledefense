@@ -4,27 +4,27 @@ public class TowerPlacementManager : MonoBehaviour
 {
     public static TowerPlacementManager Instance { get; private set; }
 
-    [Header("Selected tower")]
     public GameObject selectedTowerPrefab;
     public int selectedTowerCost;
 
-    private Camera mainCamera;
+    public bool IsBuildMode => selectedTowerPrefab != null;
+
+    private Camera cam;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         Instance = this;
-        mainCamera = Camera.main;
+        cam = Camera.main;
     }
 
     private void Update()
     {
         if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+        {
+            return;
+        }
+
+        if (selectedTowerPrefab == null)
         {
             return;
         }
@@ -37,57 +37,48 @@ public class TowerPlacementManager : MonoBehaviour
 
     private void TryPlaceTower(Vector2 screenPosition)
     {
-        if (selectedTowerPrefab == null)
+        Debug.Log("Try place tower");
+
+        Vector3 worldPosition = cam.ScreenToWorldPoint(screenPosition);
+        worldPosition.z = 0f;
+
+        Collider2D hit = Physics2D.OverlapPoint(worldPosition);
+
+        if (hit == null)
         {
+            Debug.Log("No tile hit");
             return;
         }
 
-        Vector3 worldPosition = mainCamera.ScreenToWorldPoint(screenPosition);
-        worldPosition.z = 0f;
-
-        Tile tile = FindTileAtPoint(worldPosition);
+        Tile tile = hit.GetComponent<Tile>();
 
         if (tile == null)
         {
+            Debug.Log("Hit object is not Tile: " + hit.name);
             return;
         }
 
         if (!tile.isBuildable)
         {
-            Debug.Log("Cannot build on this tile.");
+            Debug.Log("Tile is not buildable");
             return;
         }
 
         if (tile.isOccupied)
         {
-            Debug.Log("Tile is already occupied.");
+            Debug.Log("Tile is occupied");
             return;
         }
 
-        if (GameManager.Instance == null || !GameManager.Instance.SpendMoney(selectedTowerCost))
+        if (!GameManager.Instance.SpendMoney(selectedTowerCost))
         {
-            Debug.Log("Not enough money.");
+            Debug.Log("Not enough money");
             return;
         }
 
-        Instantiate(selectedTowerPrefab, tile.transform.position, Quaternion.identity);
+        Instantiate(selectedTowerPrefab, hit.transform.position, Quaternion.identity);
         tile.isOccupied = true;
-    }
 
-    private Tile FindTileAtPoint(Vector2 point)
-    {
-        Collider2D[] hits = Physics2D.OverlapPointAll(point);
-
-        foreach (Collider2D hit in hits)
-        {
-            Tile tile = hit.GetComponent<Tile>();
-
-            if (tile != null)
-            {
-                return tile;
-            }
-        }
-
-        return null;
+        Debug.Log("Tower placed");
     }
 }

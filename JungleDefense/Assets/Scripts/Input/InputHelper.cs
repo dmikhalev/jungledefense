@@ -55,8 +55,13 @@ public static class InputHelper
         return Vector2.zero;
     }
 
-    private static bool IsPointerOverUI()
+    public static bool IsPointerOverUI()
     {
-        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+        if (EventSystem.current == null)
+        {
+            return false;
+        }
+
+        return EventSystem.current.IsPointerOverGameObject();
     }
 }

@@ -3,35 +3,30 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     [Header("Combat")]
-    [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private int damage = 1;
-    [SerializeField] private float fireRate = 1f;
-    [SerializeField] private float range = 5f;
+    public float range = 5f;
+    public float fireRate = 1f;
+    public int damage = 1;
+
+    [Header("Projectile")]
+    public GameObject projectilePrefab;
 
     [Header("Upgrade")]
-    [SerializeField] private int level = 1;
-    [SerializeField] private int maxLevel = 3;
-    [SerializeField] private int upgradeCost = 50;
-    [SerializeField] private int upgradeCostIncrease = 50;
-    [SerializeField] private int damageIncrease = 1;
-    [SerializeField] private float rangeIncrease = 0.5f;
-    [SerializeField] private float fireRateIncrease = 0.3f;
+    public int level = 1;
+    public int maxLevel = 3;
+    public int upgradeCost = 50;
 
+    public int damageIncrease = 1;
+    public float rangeIncrease = 0.5f;
+    public float fireRateIncrease = 0.3f;
+
+    private float fireCooldown;
     private Enemy target;
-    private float fireCountdown;
 
     public int Level => level;
-    public int MaxLevel => maxLevel;
-    public int UpgradeCost => upgradeCost;
     public bool IsMaxLevel => level >= maxLevel;
 
     private void Update()
     {
-        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
-        {
-            return;
-        }
-
         FindTarget();
 
         if (target == null)
@@ -39,27 +34,35 @@ public class Tower : MonoBehaviour
             return;
         }
 
-        fireCountdown -= Time.deltaTime;
+        fireCooldown -= Time.deltaTime;
 
-        if (fireCountdown <= 0f)
+        if (fireCooldown <= 0f)
         {
             Shoot();
-            fireCountdown = 1f / fireRate;
+            fireCooldown = 1f / fireRate;
         }
     }
 
     private void FindTarget()
     {
-        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        Enemy[] enemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
 
         float shortestDistance = Mathf.Infinity;
         Enemy nearestEnemy = null;
 
         foreach (Enemy enemy in enemies)
         {
-            float distance = Vector2.Distance(transform.position, enemy.transform.position);
+            if (enemy == null)
+            {
+                continue;
+            }
 
-            if (distance <= range && distance < shortestDistance)
+            float distance = Vector2.Distance(
+                transform.position,
+                enemy.transform.position
+            );
+
+            if (distance < shortestDistance && distance <= range)
             {
                 shortestDistance = distance;
                 nearestEnemy = enemy;
@@ -73,16 +76,21 @@ public class Tower : MonoBehaviour
     {
         if (projectilePrefab == null)
         {
-            Debug.LogError($"{name} has no projectile prefab assigned.");
+            Debug.LogError("Projectile prefab is missing");
             return;
         }
 
-        GameObject projectileObject = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        GameObject projectileObject = Instantiate(
+            projectilePrefab,
+            transform.position,
+            Quaternion.identity
+        );
+
         Projectile projectile = projectileObject.GetComponent<Projectile>();
 
         if (projectile == null)
         {
-            Debug.LogError("Projectile prefab does not have Projectile component.");
+            Debug.LogError("Projectile component missing");
             Destroy(projectileObject);
             return;
         }
@@ -95,30 +103,32 @@ public class Tower : MonoBehaviour
     {
         if (IsMaxLevel)
         {
-            Debug.Log("Tower is already at max level.");
+            Debug.Log("Tower already max level");
             return false;
         }
 
-        if (GameManager.Instance == null || !GameManager.Instance.SpendMoney(upgradeCost))
+        if (!GameManager.Instance.SpendMoney(upgradeCost))
         {
-            Debug.Log("Not enough money to upgrade tower.");
+            Debug.Log("Not enough money");
             return false;
         }
 
         level++;
+
         damage += damageIncrease;
         range += rangeIncrease;
         fireRate += fireRateIncrease;
-        upgradeCost += upgradeCostIncrease;
 
-        Debug.Log($"Tower upgraded to level {level}.");
+        upgradeCost += 50;
+
+        Debug.Log("Tower upgraded to level " + level);
 
         return true;
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.blue;
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, range);
     }
 }
