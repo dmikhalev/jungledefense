@@ -68,11 +68,23 @@ public class Tower : MonoBehaviour
 
     void Shoot()
     {
-        GameObject projectileGO = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        GameObject projectileObject = Instantiate(
+            projectilePrefab,
+            transform.position,
+            Quaternion.identity
+        );
 
-        Projectile proj = projectileGO.GetComponent<Projectile>();
-        proj.damage = damage;
-        proj.SetTarget(target.transform);
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+
+        if (projectile == null)
+        {
+            Debug.LogError("Projectile component is missing on projectile prefab");
+            Destroy(projectileObject);
+            return;
+        }
+
+        projectile.damage = damage;
+        projectile.SetTarget(target.transform);
     }
 
     public bool UpgradeTower()

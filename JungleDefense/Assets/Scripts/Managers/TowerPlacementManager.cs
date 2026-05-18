@@ -1,54 +1,56 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class TowerPlacementManager : MonoBehaviour
 {
-    public static TowerPlacementManager Instance;
+    public static TowerPlacementManager Instance { get; private set; }
 
+    [Header("Selected tower")]
     public GameObject selectedTowerPrefab;
     public int selectedTowerCost;
 
-    private Camera cam;
+    private Camera mainCamera;
 
-    void Awake()
+    private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
-        cam = Camera.main;
+        mainCamera = Camera.main;
     }
 
-    void Update()
+    private void Update()
     {
-        // Не ставим башни при нажатии на UI
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
         {
             return;
         }
 
-        // Mouse (Editor)
-        if (Input.GetMouseButtonDown(0))
+        if (InputHelper.IsPointerOverUI())
         {
-            TryPlaceTower(Input.mousePosition);
+            return;
         }
 
-        // Touch (iPhone)
-        if (Input.touchCount > 0 &&
-            Input.GetTouch(0).phase == TouchPhase.Began)
+        if (InputHelper.TryGetTapBegan(out Vector2 screenPosition))
         {
-            TryPlaceTower(Input.GetTouch(0).position);
+            TryPlaceTower(screenPosition);
         }
     }
 
-    void TryPlaceTower(Vector2 screenPos)
+    private void TryPlaceTower(Vector2 screenPosition)
     {
         if (selectedTowerPrefab == null)
         {
             return;
         }
 
-        Vector3 world = cam.ScreenToWorldPoint(screenPos);
-        world.z = 0f;
+        Vector3 worldPosition = mainCamera.ScreenToWorldPoint(screenPosition);
+        worldPosition.z = 0f;
 
-        Collider2D hit = Physics2D.OverlapPoint(world);
+        Collider2D hit = Physics2D.OverlapPoint(worldPosition);
 
         if (hit == null)
         {
@@ -64,28 +66,23 @@ public class TowerPlacementManager : MonoBehaviour
 
         if (!tile.isBuildable)
         {
-            Debug.Log("Нельзя строить на этой клетке");
+            Debug.Log("Cannot build on this tile.");
             return;
         }
 
         if (tile.isOccupied)
         {
-            Debug.Log("Клетка уже занята");
+            Debug.Log("Tile is already occupied.");
             return;
         }
 
         if (!GameManager.Instance.SpendMoney(selectedTowerCost))
         {
-            Debug.Log("Недостаточно денег");
+            Debug.Log("Not enough money.");
             return;
         }
 
-        Instantiate(
-            selectedTowerPrefab,
-            hit.transform.position,
-            Quaternion.identity
-        );
-
+        Instantiate(selectedTowerPrefab, hit.transform.position, Quaternion.identity);
         tile.isOccupied = true;
     }
 }

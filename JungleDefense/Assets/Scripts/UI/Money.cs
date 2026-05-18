@@ -3,10 +3,15 @@ using UnityEngine;
 
 public class MoneyUI : MonoBehaviour
 {
-    public TextMeshProUGUI moneyText;
+    [SerializeField] private TextMeshProUGUI moneyText;
 
-    void Update()
+    private void Update()
     {
-        moneyText.text = "Money: " + GameManager.Instance.money;
+        if (GameManager.Instance == null || moneyText == null)
+        {
+            return;
+        }
+
+        moneyText.text = $"Money: {GameManager.Instance.money}";
     }
 }

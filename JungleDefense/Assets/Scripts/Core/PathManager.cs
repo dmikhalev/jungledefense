@@ -1,16 +1,18 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PathManager : MonoBehaviour
 {
-    public static PathManager Instance;
+    public static PathManager Instance { get; private set; }
 
-    public List<Transform> waypoints = new List<Transform>();
+    public readonly List<Transform> waypoints = new List<Transform>();
 
     public Transform startPoint;
     public Transform endPoint;
 
-    void Awake()
+    private const float NeighborDistance = 1.1f;
+
+    private void Awake()
     {
         Instance = this;
     }
@@ -23,59 +25,95 @@ public class PathManager : MonoBehaviour
 
         for (int i = 0; i < sortedPath.Count; i++)
         {
-            GameObject point = new GameObject("Waypoint_" + i);
+            GameObject point = new GameObject($"Waypoint_{i}");
             point.transform.position = sortedPath[i];
+            point.transform.SetParent(transform);
             waypoints.Add(point.transform);
+        }
+
+        if (waypoints.Count == 0)
+        {
+            Debug.LogError("Path is empty. Add P cells to LevelData.");
+            return;
         }
 
         startPoint = waypoints[0];
         endPoint = waypoints[waypoints.Count - 1];
     }
 
-    List<Vector3> SortPath(List<Vector3> positions)
+    private List<Vector3> SortPath(List<Vector3> positions)
     {
         List<Vector3> result = new List<Vector3>();
 
         if (positions == null || positions.Count == 0)
         {
-            Debug.LogError("Путь пуст!");
+            Debug.LogError("Path is empty.");
             return result;
         }
 
-        // копия списка
         List<Vector3> remaining = new List<Vector3>(positions);
+        Vector3 current = FindEndpoint(remaining);
 
-        Vector3 current = remaining[0];
         result.Add(current);
         remaining.Remove(current);
 
         while (remaining.Count > 0)
         {
-            Vector3 next = Vector3.zero;
-            bool found = false;
+            int nextIndex = FindNeighborIndex(current, remaining);
 
-            foreach (var pos in remaining)
+            if (nextIndex < 0)
             {
-                // ищем соседнюю клетку (очень важно)
-                if (Vector3.Distance(current, pos) < 1.1f)
-                {
-                    next = pos;
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
-            {
-                Debug.LogError("Путь разорван! Проверь P клетки");
+                Debug.LogError("Path is broken. Check that P cells are connected.");
                 break;
             }
 
-            result.Add(next);
-            remaining.Remove(next);
-            current = next;
+            current = remaining[nextIndex];
+            result.Add(current);
+            remaining.RemoveAt(nextIndex);
         }
 
         return result;
+    }
+
+    private Vector3 FindEndpoint(List<Vector3> positions)
+    {
+        foreach (Vector3 position in positions)
+        {
+            int neighbors = 0;
+
+            foreach (Vector3 other in positions)
+            {
+                if (position == other)
+                {
+                    continue;
+                }
+
+                if (Vector3.Distance(position, other) < NeighborDistance)
+                {
+                    neighbors++;
+                }
+            }
+
+            if (neighbors == 1)
+            {
+                return position;
+            }
+        }
+
+        Debug.LogWarning("Path has no clear endpoint. Using first P cell as start.");
+        return positions[0];
+    }
+
+    private int FindNeighborIndex(Vector3 current, List<Vector3> remaining)
+    {
+        for (int i = 0; i < remaining.Count; i++)
+        {
+            if (Vector3.Distance(current, remaining[i]) < NeighborDistance)
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }

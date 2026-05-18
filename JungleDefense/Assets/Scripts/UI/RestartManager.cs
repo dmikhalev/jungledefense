@@ -3,17 +3,27 @@ using UnityEngine.SceneManagement;
 
 public class RestartManager : MonoBehaviour
 {
-    public GameObject restartButton;
+    [SerializeField] private GameObject restartButton;
+
+    private void Awake()
+    {
+        if (restartButton != null)
+        {
+            restartButton.SetActive(false);
+        }
+    }
 
     public void ShowRestart()
     {
-        restartButton.SetActive(true);
+        if (restartButton != null)
+        {
+            restartButton.SetActive(true);
+        }
     }
 
     public void RestartGame()
     {
-        Time.timeScale = 1f; // важно вернуть время
-
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

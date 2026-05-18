@@ -1,18 +1,35 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public static class InputHelper
 {
-    public static bool IsTap()
+    public static bool TryGetTapBegan(out Vector2 screenPosition)
     {
-        // Touchscreen (iPhone)
+        screenPosition = Vector2.zero;
+
+        if (IsPointerOverUI())
+        {
+            return false;
+        }
+
+        if (!IsTapStarted())
+        {
+            return false;
+        }
+
+        screenPosition = GetTapScreenPosition();
+        return true;
+    }
+
+    public static bool IsTapStarted()
+    {
         if (Touchscreen.current != null &&
             Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
         {
             return true;
         }
 
-        // Mouse (Editor)
         if (Mouse.current != null &&
             Mouse.current.leftButton.wasPressedThisFrame)
         {
@@ -22,20 +39,29 @@ public static class InputHelper
         return false;
     }
 
-    public static Vector2 GetTapPosition()
+    public static Vector2 GetTapScreenPosition()
     {
-        // Touchscreen
-        if (Touchscreen.current != null)
+        if (Touchscreen.current != null &&
+            Touchscreen.current.primaryTouch.press.isPressed)
         {
             return Touchscreen.current.primaryTouch.position.ReadValue();
         }
 
-        // Mouse
         if (Mouse.current != null)
         {
             return Mouse.current.position.ReadValue();
         }
 
         return Vector2.zero;
+    }
+
+    public static bool IsPointerOverUI()
+    {
+        if (EventSystem.current == null)
+        {
+            return false;
+        }
+
+        return EventSystem.current.IsPointerOverGameObject();
     }
 }

@@ -2,23 +2,22 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
 
     public int money = 100;
-    public int score = 0; // Очки за убитых врагов
     public int lives = 10;
-    public bool isGameOver = false;
+    public bool isGameOver;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+        Time.timeScale = 1f;
     }
 
     public void AddMoney(int amount)
@@ -26,14 +25,26 @@ public class GameManager : MonoBehaviour
         money += amount;
     }
 
+    public bool SpendMoney(int amount)
+    {
+        if (money < amount)
+        {
+            return false;
+        }
+
+        money -= amount;
+        return true;
+    }
+
     public void LoseLife(int amount)
     {
         if (isGameOver)
+        {
             return;
+        }
 
         lives -= amount;
-
-        Debug.Log("Жизни: " + lives);
+        Debug.Log($"Lives: {lives}");
 
         if (lives <= 0)
         {
@@ -41,27 +52,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void GameOver()
+    private void GameOver()
     {
         isGameOver = true;
+        Time.timeScale = 0f;
 
-        Debug.Log("GAME OVER");
+        Debug.Log("Game Over");
 
-        Time.timeScale = 0f; // останавливает игру
-        FindObjectOfType<RestartManager>().ShowRestart();
-    }
+        RestartManager restartManager = FindObjectOfType<RestartManager>();
 
-    public void AddScore(int amount)
-    {
-        score += amount;
-    }
-
-    public bool SpendMoney(int amount)
-    {
-        if (money < amount)
-            return false;
-
-        money -= amount;
-        return true;
+        if (restartManager != null)
+        {
+            restartManager.ShowRestart();
+        }
     }
 }

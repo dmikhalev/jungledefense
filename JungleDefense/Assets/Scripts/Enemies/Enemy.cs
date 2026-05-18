@@ -1,40 +1,80 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private float currentHealth;
-    public int reward = 10;
-    public EnemyData data;
-    public GameObject deathEffect;
+    [SerializeField] private EnemyData data;
+    [SerializeField] private GameObject deathEffect;
 
-    private int waypointIndex = 0;
+    private float currentHealth;
+    private int waypointIndex;
+    private bool isDead;
     private List<Transform> waypoints;
 
-    public System.Action onDeath;
+    public Action OnRemoved;
 
-    public void SetPath(List<Transform> waypoints)
+    public void SetPath(List<Transform> path)
     {
-        this.waypoints = waypoints;
+        waypoints = path;
         waypointIndex = 0;
     }
 
-    void Start()
+    private void Start()
     {
+        if (data == null)
+        {
+            Debug.LogError($"{name} has no EnemyData assigned.");
+            enabled = false;
+            return;
+        }
+
         currentHealth = data.maxHealth;
 
-        GetComponent<SpriteRenderer>().color = data.color;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = data.color;
+        }
     }
 
-    void Update()
+    private void Update()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+        {
+            return;
+        }
+
+        MoveAlongPath();
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (isDead)
+        {
+            return;
+        }
+
+        currentHealth -= damage;
+
+        if (currentHealth <= 0f)
+        {
+            Die();
+        }
+    }
+
+    private void MoveAlongPath()
     {
         if (waypoints == null || waypointIndex >= waypoints.Count)
+        {
             return;
+        }
 
         Transform target = waypoints[waypointIndex];
-        Vector3 dir = (target.position - transform.position).normalized;
+        Vector3 direction = (target.position - transform.position).normalized;
 
-        transform.position += dir * data.speed * Time.deltaTime;
+        transform.position += direction * data.speed * Time.deltaTime;
 
         if (Vector3.Distance(transform.position, target.position) < 0.1f)
         {
@@ -47,34 +87,44 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    private void Die()
     {
-        currentHealth -= damage;
-
-        if (currentHealth <= 0)
+        if (isDead)
         {
-            Die();
+            return;
         }
+
+        isDead = true;
+
+        GameManager.Instance.AddMoney(data.reward);
+        SpawnDeathEffect();
+        RemoveEnemy();
     }
 
-    void Die()
+    private void ReachEnd()
     {
-        GameManager.Instance.AddMoney(data.reward);
+        if (isDead)
+        {
+            return;
+        }
 
-        onDeath?.Invoke();
+        isDead = true;
 
+        GameManager.Instance.LoseLife(1);
+        RemoveEnemy();
+    }
+
+    private void SpawnDeathEffect()
+    {
         if (deathEffect != null)
         {
             Instantiate(deathEffect, transform.position, Quaternion.identity);
         }
-
-        Destroy(gameObject);
     }
 
-    void ReachEnd()
+    private void RemoveEnemy()
     {
-        GameManager.Instance.LoseLife(1);
-        onDeath?.Invoke();
+        OnRemoved?.Invoke();
         Destroy(gameObject);
     }
 }

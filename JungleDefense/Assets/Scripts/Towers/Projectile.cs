@@ -7,9 +7,9 @@ public class Projectile : MonoBehaviour
 
     private Transform target;
 
-    public void SetTarget(Transform _target)
+    public void SetTarget(Transform newTarget)
     {
-        target = _target;
+        target = newTarget;
     }
 
     void Update()
@@ -20,25 +20,20 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        Vector2 dir = (target.position - transform.position).normalized;
-        transform.position += (Vector3)dir * speed * Time.deltaTime;
+        Vector3 direction = (target.position - transform.position).normalized;
+        transform.position += direction * speed * Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("��������� �: " + collision.name);
+        Enemy enemy = collision.GetComponent<Enemy>();
 
-        if (collision.CompareTag("Enemy"))
+        if (enemy == null)
         {
-            Enemy enemy = collision.GetComponent<Enemy>();
-
-            if (enemy != null)
-            {
-                Debug.Log("Enemy took damage: " + damage);
-                enemy.TakeDamage(damage);
-            }
-
-            Destroy(gameObject);
+            return;
         }
+
+        enemy.TakeDamage(damage);
+        Destroy(gameObject);
     }
 }

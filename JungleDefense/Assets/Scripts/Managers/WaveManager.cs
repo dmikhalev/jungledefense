@@ -1,41 +1,41 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    public LevelData levelData;
+    [SerializeField] private LevelData levelData;
+    [SerializeField] private GameObject victoryText;
 
-    private int currentWaveIndex = 0;
-    private int aliveEnemies = 0;
+    private int currentWaveIndex;
+    private int aliveEnemies;
 
-    public GameObject victoryText;
-
-    void Start()
+    private void Start()
     {
         StartCoroutine(StartWaves());
     }
 
-    IEnumerator StartWaves()
+    private IEnumerator StartWaves()
     {
-        yield return new WaitForSeconds(1f);
+        yield return WaitForPath();
 
         while (currentWaveIndex < levelData.waves.Length)
         {
+            if (GameManager.Instance.isGameOver)
+            {
+                yield break;
+            }
+
             Wave wave = levelData.waves[currentWaveIndex];
 
-            Debug.Log("—Ú‡Ú ‚ÓÎÌ˚: " + (currentWaveIndex + 1));
+            Debug.Log($"Wave started: {currentWaveIndex + 1}");
 
             yield return StartCoroutine(SpawnWave(wave));
 
             currentWaveIndex++;
 
-            // Ô‡ÛÁ‡ ÏÂÊ‰Û ‚ÓÎÌ‡ÏË
             yield return new WaitForSeconds(3f);
         }
 
-        Debug.Log("¬—≈ ¬ŒÀÕ€ «¿—œ¿¬Õ≈Õ€");
-
-        // Ê‰∏Ï ÔÓÍ‡ ‚ÒÂ ‚‡„Ë ÛÏÛÚ
         while (aliveEnemies > 0)
         {
             yield return null;
@@ -44,42 +44,82 @@ public class WaveManager : MonoBehaviour
         Victory();
     }
 
-    IEnumerator SpawnWave(Wave wave)
+    private IEnumerator WaitForPath()
+    {
+        while (PathManager.Instance == null || PathManager.Instance.startPoint == null)
+        {
+            yield return null;
+        }
+    }
+
+    private IEnumerator SpawnWave(Wave wave)
     {
         for (int i = 0; i < wave.count; i++)
         {
+            if (GameManager.Instance.isGameOver)
+            {
+                yield break;
+            }
+
             SpawnEnemy(wave.enemyPrefab);
 
             yield return new WaitForSeconds(wave.delayBetweenEnemies);
         }
     }
 
-    void SpawnEnemy(GameObject enemyPrefab)
+    private void SpawnEnemy(GameObject enemyPrefab)
     {
+        if (enemyPrefab == null)
+        {
+            Debug.LogError("Wave contains an empty enemy prefab.");
+            return;
+        }
+
         Transform start = PathManager.Instance.startPoint;
+        GameObject enemyObject = Instantiate(enemyPrefab, start.position, Quaternion.identity);
 
-        GameObject enemyGO = Instantiate(enemyPrefab, start.position, Quaternion.identity);
+        Enemy enemy = enemyObject.GetComponent<Enemy>();
 
-        Enemy enemy = enemyGO.GetComponent<Enemy>();
+        if (enemy == null)
+        {
+            Debug.LogError("Enemy prefab does not have Enemy component.");
+            Destroy(enemyObject);
+            return;
+        }
+
         enemy.SetPath(PathManager.Instance.waypoints);
-        enemy.onDeath += OnEnemyDied;
+        enemy.OnRemoved += OnEnemyRemoved;
 
         aliveEnemies++;
     }
 
-    void OnEnemyDied()
+    private void OnEnemyRemoved()
     {
-        aliveEnemies--;
+        aliveEnemies = Mathf.Max(0, aliveEnemies - 1);
     }
 
-    void Victory()
+    private void Victory()
     {
-        Debug.Log("œŒ¡≈ƒ¿!");
+        if (GameManager.Instance.isGameOver)
+        {
+            return;
+        }
+
+        Debug.Log("Victory!");
 
         GameManager.Instance.isGameOver = true;
-
         Time.timeScale = 0f;
-        victoryText.SetActive(true);
-        FindObjectOfType<RestartManager>().ShowRestart();
+
+        if (victoryText != null)
+        {
+            victoryText.SetActive(true);
+        }
+
+        RestartManager restartManager = FindObjectOfType<RestartManager>();
+
+        if (restartManager != null)
+        {
+            restartManager.ShowRestart();
+        }
     }
 }

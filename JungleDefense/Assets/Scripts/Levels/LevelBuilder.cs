@@ -3,64 +3,112 @@ using UnityEngine;
 
 public class LevelBuilder : MonoBehaviour
 {
-    public LevelData levelData;
+    [SerializeField] private LevelData levelData;
+    [SerializeField] private GameObject buildTilePrefab;
+    [SerializeField] private GameObject pathTilePrefab;
+    [SerializeField] private float tileSize = 1f;
 
-    public GameObject buildTilePrefab;
-    public GameObject pathTilePrefab;
+    private readonly List<Vector3> pathPositions = new List<Vector3>();
 
-    public float tileSize = 1f;
-
-    private List<Vector3> pathPositions = new List<Vector3>();
-
-    void Start()
+    private void Start()
     {
         BuildLevel();
     }
 
-    void BuildLevel()
+    private void BuildLevel()
     {
+        if (!IsLevelDataValid())
+        {
+            return;
+        }
+
+        pathPositions.Clear();
+
         for (int y = 0; y < levelData.height; y++)
         {
             string row = levelData.rows[y];
 
             for (int x = 0; x < levelData.width; x++)
             {
-                char c = row[x];
+                char cell = row[x];
 
-                float offsetX = (levelData.width - 1) / 2f;
-                float offsetY = (levelData.height - 1) / 2f;
+                Vector3 position = GetCellPosition(x, y);
 
-                Vector3 pos = new Vector3(
-                    (x - offsetX) * tileSize,
-                    (offsetY - y) * tileSize,
-                    0
-                );
-
-                if (c == '1')
+                if (cell == '1')
                 {
-                    GameObject tile = Instantiate(buildTilePrefab, pos, Quaternion.identity);
-
-                    Tile t = tile.AddComponent<Tile>();
-                    t.isBuildable = true;
+                    CreateTile(buildTilePrefab, position, true);
                 }
-                else if (c == 'P')
+                else if (cell == 'P')
                 {
-                    GameObject tile = Instantiate(pathTilePrefab, pos, Quaternion.identity);
-
-                    Tile t = tile.AddComponent<Tile>();
-                    t.isBuildable = false;
-
-                    pathPositions.Add(pos);
+                    CreateTile(pathTilePrefab, position, false);
+                    pathPositions.Add(position);
                 }
             }
         }
 
-        // создаём объект PathManager если его нет
         if (PathManager.Instance == null)
         {
             new GameObject("PathManager").AddComponent<PathManager>();
         }
 
         PathManager.Instance.SetPath(pathPositions);
+    }
+
+    private Vector3 GetCellPosition(int x, int y)
+    {
+        float offsetX = (levelData.width - 1) / 2f;
+        float offsetY = (levelData.height - 1) / 2f;
+
+        return new Vector3(
+            (x - offsetX) * tileSize,
+            (offsetY - y) * tileSize,
+            0f
+        );
+    }
+
+    private void CreateTile(GameObject prefab, Vector3 position, bool isBuildable)
+    {
+        if (prefab == null)
+        {
+            Debug.LogError("Tile prefab is not assigned.");
+            return;
+        }
+
+        GameObject tileObject = Instantiate(prefab, position, Quaternion.identity);
+        Tile tile = tileObject.GetComponent<Tile>();
+
+        if (tile == null)
+        {
+            tile = tileObject.AddComponent<Tile>();
+        }
+
+        tile.isBuildable = isBuildable;
+        tile.isOccupied = false;
+    }
+
+    private bool IsLevelDataValid()
+    {
+        if (levelData == null)
+        {
+            Debug.LogError("LevelData is not assigned.");
+            return false;
+        }
+
+        if (levelData.rows == null || levelData.rows.Length != levelData.height)
+        {
+            Debug.LogError("LevelData rows count does not match height.");
+            return false;
+        }
+
+        for (int y = 0; y < levelData.rows.Length; y++)
+        {
+            if (levelData.rows[y].Length != levelData.width)
+            {
+                Debug.LogError($"LevelData row {y} length does not match width.");
+                return false;
+            }
+        }
+
+        return true;
     }
 }

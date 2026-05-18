@@ -3,10 +3,15 @@ using UnityEngine;
 
 public class LivesUI : MonoBehaviour
 {
-    public TextMeshProUGUI livesText;
+    [SerializeField] private TextMeshProUGUI livesText;
 
-    void Update()
+    private void Update()
     {
-        livesText.text = "Lives: " + GameManager.Instance.lives;
+        if (GameManager.Instance == null || livesText == null)
+        {
+            return;
+        }
+
+        livesText.text = $"Lives: {GameManager.Instance.lives}";
     }
 }
