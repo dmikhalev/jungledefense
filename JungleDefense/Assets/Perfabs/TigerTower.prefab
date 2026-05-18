@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3559377170122960889}
   - component: {fileID: 4431848639942802947}
   - component: {fileID: 8105452346581340071}
+  - component: {fileID: 1484755100542748264}
   m_Layer: 0
   m_Name: TigerTower
   m_TagString: Untagged
@@ -108,3 +109,45 @@ MonoBehaviour:
   damage: 3
   fireRate: 1
   range: 5
+  level: 1
+  maxLevel: 3
+  upgradeCost: 50
+  damageIncrease: 1
+  rangeIncrease: 0.5
+  fireRateIncrease: 0.3
+--- !u!58 &1484755100542748264
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1564398317561726871}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.5

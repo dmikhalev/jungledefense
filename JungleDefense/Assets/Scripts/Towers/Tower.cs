@@ -8,9 +8,19 @@ public class Tower : MonoBehaviour
 
     private float fireCountdown = 0f;
 
-    public int damage = 1;   // Урон
-    public float fireRate = 1f;  // Скорость стрельбы
-    public float range = 5f;  // Радиус
+    public int damage = 1;   // пїЅпїЅпїЅпїЅ
+    public float fireRate = 1f;  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public float range = 5f;  // пїЅпїЅпїЅпїЅпїЅпїЅ
+
+    public int level = 1;
+    public int maxLevel = 3;
+
+    public int upgradeCost = 50;
+
+    public int damageIncrease = 1;
+    public float rangeIncrease = 0.5f;
+    public float fireRateIncrease = 0.3f;
+
 
     void Update()
     {
@@ -39,7 +49,7 @@ public class Tower : MonoBehaviour
         {
             float distance = Vector2.Distance(transform.position, enemy.transform.position);
 
-            // Выбираем врага, который ближе всего к выходу
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             if (distance < shortestDistance && distance <= range)
             {
                 shortestDistance = distance;
@@ -61,13 +71,34 @@ public class Tower : MonoBehaviour
         GameObject projectileGO = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 
         Projectile proj = projectileGO.GetComponent<Projectile>();
+        proj.damage = damage;
         proj.SetTarget(target.transform);
     }
 
-    public void UpgradeTower()
+    public bool UpgradeTower()
     {
-        damage += 2;
-        fireRate += 0.5f;
-        range += 1f;
+        if (level >= maxLevel)
+        {
+            Debug.Log("Р‘Р°С€РЅСЏ СѓР¶Рµ РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ СѓСЂРѕРІРЅСЏ");
+            return false;
+        }
+
+        if (!GameManager.Instance.SpendMoney(upgradeCost))
+        {
+            Debug.Log("РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РґРµРЅРµРі РґР»СЏ СѓР»СѓС‡С€РµРЅРёСЏ");
+            return false;
+        }
+
+        level++;
+
+        damage += damageIncrease;
+        range += rangeIncrease;
+        fireRate += fireRateIncrease;
+
+        upgradeCost += 50;
+
+        Debug.Log("Р‘Р°С€РЅСЏ СѓР»СѓС‡С€РµРЅР° РґРѕ СѓСЂРѕРІРЅСЏ: " + level);
+
+        return true;
     }
 }
