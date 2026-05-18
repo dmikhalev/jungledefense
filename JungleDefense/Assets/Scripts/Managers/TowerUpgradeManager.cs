@@ -1,73 +1,74 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class TowerUpgradeManager : MonoBehaviour
 {
-    public static TowerUpgradeManager Instance;
+    public static TowerUpgradeManager Instance { get; private set; }
 
-    public Tower selectedTower;
-    public GameObject upgradeButton;
+    [SerializeField] private GameObject upgradeButton;
 
-    private Camera cam;
+    private Camera mainCamera;
+    private Tower selectedTower;
 
-    void Awake()
+    public Tower SelectedTower => selectedTower;
+
+    private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
-        cam = Camera.main;
+        mainCamera = Camera.main;
 
-        if (upgradeButton != null)
+        HideUpgradeButton();
+    }
+
+    private void Update()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
         {
-            upgradeButton.SetActive(false);
+            return;
+        }
+
+        if (InputHelper.TryGetTapBegan(out Vector2 screenPosition))
+        {
+            TrySelectTower(screenPosition);
         }
     }
 
-    void Update()
+    private void TrySelectTower(Vector2 screenPosition)
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        Vector3 worldPosition = mainCamera.ScreenToWorldPoint(screenPosition);
+        worldPosition.z = 0f;
+
+        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
+
+        foreach (Collider2D hit in hits)
         {
-            return;
+            Tower tower = hit.GetComponent<Tower>();
+
+            if (tower != null)
+            {
+                SelectTower(tower);
+                return;
+            }
         }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            TrySelectTower(Input.mousePosition);
-        }
-
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            TrySelectTower(Input.GetTouch(0).position);
-        }
+        ClearSelection();
     }
 
-    void TrySelectTower(Vector2 screenPos)
+    private void SelectTower(Tower tower)
     {
-        Vector3 world = cam.ScreenToWorldPoint(screenPos);
-        world.z = 0f;
-
-        Collider2D hit = Physics2D.OverlapPoint(world);
-
-        if (hit == null)
-        {
-            ClearSelection();
-            return;
-        }
-
-        Tower tower = hit.GetComponent<Tower>();
-
-        if (tower == null)
-        {
-            ClearSelection();
-            return;
-        }
-
         selectedTower = tower;
 
         if (upgradeButton != null)
         {
-            upgradeButton.SetActive(true);
+            upgradeButton.SetActive(!selectedTower.IsMaxLevel);
         }
 
-        Debug.Log("Выбрана башня уровня: " + selectedTower.level);
+        Debug.Log($"Selected tower level: {selectedTower.Level}");
     }
 
     public void UpgradeSelectedTower()
@@ -77,18 +78,27 @@ public class TowerUpgradeManager : MonoBehaviour
             return;
         }
 
-        selectedTower.UpgradeTower();
+        bool upgraded = selectedTower.UpgradeTower();
 
-        if (selectedTower.level >= selectedTower.maxLevel)
+        if (!upgraded)
         {
-            upgradeButton.SetActive(false);
+            return;
+        }
+
+        if (selectedTower.IsMaxLevel)
+        {
+            HideUpgradeButton();
         }
     }
 
-    void ClearSelection()
+    private void ClearSelection()
     {
         selectedTower = null;
+        HideUpgradeButton();
+    }
 
+    private void HideUpgradeButton()
+    {
         if (upgradeButton != null)
         {
             upgradeButton.SetActive(false);

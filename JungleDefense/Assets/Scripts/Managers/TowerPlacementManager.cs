@@ -29,11 +29,6 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
-        if (InputHelper.IsPointerOverUI())
-        {
-            return;
-        }
-
         if (InputHelper.TryGetTapBegan(out Vector2 screenPosition))
         {
             TryPlaceTower(screenPosition);
@@ -50,14 +45,7 @@ public class TowerPlacementManager : MonoBehaviour
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(screenPosition);
         worldPosition.z = 0f;
 
-        Collider2D hit = Physics2D.OverlapPoint(worldPosition);
-
-        if (hit == null)
-        {
-            return;
-        }
-
-        Tile tile = hit.GetComponent<Tile>();
+        Tile tile = FindTileAtPoint(worldPosition);
 
         if (tile == null)
         {
@@ -76,13 +64,30 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
-        if (!GameManager.Instance.SpendMoney(selectedTowerCost))
+        if (GameManager.Instance == null || !GameManager.Instance.SpendMoney(selectedTowerCost))
         {
             Debug.Log("Not enough money.");
             return;
         }
 
-        Instantiate(selectedTowerPrefab, hit.transform.position, Quaternion.identity);
+        Instantiate(selectedTowerPrefab, tile.transform.position, Quaternion.identity);
         tile.isOccupied = true;
+    }
+
+    private Tile FindTileAtPoint(Vector2 point)
+    {
+        Collider2D[] hits = Physics2D.OverlapPointAll(point);
+
+        foreach (Collider2D hit in hits)
+        {
+            Tile tile = hit.GetComponent<Tile>();
+
+            if (tile != null)
+            {
+                return tile;
+            }
+        }
+
+        return null;
     }
 }

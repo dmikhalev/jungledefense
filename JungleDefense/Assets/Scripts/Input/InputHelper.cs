@@ -1,6 +1,6 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public static class InputHelper
 {
@@ -22,7 +22,7 @@ public static class InputHelper
         return true;
     }
 
-    public static bool IsTapStarted()
+    private static bool IsTapStarted()
     {
         if (Touchscreen.current != null &&
             Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
@@ -39,7 +39,7 @@ public static class InputHelper
         return false;
     }
 
-    public static Vector2 GetTapScreenPosition()
+    private static Vector2 GetTapScreenPosition()
     {
         if (Touchscreen.current != null &&
             Touchscreen.current.primaryTouch.press.isPressed)
@@ -55,13 +55,8 @@ public static class InputHelper
         return Vector2.zero;
     }
 
-    public static bool IsPointerOverUI()
+    private static bool IsPointerOverUI()
     {
-        if (EventSystem.current == null)
-        {
-            return false;
-        }
-
-        return EventSystem.current.IsPointerOverGameObject();
+        return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
     }
 }
