@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.3443396, g: 0.96690375, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -105,7 +105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34485deb5e5eded4ca9d7a92db601ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  reward: 10
   data: {fileID: 11400000, guid: bf726f791c91c45d689be7322a46a763, type: 2}
   deathEffect: {fileID: 3326687224019949077, guid: e40ace64ae8364ac09630c4ff63bcc09, type: 3}
 --- !u!61 &-4057379165698578625

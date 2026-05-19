@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.053634696, g: 0.48534226, b: 0.9169811, a: 1}
+  m_Color: {r: 0.25698647, g: 0.3898249, b: 0.5188679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -105,10 +105,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8a6f7128ed3d544970c11698104801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
-  projectilePrefab: {fileID: 3745231535095687233, guid: 670cbd5b76bbf4c4a9c5f52cb11fdd6d, type: 3}
-  damage: 8
-  fireRate: 0.33
   range: 3
+  fireRate: 1
+  damage: 8
+  projectilePrefab: {fileID: 3745231535095687233, guid: 670cbd5b76bbf4c4a9c5f52cb11fdd6d, type: 3}
   level: 1
   maxLevel: 3
   upgradeCost: 50
