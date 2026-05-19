@@ -66,7 +66,13 @@ public class TowerUpgradeManager : MonoBehaviour
 
     private void SelectTower(Tower tower)
     {
+        if (selectedTower != null && selectedTower != tower)
+        {
+            selectedTower.HideRange();
+        }
+
         selectedTower = tower;
+        selectedTower.ShowRange();
 
         if (upgradeButton != null)
         {
@@ -98,6 +104,11 @@ public class TowerUpgradeManager : MonoBehaviour
 
     public void ClearSelection()
     {
+        if (selectedTower != null)
+        {
+            selectedTower.HideRange();
+        }
+
         selectedTower = null;
         HideUpgradeButton();
     }

@@ -18,8 +18,27 @@ public static class InputHelper
             return false;
         }
 
-        screenPosition = GetTapScreenPosition();
-        return true;
+        return TryGetPointerScreenPosition(out screenPosition);
+    }
+
+    public static bool TryGetPointerScreenPosition(out Vector2 screenPosition)
+    {
+        screenPosition = Vector2.zero;
+
+        if (Touchscreen.current != null &&
+            Touchscreen.current.primaryTouch.press.isPressed)
+        {
+            screenPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+            return true;
+        }
+
+        if (Mouse.current != null)
+        {
+            screenPosition = Mouse.current.position.ReadValue();
+            return true;
+        }
+
+        return false;
     }
 
     private static bool IsTapStarted()
@@ -37,22 +56,6 @@ public static class InputHelper
         }
 
         return false;
-    }
-
-    private static Vector2 GetTapScreenPosition()
-    {
-        if (Touchscreen.current != null &&
-            Touchscreen.current.primaryTouch.press.isPressed)
-        {
-            return Touchscreen.current.primaryTouch.position.ReadValue();
-        }
-
-        if (Mouse.current != null)
-        {
-            return Mouse.current.position.ReadValue();
-        }
-
-        return Vector2.zero;
     }
 
     public static bool IsPointerOverUI()

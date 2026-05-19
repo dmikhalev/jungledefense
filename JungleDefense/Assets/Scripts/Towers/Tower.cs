@@ -21,6 +21,7 @@ public class Tower : MonoBehaviour
 
     private float fireCooldown;
     private Enemy target;
+    private RangeCircleRenderer rangeCircle;
 
     public int Level => level;
     public bool IsMaxLevel => level >= maxLevel;
@@ -99,6 +100,30 @@ public class Tower : MonoBehaviour
         projectile.SetTarget(target.transform);
     }
 
+
+    public void ShowRange()
+    {
+        if (rangeCircle == null)
+        {
+            GameObject rangeObject = new GameObject("RangeCircle");
+            rangeObject.transform.SetParent(transform);
+            rangeObject.transform.localPosition = Vector3.zero;
+
+            rangeCircle = rangeObject.AddComponent<RangeCircleRenderer>();
+        }
+
+        rangeCircle.gameObject.SetActive(true);
+        rangeCircle.Draw(range);
+    }
+
+    public void HideRange()
+    {
+        if (rangeCircle != null)
+        {
+            rangeCircle.gameObject.SetActive(false);
+        }
+    }
+
     public bool UpgradeTower()
     {
         if (IsMaxLevel)
@@ -120,6 +145,8 @@ public class Tower : MonoBehaviour
         fireRate += fireRateIncrease;
 
         upgradeCost += 50;
+
+        ShowRange();
 
         Debug.Log("Tower upgraded to level " + level);
 
