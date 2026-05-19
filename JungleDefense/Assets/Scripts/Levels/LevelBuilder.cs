@@ -3,26 +3,21 @@ using UnityEngine;
 
 public class LevelBuilder : MonoBehaviour
 {
-    [SerializeField] private LevelData levelData;
     [SerializeField] private GameObject buildTilePrefab;
     [SerializeField] private GameObject pathTilePrefab;
     [SerializeField] private float tileSize = 1f;
 
+    private readonly List<GameObject> spawnedTiles = new List<GameObject>();
     private readonly List<Vector3> pathPositions = new List<Vector3>();
 
-    private void Start()
+    public void BuildLevel(LevelData levelData)
     {
-        BuildLevel();
-    }
+        ClearLevel();
 
-    private void BuildLevel()
-    {
-        if (!IsLevelDataValid())
+        if (!IsLevelDataValid(levelData))
         {
             return;
         }
-
-        pathPositions.Clear();
 
         for (int y = 0; y < levelData.height; y++)
         {
@@ -31,8 +26,7 @@ public class LevelBuilder : MonoBehaviour
             for (int x = 0; x < levelData.width; x++)
             {
                 char cell = row[x];
-
-                Vector3 position = GetCellPosition(x, y);
+                Vector3 position = GetCellPosition(levelData, x, y);
 
                 if (cell == '1')
                 {
@@ -46,15 +40,30 @@ public class LevelBuilder : MonoBehaviour
             }
         }
 
-        if (PathManager.Instance == null)
-        {
-            new GameObject("PathManager").AddComponent<PathManager>();
-        }
-
+        EnsurePathManager();
         PathManager.Instance.SetPath(pathPositions);
     }
 
-    private Vector3 GetCellPosition(int x, int y)
+    public void ClearLevel()
+    {
+        for (int i = spawnedTiles.Count - 1; i >= 0; i--)
+        {
+            if (spawnedTiles[i] != null)
+            {
+                Destroy(spawnedTiles[i]);
+            }
+        }
+
+        spawnedTiles.Clear();
+        pathPositions.Clear();
+
+        if (PathManager.Instance != null)
+        {
+            PathManager.Instance.ClearPath();
+        }
+    }
+
+    private Vector3 GetCellPosition(LevelData levelData, int x, int y)
     {
         float offsetX = (levelData.width - 1) / 2f;
         float offsetY = (levelData.height - 1) / 2f;
@@ -75,6 +84,8 @@ public class LevelBuilder : MonoBehaviour
         }
 
         GameObject tileObject = Instantiate(prefab, position, Quaternion.identity);
+        spawnedTiles.Add(tileObject);
+
         Tile tile = tileObject.GetComponent<Tile>();
 
         if (tile == null)
@@ -86,11 +97,27 @@ public class LevelBuilder : MonoBehaviour
         tile.isOccupied = false;
     }
 
-    private bool IsLevelDataValid()
+    private void EnsurePathManager()
+    {
+        if (PathManager.Instance != null)
+        {
+            return;
+        }
+
+        new GameObject("PathManager").AddComponent<PathManager>();
+    }
+
+    private bool IsLevelDataValid(LevelData levelData)
     {
         if (levelData == null)
         {
             Debug.LogError("LevelData is not assigned.");
+            return false;
+        }
+
+        if (levelData.width <= 0 || levelData.height <= 0)
+        {
+            Debug.LogError("LevelData width and height must be greater than zero.");
             return false;
         }
 
@@ -102,7 +129,7 @@ public class LevelBuilder : MonoBehaviour
 
         for (int y = 0; y < levelData.rows.Length; y++)
         {
-            if (levelData.rows[y].Length != levelData.width)
+            if (string.IsNullOrEmpty(levelData.rows[y]) || levelData.rows[y].Length != levelData.width)
             {
                 Debug.LogError($"LevelData row {y} length does not match width.");
                 return false;

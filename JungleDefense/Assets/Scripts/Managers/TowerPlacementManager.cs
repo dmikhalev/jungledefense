@@ -13,6 +13,12 @@ public class TowerPlacementManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
         cam = Camera.main;
     }
@@ -24,7 +30,7 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
-        if (selectedTowerPrefab == null)
+        if (!IsBuildMode)
         {
             return;
         }
@@ -35,50 +41,69 @@ public class TowerPlacementManager : MonoBehaviour
         }
     }
 
+    public void SelectTowerForBuilding(GameObject towerPrefab, int cost)
+    {
+        selectedTowerPrefab = towerPrefab;
+        selectedTowerCost = cost;
+    }
+
+    public void ClearSelection()
+    {
+        selectedTowerPrefab = null;
+        selectedTowerCost = 0;
+    }
+
     private void TryPlaceTower(Vector2 screenPosition)
     {
-        Debug.Log("Try place tower");
-
         Vector3 worldPosition = cam.ScreenToWorldPoint(screenPosition);
         worldPosition.z = 0f;
 
-        Collider2D hit = Physics2D.OverlapPoint(worldPosition);
+        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
 
-        if (hit == null)
-        {
-            Debug.Log("No tile hit");
-            return;
-        }
-
-        Tile tile = hit.GetComponent<Tile>();
+        Tile tile = FindTile(hits);
 
         if (tile == null)
         {
-            Debug.Log("Hit object is not Tile: " + hit.name);
+            Debug.Log("No tile hit.");
             return;
         }
 
         if (!tile.isBuildable)
         {
-            Debug.Log("Tile is not buildable");
+            Debug.Log("Tile is not buildable.");
             return;
         }
 
         if (tile.isOccupied)
         {
-            Debug.Log("Tile is occupied");
+            Debug.Log("Tile is occupied.");
             return;
         }
 
         if (!GameManager.Instance.SpendMoney(selectedTowerCost))
         {
-            Debug.Log("Not enough money");
+            Debug.Log("Not enough money.");
             return;
         }
 
-        Instantiate(selectedTowerPrefab, hit.transform.position, Quaternion.identity);
+        Instantiate(selectedTowerPrefab, tile.transform.position, Quaternion.identity);
         tile.isOccupied = true;
 
-        Debug.Log("Tower placed");
+        Debug.Log("Tower placed.");
+    }
+
+    private Tile FindTile(Collider2D[] hits)
+    {
+        foreach (Collider2D hit in hits)
+        {
+            Tile tile = hit.GetComponent<Tile>();
+
+            if (tile != null)
+            {
+                return tile;
+            }
+        }
+
+        return null;
     }
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class RestartManager : MonoBehaviour
 {
@@ -7,10 +6,7 @@ public class RestartManager : MonoBehaviour
 
     private void Awake()
     {
-        if (restartButton != null)
-        {
-            restartButton.SetActive(false);
-        }
+        HideRestart();
     }
 
     public void ShowRestart()
@@ -21,9 +17,23 @@ public class RestartManager : MonoBehaviour
         }
     }
 
+    public void HideRestart()
+    {
+        if (restartButton != null)
+        {
+            restartButton.SetActive(false);
+        }
+    }
+
     public void RestartGame()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.Instance.RestartCurrentLevel();
+        }
+
+        HideRestart();
     }
 }

@@ -14,12 +14,18 @@ public class PathManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
     }
 
     public void SetPath(List<Vector3> positions)
     {
-        waypoints.Clear();
+        ClearPath();
 
         List<Vector3> sortedPath = SortPath(positions);
 
@@ -39,6 +45,21 @@ public class PathManager : MonoBehaviour
 
         startPoint = waypoints[0];
         endPoint = waypoints[waypoints.Count - 1];
+    }
+
+    public void ClearPath()
+    {
+        for (int i = waypoints.Count - 1; i >= 0; i--)
+        {
+            if (waypoints[i] != null)
+            {
+                Destroy(waypoints[i].gameObject);
+            }
+        }
+
+        waypoints.Clear();
+        startPoint = null;
+        endPoint = null;
     }
 
     private List<Vector3> SortPath(List<Vector3> positions)

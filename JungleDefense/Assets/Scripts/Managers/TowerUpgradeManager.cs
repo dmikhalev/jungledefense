@@ -32,6 +32,11 @@ public class TowerUpgradeManager : MonoBehaviour
             return;
         }
 
+        if (TowerPlacementManager.Instance != null && TowerPlacementManager.Instance.IsBuildMode)
+        {
+            return;
+        }
+
         if (InputHelper.TryGetTapBegan(out Vector2 screenPosition))
         {
             TrySelectTower(screenPosition);
@@ -91,7 +96,7 @@ public class TowerUpgradeManager : MonoBehaviour
         }
     }
 
-    private void ClearSelection()
+    public void ClearSelection()
     {
         selectedTower = null;
         HideUpgradeButton();

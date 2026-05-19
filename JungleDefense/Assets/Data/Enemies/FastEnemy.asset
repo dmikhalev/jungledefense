@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Fast
   maxHealth: 5
-  speed: 6
+  speed: 8
   reward: 8
   color: {r: 0.9811321, g: 0.9165043, b: 0.36561054, a: 1}

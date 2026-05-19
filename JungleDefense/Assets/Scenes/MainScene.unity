@@ -119,6 +119,56 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &9050844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9050845}
+  - component: {fileID: 9050846}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9050845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9050844}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2098176626}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9050846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9050844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa8abe15861e4aaf96649a1562ea066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelManager
+  levels:
+  - {fileID: 11400000, guid: 27633668b36eb834ab87f86722a04fbe, type: 2}
+  - {fileID: 11400000, guid: e33f85a56964c40fbb986248d80d5b76, type: 2}
+  levelBuilder: {fileID: 680711179}
+  waveManager: {fileID: 1838406154}
+  victoryText: {fileID: 1090194358}
 --- !u!1 &110393280
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,7 +248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dba5fc5fa6f24bb5a962d6d1e6c2aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerUpgradeManager
-  selectedTower: {fileID: 0}
   upgradeButton: {fileID: 368131361}
 --- !u!4 &132500194
 Transform:
@@ -664,7 +713,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c307fc3be374cfb419a88172a15a672b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelBuilder
-  levelData: {fileID: 11400000, guid: 27633668b36eb834ab87f86722a04fbe, type: 2}
   buildTilePrefab: {fileID: 2551773862290587177, guid: 3c7b54e16c4af5c48bdd1b914b8010e6, type: 3}
   pathTilePrefab: {fileID: 8865230353639095373, guid: a2c57f9d9aac10b40aeaac16a6713791, type: 3}
   tileSize: 1
@@ -1252,12 +1300,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1146384397}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2098176626}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1146384399
 MonoBehaviour:
@@ -1271,7 +1319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a12247d015c8d344947bc6aebe51316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PathManager
-  waypoints: []
   startPoint: {fileID: 0}
   endPoint: {fileID: 0}
 --- !u!1 &1294548404
@@ -2162,8 +2209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4c247c93dcf44148a21c8a75b571ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
-  levelData: {fileID: 11400000, guid: 27633668b36eb834ab87f86722a04fbe, type: 2}
-  victoryText: {fileID: 1090194358}
 --- !u!4 &1838406155
 Transform:
   m_ObjectHideFlags: 0
@@ -2361,7 +2406,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   money: 100
-  score: 0
   lives: 10
   isGameOver: 0
 --- !u!1 &2018378963
@@ -2468,12 +2512,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2057581551}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.42758, y: 0.97972, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2098176626}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2057581554
 MonoBehaviour:
@@ -2565,6 +2609,9 @@ Transform:
   m_Children:
   - {fileID: 1900325898}
   - {fileID: 1838406155}
+  - {fileID: 9050845}
+  - {fileID: 1146384398}
+  - {fileID: 2057581553}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2112950059
@@ -2710,8 +2757,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 1753596224}
   - {fileID: 2098176626}
-  - {fileID: 1146384398}
-  - {fileID: 2057581553}
   - {fileID: 490862658}
   - {fileID: 2018378966}
   - {fileID: 110393282}

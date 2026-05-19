@@ -35,7 +35,6 @@ public class TowerSelectUI : MonoBehaviour
             return;
         }
 
-        TowerPlacementManager.Instance.selectedTowerPrefab = towerPrefab;
-        TowerPlacementManager.Instance.selectedTowerCost = cost;
+        TowerPlacementManager.Instance.SelectTowerForBuilding(towerPrefab, cost);
     }
 }

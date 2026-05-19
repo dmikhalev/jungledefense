@@ -7,7 +7,13 @@ public class GameManager : MonoBehaviour
     public int money = 100;
     public int lives = 10;
     public bool isGameOver;
+    public int startLives = 10;
 
+    public void ResetGameState()
+    {
+        lives = startLives;
+        isGameOver = false;
+    }
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -17,6 +23,14 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+        Time.timeScale = 1f;
+    }
+
+    public void ResetState(int startingMoney, int startingLives)
+    {
+        money = startingMoney;
+        lives = startingLives;
+        isGameOver = false;
         Time.timeScale = 1f;
     }
 
@@ -52,18 +66,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void GameOver()
+    public void GameOver()
     {
+        if (isGameOver)
+        {
+            return;
+        }
+
         isGameOver = true;
         Time.timeScale = 0f;
 
         Debug.Log("Game Over");
 
-        RestartManager restartManager = FindObjectOfType<RestartManager>();
+        RestartManager restartManager = FindFirstObjectByType<RestartManager>();
 
         if (restartManager != null)
         {
             restartManager.ShowRestart();
         }
+    }
+
+    public void ResetMoney(int amount)
+    {
+        money = amount;
     }
 }

@@ -9,4 +9,5 @@ public class LevelData : ScriptableObject
     public string[] rows;
 
     public Wave[] waves;
+    public int startMoney;
 }
