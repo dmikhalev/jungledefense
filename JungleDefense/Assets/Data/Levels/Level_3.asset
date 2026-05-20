@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e4dc5c51a0619d49a0d24463fac6497, type: 3}
+  m_Name: Level_3
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  width: 7
+  height: 14
+  rows:
+  - PPPPP11
+  - 1111P11
+  - 11PPP11
+  - 11P1111
+  - 11PPPP1
+  - 11111P1
+  - 1PPPPP1
+  - 1P11111
+  - 1PPPPP1
+  - 11111P1
+  - 11PPPP1
+  - 11P1111
+  - 11PPPP1
+  - 11111P1
+  waves:
+  - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
+    count: 12
+    delayBetweenEnemies: 0.55
+  - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
+    count: 18
+    delayBetweenEnemies: 0.45
+  - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
+    count: 24
+    delayBetweenEnemies: 0.35
+  - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
+    count: 12
+    delayBetweenEnemies: 0.5
+  - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
+    count: 32
+    delayBetweenEnemies: 0.28
+  startMoney: 160

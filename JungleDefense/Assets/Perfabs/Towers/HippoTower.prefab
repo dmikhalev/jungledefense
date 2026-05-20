@@ -105,9 +105,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8a6f7128ed3d544970c11698104801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
-  range: 3
-  fireRate: 1
-  damage: 8
+  cost: 150
+  range: 5.5
+  fireRate: 0.45
+  damage: 10
   projectilePrefab: {fileID: 3745231535095687233, guid: 670cbd5b76bbf4c4a9c5f52cb11fdd6d, type: 3}
   level: 1
   maxLevel: 3

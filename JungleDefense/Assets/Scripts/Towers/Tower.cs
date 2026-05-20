@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    [Header("Economy")]
+    public int cost = 50;
+
     [Header("Combat")]
     public float range = 5f;
     public float fireRate = 1f;

@@ -5,7 +5,6 @@ public class TowerPlacementManager : MonoBehaviour
     public static TowerPlacementManager Instance { get; private set; }
 
     public GameObject selectedTowerPrefab;
-    public int selectedTowerCost;
 
     public bool IsBuildMode => selectedTowerPrefab != null;
 
@@ -51,16 +50,13 @@ public class TowerPlacementManager : MonoBehaviour
     public void SelectTowerForBuilding(GameObject towerPrefab, int cost)
     {
         selectedTowerPrefab = towerPrefab;
-        selectedTowerCost = cost;
         selectedTowerTemplate = towerPrefab != null ? towerPrefab.GetComponent<Tower>() : null;
-
         CreatePreview();
     }
 
     public void ClearSelection()
     {
         selectedTowerPrefab = null;
-        selectedTowerCost = 0;
         selectedTowerTemplate = null;
 
         DestroyPreview();
@@ -92,7 +88,7 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
-        if (!GameManager.Instance.SpendMoney(selectedTowerCost))
+        if (!GameManager.Instance.SpendMoney(selectedTowerTemplate.cost))
         {
             Debug.Log("Not enough money.");
             return;

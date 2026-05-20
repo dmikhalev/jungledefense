@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NormalEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Normal
-  maxHealth: 10
-  speed: 4
+  maxHealth: 12
+  speed: 2.2
   reward: 10
   color: {r: 1, g: 1, b: 1, a: 1}

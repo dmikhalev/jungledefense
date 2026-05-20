@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TankEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Tank
-  maxHealth: 30
+  maxHealth: 45
   speed: 1
-  reward: 20
+  reward: 25
   color: {r: 0.754717, g: 0.038063236, b: 0, a: 1}
