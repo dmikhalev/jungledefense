@@ -4,155 +4,149 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    private LevelData currentLevelData;
-    private Action onLevelCompleted;
+    [SerializeField] private GameObject startWaveButton;
 
+    private LevelData currentLevel;
     private int currentWaveIndex;
     private int aliveEnemies;
-    private Coroutine waveRoutine;
+    private bool isWaveRunning;
 
-    public int CurrentWaveNumber => currentWaveIndex + 1;
-    public int TotalWaves => currentLevelData != null && currentLevelData.waves != null ? currentLevelData.waves.Length : 0;
-    public int AliveEnemies => aliveEnemies;
+    private Action onLevelCompleted;
 
-    public void StartLevel(LevelData level, System.Action levelCompletedCallback)
+    public void StartLevel(LevelData level, Action levelCompletedCallback)
     {
         StopAllCoroutines();
 
-        currentLevelData = level;
+        currentLevel = level;
         currentWaveIndex = 0;
         aliveEnemies = 0;
+        isWaveRunning = false;
         onLevelCompleted = levelCompletedCallback;
 
-        StartCoroutine(RunWaves());
+        ShowStartWaveButton();
     }
 
-    public void StopCurrentLevel()
+    public void StartNextWave()
     {
-        if (waveRoutine != null)
+        if (currentLevel == null)
         {
-            StopCoroutine(waveRoutine);
-            waveRoutine = null;
+            Debug.LogError("No level assigned to WaveManager");
+            return;
         }
 
-        currentWaveIndex = 0;
-        aliveEnemies = 0;
-        currentLevelData = null;
-        onLevelCompleted = null;
-    }
-
-    private IEnumerator RunWaves()
-    {
-        if (currentLevelData == null)
+        if (isWaveRunning)
         {
-            Debug.LogError("WaveManager cannot start: LevelData is null.");
-            yield break;
+            return;
         }
 
-        if (currentLevelData.waves == null || currentLevelData.waves.Length == 0)
+        if (currentWaveIndex >= currentLevel.waves.Length)
         {
-            Debug.LogWarning("Level has no waves. Completing level immediately.");
-            onLevelCompleted?.Invoke();
-            yield break;
+            CompleteLevel();
+            return;
         }
 
-        yield return WaitForPath();
-
-        while (currentWaveIndex < currentLevelData.waves.Length)
-        {
-            if (GameManager.Instance != null && GameManager.Instance.isGameOver)
-            {
-                yield break;
-            }
-
-            Wave wave = currentLevelData.waves[currentWaveIndex];
-
-            Debug.Log($"Wave started: {currentWaveIndex + 1}/{currentLevelData.waves.Length}");
-
-            yield return StartCoroutine(SpawnWave(wave));
-            currentWaveIndex++;
-
-            if (currentWaveIndex < currentLevelData.waves.Length)
-            {
-                yield return new WaitForSeconds(3f);
-            }
-        }
-
-        while (aliveEnemies > 0)
-        {
-            if (GameManager.Instance != null && GameManager.Instance.isGameOver)
-            {
-                yield break;
-            }
-
-            yield return null;
-        }
-
-        onLevelCompleted?.Invoke();
-    }
-
-    private IEnumerator WaitForPath()
-    {
-        while (PathManager.Instance == null || PathManager.Instance.startPoint == null)
-        {
-            yield return null;
-        }
+        HideStartWaveButton();
+        StartCoroutine(SpawnWave(currentLevel.waves[currentWaveIndex]));
     }
 
     private IEnumerator SpawnWave(Wave wave)
     {
-        if (wave == null)
+        isWaveRunning = true;
+
+        Debug.Log("Starting wave " + (currentWaveIndex + 1));
+
+        for (int i = 0; i < wave.count; i++)
+        {
+            SpawnEnemy(wave.enemyPrefab);
+            yield return new WaitForSeconds(wave.delayBetweenEnemies);
+        }
+
+        while (aliveEnemies > 0)
+        {
+            yield return null;
+        }
+
+        currentWaveIndex++;
+        isWaveRunning = false;
+
+        if (GameManager.Instance != null &&
+            GameManager.Instance.isGameOver)
         {
             yield break;
         }
 
-        for (int i = 0; i < wave.count; i++)
+        if (currentWaveIndex >= currentLevel.waves.Length)
         {
-            if (GameManager.Instance != null && GameManager.Instance.isGameOver)
-            {
-                yield break;
-            }
-
-            SpawnEnemy(wave.enemyPrefab);
-
-            yield return new WaitForSeconds(wave.delayBetweenEnemies);
+            CompleteLevel();
+        }
+        else
+        {
+            ShowStartWaveButton();
         }
     }
 
     private void SpawnEnemy(GameObject enemyPrefab)
     {
-        if (enemyPrefab == null)
-        {
-            Debug.LogError("Wave contains an empty enemy prefab.");
-            return;
-        }
-
         if (PathManager.Instance == null || PathManager.Instance.startPoint == null)
         {
-            Debug.LogError("Cannot spawn enemy: path is not ready.");
+            Debug.LogError("Path is not ready");
             return;
         }
 
-        Transform start = PathManager.Instance.startPoint;
-        GameObject enemyObject = Instantiate(enemyPrefab, start.position, Quaternion.identity);
+        GameObject enemyObject = Instantiate(
+            enemyPrefab,
+            PathManager.Instance.startPoint.position,
+            Quaternion.identity
+        );
 
         Enemy enemy = enemyObject.GetComponent<Enemy>();
 
         if (enemy == null)
         {
-            Debug.LogError("Enemy prefab does not have Enemy component.");
+            Debug.LogError("Enemy prefab does not have Enemy component");
             Destroy(enemyObject);
             return;
         }
 
+        aliveEnemies++;
+
         enemy.SetPath(PathManager.Instance.waypoints);
         enemy.OnRemoved += OnEnemyRemoved;
-
-        aliveEnemies++;
     }
 
     private void OnEnemyRemoved()
     {
         aliveEnemies = Mathf.Max(0, aliveEnemies - 1);
+    }
+
+    private void CompleteLevel()
+    {
+        HideStartWaveButton();
+        onLevelCompleted?.Invoke();
+    }
+
+    private void ShowStartWaveButton()
+    {
+        if (startWaveButton == null)
+        {
+            return;
+        }
+
+        if (GameManager.Instance != null &&
+            GameManager.Instance.isGameOver)
+        {
+            startWaveButton.SetActive(false);
+            return;
+        }
+
+        startWaveButton.SetActive(true);
+    }
+
+    private void HideStartWaveButton()
+    {
+        if (startWaveButton != null)
+        {
+            startWaveButton.SetActive(false);
+        }
     }
 }
