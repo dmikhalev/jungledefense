@@ -55,10 +55,16 @@ public class WaveManager : MonoBehaviour
 
         Debug.Log("Starting wave " + (currentWaveIndex + 1));
 
-        for (int i = 0; i < wave.count; i++)
+        if (wave.enemyGroups == null || wave.enemyGroups.Length == 0)
         {
-            SpawnEnemy(wave.enemyPrefab);
-            yield return new WaitForSeconds(wave.delayBetweenEnemies);
+            Debug.LogWarning("Wave has no enemy groups");
+        }
+        else
+        {
+            foreach (WaveEnemyGroup group in wave.enemyGroups)
+            {
+                yield return StartCoroutine(SpawnEnemyGroup(group));
+            }
         }
 
         while (aliveEnemies > 0)
@@ -82,6 +88,20 @@ public class WaveManager : MonoBehaviour
         else
         {
             ShowStartWaveButton();
+        }
+    }
+
+    private IEnumerator SpawnEnemyGroup(WaveEnemyGroup group)
+    {
+        if (group == null || group.enemyPrefab == null || group.count <= 0)
+        {
+            yield break;
+        }
+
+        for (int i = 0; i < group.count; i++)
+        {
+            SpawnEnemy(group.enemyPrefab);
+            yield return new WaitForSeconds(group.delayBetweenEnemies);
         }
     }
 
