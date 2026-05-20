@@ -5,6 +5,7 @@ public class TowerUpgradeManager : MonoBehaviour
     public static TowerUpgradeManager Instance { get; private set; }
 
     [SerializeField] private GameObject upgradeButton;
+    [SerializeField] private GameObject deleteButton;
 
     private Camera mainCamera;
     private Tower selectedTower;
@@ -23,6 +24,7 @@ public class TowerUpgradeManager : MonoBehaviour
         mainCamera = Camera.main;
 
         HideUpgradeButton();
+        HideDeleteButton();
     }
 
     private void Update()
@@ -79,6 +81,11 @@ public class TowerUpgradeManager : MonoBehaviour
             upgradeButton.SetActive(!selectedTower.IsMaxLevel);
         }
 
+        if (deleteButton != null)
+        {
+            deleteButton.SetActive(true);
+        }
+
         Debug.Log($"Selected tower level: {selectedTower.Level}");
     }
 
@@ -111,6 +118,7 @@ public class TowerUpgradeManager : MonoBehaviour
 
         selectedTower = null;
         HideUpgradeButton();
+        HideDeleteButton();
     }
 
     private void HideUpgradeButton()
@@ -119,5 +127,27 @@ public class TowerUpgradeManager : MonoBehaviour
         {
             upgradeButton.SetActive(false);
         }
+    }
+
+    private void HideDeleteButton()
+    {
+        if (deleteButton != null)
+        {
+            deleteButton.SetActive(false);
+        }
+    }
+
+    public void DeleteSelectedTower()
+    {
+        if (selectedTower == null)
+        {
+            return;
+        }
+
+        selectedTower.DeleteTower();
+        selectedTower = null;
+
+        HideUpgradeButton();
+        HideDeleteButton();
     }
 }

@@ -29,6 +29,10 @@ public class Tower : MonoBehaviour
     public int Level => level;
     public bool IsMaxLevel => level >= maxLevel;
 
+    private Tile occupiedTile;
+
+    public int SellRefund => cost / 2;
+
     private void Update()
     {
         FindTarget();
@@ -160,5 +164,31 @@ public class Tower : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, range);
+    }
+
+    public void SetOccupiedTile(Tile tile)
+
+    {
+
+        occupiedTile = tile;
+
+    }
+
+    public void DeleteTower()
+
+    {
+
+        if (occupiedTile != null)
+
+        {
+
+            occupiedTile.isOccupied = false;
+
+        }
+
+        GameManager.Instance.AddMoney(SellRefund);
+
+        Destroy(gameObject);
+
     }
 }

@@ -94,7 +94,19 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
-        Instantiate(selectedTowerPrefab, tile.transform.position, Quaternion.identity);
+        GameObject towerObject = Instantiate(
+            selectedTowerPrefab,
+            tile.transform.position,
+            Quaternion.identity
+        );
+
+        Tower tower = towerObject.GetComponent<Tower>();
+
+        if (tower != null)
+        {
+            tower.SetOccupiedTile(tile);
+        }
+
         tile.isOccupied = true;
 
         ClearSelection();
