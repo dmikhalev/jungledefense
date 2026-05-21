@@ -3,7 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class RangeCircleRenderer : MonoBehaviour
 {
-    [SerializeField] private int segments = 96;
+    private static Material sharedMaterial;
+
+    [SerializeField] private int segments = 72;
     [SerializeField] private float lineWidth = 0.04f;
 
     private LineRenderer lineRenderer;
@@ -45,11 +47,23 @@ public class RangeCircleRenderer : MonoBehaviour
         lineRenderer.sortingLayerName = "Projectiles";
         lineRenderer.sortingOrder = 20;
 
-        Material material = new Material(Shader.Find("Sprites/Default"));
-        material.color = new Color(1f, 1f, 1f, 0.45f);
-        lineRenderer.material = material;
+        lineRenderer.sharedMaterial = GetSharedMaterial();
 
-        lineRenderer.startColor = new Color(1f, 1f, 1f, 0.45f);
-        lineRenderer.endColor = new Color(1f, 1f, 1f, 0.45f);
+        Color color = new Color(1f, 1f, 1f, 0.45f);
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
+    }
+
+    private static Material GetSharedMaterial()
+    {
+        if (sharedMaterial == null)
+        {
+            sharedMaterial = new Material(Shader.Find("Sprites/Default"))
+            {
+                color = new Color(1f, 1f, 1f, 0.45f)
+            };
+        }
+
+        return sharedMaterial;
     }
 }

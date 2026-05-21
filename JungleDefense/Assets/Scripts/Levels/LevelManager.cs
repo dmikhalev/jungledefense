@@ -55,7 +55,7 @@ public class LevelManager : MonoBehaviour
 
         currentLevelIndex = levelIndex;
 
-        ClearLevel();
+        ClearRuntimeObjects();
 
         LevelData level = levels[currentLevelIndex];
 
@@ -89,8 +89,11 @@ public class LevelManager : MonoBehaviour
         LoadLevel(currentLevelIndex);
     }
 
-    private void ClearLevel()
+    private void ClearRuntimeObjects()
     {
+        TowerPlacementManager.Instance?.ClearSelection();
+        TowerUpgradeManager.Instance?.ClearSelection();
+
         foreach (Enemy enemy in FindObjectsByType<Enemy>(FindObjectsSortMode.None))
         {
             Destroy(enemy.gameObject);
@@ -101,10 +104,12 @@ public class LevelManager : MonoBehaviour
             Destroy(tower.gameObject);
         }
 
-        foreach (Tile tile in FindObjectsByType<Tile>(FindObjectsSortMode.None))
+        foreach (Projectile projectile in FindObjectsByType<Projectile>(FindObjectsSortMode.None))
         {
-            Destroy(tile.gameObject);
+            Destroy(projectile.gameObject);
         }
+
+        EnemyRegistry.Clear();
 
         if (PathManager.Instance != null)
         {

@@ -15,5 +15,5 @@ MonoBehaviour:
   enemyName: Fast
   maxHealth: 4
   speed: 4.5
-  reward: 6
+  reward: 5
   color: {r: 0.9811321, g: 0.9165043, b: 0.36561054, a: 1}

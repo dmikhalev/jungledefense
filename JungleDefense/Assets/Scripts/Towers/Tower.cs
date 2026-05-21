@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Tower : MonoBehaviour
@@ -9,6 +10,7 @@ public class Tower : MonoBehaviour
     public float range = 5f;
     public float fireRate = 1f;
     public int damage = 1;
+    [SerializeField] private float targetRefreshInterval = 0.15f;
 
     [Header("Projectile")]
     public GameObject projectilePrefab;
@@ -23,19 +25,29 @@ public class Tower : MonoBehaviour
     public float fireRateIncrease = 0.3f;
 
     private float fireCooldown;
+    private float targetRefreshCooldown;
     private Enemy target;
     private RangeCircleRenderer rangeCircle;
+    private Tile occupiedTile;
 
     public int Level => level;
     public bool IsMaxLevel => level >= maxLevel;
-
-    private Tile occupiedTile;
-
     public int SellRefund => cost / 2;
 
     private void Update()
     {
-        FindTarget();
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+        {
+            return;
+        }
+
+        targetRefreshCooldown -= Time.deltaTime;
+
+        if (targetRefreshCooldown <= 0f || !IsTargetValid(target))
+        {
+            FindTarget();
+            targetRefreshCooldown = targetRefreshInterval;
+        }
 
         if (target == null)
         {
@@ -51,28 +63,39 @@ public class Tower : MonoBehaviour
         }
     }
 
+    private bool IsTargetValid(Enemy enemy)
+    {
+        if (enemy == null || !enemy.IsAlive)
+        {
+            return false;
+        }
+
+        float rangeSqr = range * range;
+        return (enemy.transform.position - transform.position).sqrMagnitude <= rangeSqr;
+    }
+
     private void FindTarget()
     {
-        Enemy[] enemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
+        IReadOnlyList<Enemy> enemies = EnemyRegistry.Enemies;
 
-        float shortestDistance = Mathf.Infinity;
+        float rangeSqr = range * range;
+        float shortestDistanceSqr = Mathf.Infinity;
         Enemy nearestEnemy = null;
 
-        foreach (Enemy enemy in enemies)
+        for (int i = 0; i < enemies.Count; i++)
         {
-            if (enemy == null)
+            Enemy enemy = enemies[i];
+
+            if (enemy == null || !enemy.IsAlive)
             {
                 continue;
             }
 
-            float distance = Vector2.Distance(
-                transform.position,
-                enemy.transform.position
-            );
+            float distanceSqr = (enemy.transform.position - transform.position).sqrMagnitude;
 
-            if (distance < shortestDistance && distance <= range)
+            if (distanceSqr <= rangeSqr && distanceSqr < shortestDistanceSqr)
             {
-                shortestDistance = distance;
+                shortestDistanceSqr = distanceSqr;
                 nearestEnemy = enemy;
             }
         }
@@ -82,9 +105,8 @@ public class Tower : MonoBehaviour
 
     private void Shoot()
     {
-        if (projectilePrefab == null)
+        if (projectilePrefab == null || target == null)
         {
-            Debug.LogError("Projectile prefab is missing");
             return;
         }
 
@@ -98,7 +120,7 @@ public class Tower : MonoBehaviour
 
         if (projectile == null)
         {
-            Debug.LogError("Projectile component missing");
+            Debug.LogError("Projectile component missing.");
             Destroy(projectileObject);
             return;
         }
@@ -106,7 +128,6 @@ public class Tower : MonoBehaviour
         projectile.damage = damage;
         projectile.SetTarget(target.transform);
     }
-
 
     public void ShowRange()
     {
@@ -135,13 +156,13 @@ public class Tower : MonoBehaviour
     {
         if (IsMaxLevel)
         {
-            Debug.Log("Tower already max level");
+            Debug.Log("Tower already max level.");
             return false;
         }
 
         if (!GameManager.Instance.SpendMoney(upgradeCost))
         {
-            Debug.Log("Not enough money");
+            Debug.Log("Not enough money.");
             return false;
         }
 
@@ -150,45 +171,38 @@ public class Tower : MonoBehaviour
         damage += damageIncrease;
         range += rangeIncrease;
         fireRate += fireRateIncrease;
-
         upgradeCost += 50;
 
         ShowRange();
 
         Debug.Log("Tower upgraded to level " + level);
-
         return true;
+    }
+
+    public void SetOccupiedTile(Tile tile)
+    {
+        occupiedTile = tile;
+    }
+
+    public void DeleteTower()
+    {
+        if (occupiedTile != null)
+        {
+            occupiedTile.isOccupied = false;
+            occupiedTile = null;
+        }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.AddMoney(SellRefund);
+        }
+
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, range);
-    }
-
-    public void SetOccupiedTile(Tile tile)
-
-    {
-
-        occupiedTile = tile;
-
-    }
-
-    public void DeleteTower()
-
-    {
-
-        if (occupiedTile != null)
-
-        {
-
-            occupiedTile.isOccupied = false;
-
-        }
-
-        GameManager.Instance.AddMoney(SellRefund);
-
-        Destroy(gameObject);
-
     }
 }

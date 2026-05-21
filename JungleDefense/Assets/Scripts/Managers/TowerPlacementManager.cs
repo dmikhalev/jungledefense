@@ -47,7 +47,7 @@ public class TowerPlacementManager : MonoBehaviour
         }
     }
 
-    public void SelectTowerForBuilding(GameObject towerPrefab, int cost)
+    public void SelectTowerForBuilding(GameObject towerPrefab)
     {
         selectedTowerPrefab = towerPrefab;
         selectedTowerTemplate = towerPrefab != null ? towerPrefab.GetComponent<Tower>() : null;
@@ -85,6 +85,13 @@ public class TowerPlacementManager : MonoBehaviour
         if (tile.isOccupied)
         {
             Debug.Log("Tile is occupied.");
+            return;
+        }
+
+        if (selectedTowerTemplate == null)
+        {
+            Debug.LogError("Selected tower prefab has no Tower component.");
+            ClearSelection();
             return;
         }
 

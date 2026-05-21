@@ -7,34 +7,35 @@ public class TowerSelectUI : MonoBehaviour
     [SerializeField] private GameObject tigerTower;
     [SerializeField] private GameObject hippoTower;
 
-    [Header("Tower costs")]
-    [SerializeField] private int monkeyCost = 25;
-    [SerializeField] private int tigerCost = 50;
-    [SerializeField] private int hippoCost = 75;
-
     public void SelectMonkey()
     {
-        SelectTower(monkeyTower, monkeyCost);
+        SelectTower(monkeyTower);
     }
 
     public void SelectTiger()
     {
-        SelectTower(tigerTower, tigerCost);
+        SelectTower(tigerTower);
     }
 
     public void SelectHippo()
     {
-        SelectTower(hippoTower, hippoCost);
+        SelectTower(hippoTower);
     }
 
-    private void SelectTower(GameObject towerPrefab, int cost)
+    private void SelectTower(GameObject towerPrefab)
     {
+        if (towerPrefab == null)
+        {
+            Debug.LogError("Tower prefab is not assigned.");
+            return;
+        }
+
         if (TowerPlacementManager.Instance == null)
         {
             Debug.LogError("TowerPlacementManager is missing from the scene.");
             return;
         }
 
-        TowerPlacementManager.Instance.SelectTowerForBuilding(towerPrefab, cost);
+        TowerPlacementManager.Instance.SelectTowerForBuilding(towerPrefab);
     }
 }

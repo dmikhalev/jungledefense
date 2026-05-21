@@ -15,5 +15,5 @@ MonoBehaviour:
   enemyName: Tank
   maxHealth: 45
   speed: 1
-  reward: 25
+  reward: 15
   color: {r: 0.754717, g: 0.038063236, b: 0, a: 1}

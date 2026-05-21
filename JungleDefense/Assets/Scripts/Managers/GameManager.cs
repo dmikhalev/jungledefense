@@ -13,7 +13,9 @@ public class GameManager : MonoBehaviour
     {
         lives = startLives;
         isGameOver = false;
+        Time.timeScale = 1f;
     }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)

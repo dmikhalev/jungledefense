@@ -14,10 +14,22 @@ public class Enemy : MonoBehaviour
 
     public Action OnRemoved;
 
+    public bool IsAlive => !isDead;
+
     public void SetPath(List<Transform> path)
     {
         waypoints = path;
         waypointIndex = 0;
+    }
+
+    private void OnEnable()
+    {
+        EnemyRegistry.Register(this);
+    }
+
+    private void OnDestroy()
+    {
+        EnemyRegistry.Unregister(this);
     }
 
     private void Start()
