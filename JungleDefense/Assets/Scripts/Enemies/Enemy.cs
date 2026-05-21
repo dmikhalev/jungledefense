@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyData data;
     [SerializeField] private GameObject deathEffect;
+    [SerializeField] private EnemyHealthBar healthBar;
 
     private float currentHealth;
     private int waypointIndex;
@@ -43,6 +44,11 @@ public class Enemy : MonoBehaviour
 
         currentHealth = data.maxHealth;
 
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(currentHealth, data.maxHealth);
+        }
+
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (spriteRenderer != null)
@@ -69,6 +75,11 @@ public class Enemy : MonoBehaviour
         }
 
         currentHealth -= damage;
+
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(currentHealth, data.maxHealth);
+        }
 
         if (currentHealth <= 0f)
         {
