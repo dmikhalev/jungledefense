@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private EnemyData data;
     [SerializeField] private GameObject deathEffect;
     [SerializeField] private EnemyHealthBar healthBar;
+    [SerializeField] private EnemyHitFlash hitFlash;
 
     private float currentHealth;
     private int waypointIndex;
@@ -75,6 +76,11 @@ public class Enemy : MonoBehaviour
         }
 
         currentHealth -= damage;
+
+        if (hitFlash != null)
+        {
+            hitFlash.Flash();
+        }
 
         if (healthBar != null)
         {

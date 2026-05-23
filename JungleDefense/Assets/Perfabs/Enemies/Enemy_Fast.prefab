@@ -228,6 +228,7 @@ GameObject:
   - component: {fileID: 7275466266919265140}
   - component: {fileID: -4057379165698578625}
   - component: {fileID: -5348441665164509208}
+  - component: {fileID: -459034137379426343}
   m_Layer: 0
   m_Name: Enemy_Fast
   m_TagString: Enemy
@@ -325,6 +326,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: bf726f791c91c45d689be7322a46a763, type: 2}
   deathEffect: {fileID: 3326687224019949077, guid: e40ace64ae8364ac09630c4ff63bcc09, type: 3}
   healthBar: {fileID: -5348441665164509208}
+  hitFlash: {fileID: -459034137379426343}
 --- !u!61 &-4057379165698578625
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -385,3 +387,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
   root: {fileID: 352176863126484302}
   fill: {fileID: 5811862163583448901}
+--- !u!114 &-459034137379426343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4071586905742311596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e62a65fc46c041e8bb50560814ed5dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFlash
+  spriteRenderer: {fileID: 0}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.08

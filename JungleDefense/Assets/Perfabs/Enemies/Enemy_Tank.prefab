@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6419816618732733320}
   - component: {fileID: 724789007253090194}
   - component: {fileID: 528495316610907072}
+  - component: {fileID: -9567023925055682}
   m_Layer: 0
   m_Name: Enemy_Tank
   m_TagString: Enemy
@@ -110,6 +111,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 8c0edab285b53426a8ba8b7d95e1ec7f, type: 2}
   deathEffect: {fileID: 3326687224019949077, guid: e40ace64ae8364ac09630c4ff63bcc09, type: 3}
   healthBar: {fileID: 528495316610907072}
+  hitFlash: {fileID: -9567023925055682}
 --- !u!61 &724789007253090194
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -170,6 +172,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
   root: {fileID: 6140307671399177508}
   fill: {fileID: 1308795941232200330}
+--- !u!114 &-9567023925055682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3816809235310866407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e62a65fc46c041e8bb50560814ed5dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFlash
+  spriteRenderer: {fileID: 0}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.08
 --- !u!1 &6140307671399177508
 GameObject:
   m_ObjectHideFlags: 0

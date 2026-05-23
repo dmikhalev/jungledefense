@@ -11,6 +11,8 @@ public class SplashProjectile : Projectile
             splashRadius
         );
 
+        SpawnHitEffect();
+
         foreach (Collider2D hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();

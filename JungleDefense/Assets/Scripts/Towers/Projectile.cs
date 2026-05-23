@@ -5,6 +5,8 @@ public class Projectile : MonoBehaviour
     public float speed = 10f;
     public int damage = 1;
 
+    [SerializeField] private GameObject hitEffectPrefab;
+
     protected Transform target;
 
     public void SetTarget(Transform newTarget)
@@ -40,6 +42,14 @@ public class Projectile : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 
+    protected void SpawnHitEffect()
+    {
+        if (hitEffectPrefab != null)
+        {
+            Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+        }
+    }
+
     protected virtual int CalculateDamage()
     {
         return damage;
@@ -54,6 +64,7 @@ public class Projectile : MonoBehaviour
             enemy.TakeDamage(CalculateDamage());
         }
 
+        SpawnHitEffect();
         Destroy(gameObject);
     }
 }
