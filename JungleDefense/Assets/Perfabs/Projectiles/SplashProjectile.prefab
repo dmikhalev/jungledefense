@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SplashProjectile
   speed: 10
   damage: 1
+  hitEffectPrefab: {fileID: 2837635499334903491, guid: 7a3e679a32c024e60997fc477c00569c, type: 3}
   splashRadius: 1.5
 --- !u!58 &3206839793832927773
 CircleCollider2D:

@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BananaProjectile
   speed: 10
   damage: 1
+  hitEffectPrefab: {fileID: 4745654761264114777, guid: d1f8ca0ab625e42558110e9bb655900b, type: 3}
 --- !u!58 &-6451668190351925791
 CircleCollider2D:
   m_ObjectHideFlags: 0

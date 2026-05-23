@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FireProjectile
   speed: 10
   damage: 1
+  hitEffectPrefab: {fileID: 5792469006050206305, guid: bb59d2eee0be440bf85e3fd0dd75ff72, type: 3}
   critChance: 0.2
   critMultiplier: 2
 --- !u!58 &-3603706963481815101
