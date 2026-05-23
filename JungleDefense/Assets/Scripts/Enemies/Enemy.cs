@@ -108,6 +108,8 @@ public class Enemy : MonoBehaviour
         Transform target = waypoints[waypointIndex];
         Vector3 direction = (target.position - transform.position).normalized;
 
+        RotateToDirection(direction);
+
         transform.position += direction * data.speed * Time.deltaTime;
 
         if (Vector3.Distance(transform.position, target.position) < 0.1f)
@@ -119,6 +121,19 @@ public class Enemy : MonoBehaviour
         {
             ReachEnd();
         }
+    }
+
+    private void RotateToDirection(Vector3 direction)
+    {
+        if (direction.sqrMagnitude <= 0.001f)
+        {
+            return;
+        }
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Sprite смотрит вниз, поэтому добавляем 90 градусов
+        transform.rotation = Quaternion.Euler(0f, 0f, angle + 90f);
     }
 
     private void Die()
