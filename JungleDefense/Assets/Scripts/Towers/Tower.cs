@@ -147,6 +147,12 @@ public class Tower : MonoBehaviour
             shootFeedback.Play();
         }
 
+        if (projectilePrefab == null)
+        {
+            Debug.LogError($"{name} has no projectile prefab assigned.");
+            return;
+        }
+
         GameObject projectileObject = Instantiate(
             projectilePrefab,
             transform.position,
@@ -197,7 +203,7 @@ public class Tower : MonoBehaviour
             return false;
         }
 
-        if (!GameManager.Instance.SpendMoney(upgradeCost))
+        if (GameManager.Instance == null || !GameManager.Instance.SpendMoney(upgradeCost))
         {
             Debug.Log("Not enough money.");
             return false;

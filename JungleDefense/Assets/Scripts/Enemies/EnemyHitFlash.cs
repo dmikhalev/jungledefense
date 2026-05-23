@@ -7,7 +7,6 @@ public class EnemyHitFlash : MonoBehaviour
     [SerializeField] private Color flashColor = Color.white;
     [SerializeField] private float flashDuration = 0.08f;
 
-    private Color originalColor;
     private Coroutine flashRoutine;
 
     private void Awake()
@@ -15,11 +14,6 @@ public class EnemyHitFlash : MonoBehaviour
         if (spriteRenderer == null)
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
-        }
-
-        if (spriteRenderer != null)
-        {
-            originalColor = spriteRenderer.color;
         }
     }
 
@@ -42,7 +36,7 @@ public class EnemyHitFlash : MonoBehaviour
     {
         spriteRenderer.color = flashColor;
         yield return new WaitForSeconds(flashDuration);
-        spriteRenderer.color = originalColor;
+        spriteRenderer.color = Color.white;
         flashRoutine = null;
     }
 }

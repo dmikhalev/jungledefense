@@ -15,7 +15,10 @@ public class LevelManager : MonoBehaviour
 
     private int currentLevelIndex;
 
-    public LevelData CurrentLevel => levels[currentLevelIndex];
+    public LevelData CurrentLevel =>
+        levels != null && levels.Length > 0 && currentLevelIndex >= 0 && currentLevelIndex < levels.Length
+            ? levels[currentLevelIndex]
+            : null;
 
     private void Awake()
     {
@@ -66,7 +69,16 @@ public class LevelManager : MonoBehaviour
         }
 
 
-        GameManager.Instance.ResetMoney(level.startMoney);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ResetMoney(level.startMoney);
+        }
+
+        if (levelBuilder == null || waveManager == null)
+        {
+            Debug.LogError("LevelManager references are not assigned.");
+            return;
+        }
 
         levelBuilder.BuildLevel(level);
         waveManager.StartLevel(level, OnLevelCompleted);
@@ -113,6 +125,11 @@ public class LevelManager : MonoBehaviour
         foreach (Projectile projectile in FindObjectsByType<Projectile>(FindObjectsSortMode.None))
         {
             Destroy(projectile.gameObject);
+        }
+
+        foreach (FloatingDamageText damageText in FindObjectsByType<FloatingDamageText>(FindObjectsSortMode.None))
+        {
+            Destroy(damageText.gameObject);
         }
 
         EnemyRegistry.Clear();

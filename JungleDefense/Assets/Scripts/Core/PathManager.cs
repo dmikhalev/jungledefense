@@ -11,6 +11,7 @@ public class PathManager : MonoBehaviour
     public Transform endPoint;
 
     private const float NeighborDistance = 1.1f;
+    private const float NeighborDistanceSqr = NeighborDistance * NeighborDistance;
 
     private void Awake()
     {
@@ -109,7 +110,7 @@ public class PathManager : MonoBehaviour
                     continue;
                 }
 
-                if (Vector3.Distance(position, other) < NeighborDistance)
+                if ((position - other).sqrMagnitude < NeighborDistanceSqr)
                 {
                     neighbors++;
                 }
@@ -129,7 +130,7 @@ public class PathManager : MonoBehaviour
     {
         for (int i = 0; i < remaining.Count; i++)
         {
-            if (Vector3.Distance(current, remaining[i]) < NeighborDistance)
+            if ((current - remaining[i]).sqrMagnitude < NeighborDistanceSqr)
             {
                 return i;
             }

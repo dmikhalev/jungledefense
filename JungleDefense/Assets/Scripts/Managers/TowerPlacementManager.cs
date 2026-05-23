@@ -84,6 +84,27 @@ public class TowerPlacementManager : MonoBehaviour
 
     private void TryPlaceTower(Vector2 screenPosition)
     {
+        if (cam == null)
+        {
+            cam = Camera.main;
+        }
+
+        if (cam == null)
+        {
+            Debug.LogError("Main camera is missing.");
+            return;
+        }
+
+        if (cam == null)
+        {
+            cam = Camera.main;
+        }
+
+        if (cam == null)
+        {
+            return;
+        }
+
         Vector3 worldPosition = cam.ScreenToWorldPoint(screenPosition);
         worldPosition.z = 0f;
 
@@ -115,7 +136,7 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
-        if (!GameManager.Instance.SpendMoney(selectedTowerTemplate.cost))
+        if (GameManager.Instance == null || !GameManager.Instance.SpendMoney(selectedTowerTemplate.cost))
         {
             Debug.Log("Not enough money.");
             return;

@@ -5,9 +5,7 @@ public class EnemyData : ScriptableObject
 {
     public string enemyName;
 
-    public float maxHealth = 10f;
-    public float speed = 2f;
-    public int reward = 10;
-
-    public Color color = Color.white; // удобно для быстрого различия
+    [Min(1f)] public float maxHealth = 10f;
+    [Min(0.1f)] public float speed = 2f;
+    [Min(0)] public int reward = 10;
 }

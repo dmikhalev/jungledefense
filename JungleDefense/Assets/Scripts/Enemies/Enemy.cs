@@ -50,12 +50,6 @@ public class Enemy : MonoBehaviour
             healthBar.SetHealth(currentHealth, data.maxHealth);
         }
 
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = data.color;
-        }
     }
 
     private void Update()
@@ -105,14 +99,27 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        Transform target = waypoints[waypointIndex];
-        Vector3 direction = (target.position - transform.position).normalized;
+        Transform waypoint = waypoints[waypointIndex];
+
+        if (waypoint == null)
+        {
+            waypointIndex++;
+            return;
+        }
+
+        Vector3 currentPosition = transform.position;
+        Vector3 targetPosition = waypoint.position;
+        Vector3 direction = targetPosition - currentPosition;
 
         RotateToDirection(direction);
 
-        transform.position += direction * data.speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(
+            currentPosition,
+            targetPosition,
+            data.speed * Time.deltaTime
+        );
 
-        if (Vector3.Distance(transform.position, target.position) < 0.1f)
+        if ((transform.position - targetPosition).sqrMagnitude <= 0.01f)
         {
             waypointIndex++;
         }
@@ -145,7 +152,10 @@ public class Enemy : MonoBehaviour
 
         isDead = true;
 
-        GameManager.Instance.AddMoney(data.reward);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.AddMoney(data.reward);
+        }
         SpawnDeathEffect();
         RemoveEnemy();
     }
@@ -159,7 +169,10 @@ public class Enemy : MonoBehaviour
 
         isDead = true;
 
-        GameManager.Instance.LoseLife(1);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.LoseLife(1);
+        }
         RemoveEnemy();
     }
 

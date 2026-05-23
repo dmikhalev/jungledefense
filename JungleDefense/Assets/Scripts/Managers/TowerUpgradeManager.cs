@@ -16,6 +16,9 @@ public class TowerUpgradeManager : MonoBehaviour
     [SerializeField] private Button upgradeButton;
     [SerializeField] private Button sellButton;
 
+    private const float SelectionRadius = 0.22f;
+    private readonly Collider2D[] selectionHits = new Collider2D[16];
+
     private Tower selectedTower;
     private Camera mainCamera;
 
@@ -61,11 +64,20 @@ public class TowerUpgradeManager : MonoBehaviour
 
     private void TrySelectTower(Vector2 screenPosition)
     {
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+
+            if (mainCamera == null)
+            {
+                return;
+            }
+        }
+
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(screenPosition);
         worldPosition.z = 0f;
 
-        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
-        Tower tower = FindTower(hits);
+        Tower tower = FindTowerAt(worldPosition);
 
         if (tower == null)
         {
@@ -84,26 +96,49 @@ public class TowerUpgradeManager : MonoBehaviour
         ShowUI();
     }
 
-    private Tower FindTower(Collider2D[] hits)
+    private Tower FindTowerAt(Vector2 worldPosition)
     {
-        foreach (Collider2D hit in hits)
-        {
-            Tower tower = hit.GetComponent<Tower>();
+        int hitCount = Physics2D.OverlapCircleNonAlloc(
+            worldPosition,
+            SelectionRadius,
+            selectionHits
+        );
 
-            if (tower != null)
+        Tower closestTower = null;
+        float closestDistanceSqr = float.MaxValue;
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            Collider2D hit = selectionHits[i];
+            selectionHits[i] = null;
+
+            if (hit == null)
             {
-                return tower;
+                continue;
             }
 
-            tower = hit.GetComponentInParent<Tower>();
+            Tower tower = hit.GetComponent<Tower>();
 
-            if (tower != null)
+            if (tower == null)
             {
-                return tower;
+                tower = hit.GetComponentInParent<Tower>();
+            }
+
+            if (tower == null)
+            {
+                continue;
+            }
+
+            float distanceSqr = ((Vector2)tower.transform.position - worldPosition).sqrMagnitude;
+
+            if (distanceSqr < closestDistanceSqr)
+            {
+                closestDistanceSqr = distanceSqr;
+                closestTower = tower;
             }
         }
 
-        return null;
+        return closestTower;
     }
 
     private void ShowUI()

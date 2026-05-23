@@ -1,20 +1,17 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    public event Action<int> MoneyChanged;
+    public event Action<int> LivesChanged;
+
     public int money = 100;
     public int lives = 10;
     public bool isGameOver;
     public int startLives = 10;
-
-    public void ResetGameState()
-    {
-        lives = startLives;
-        isGameOver = false;
-        Time.timeScale = 1f;
-    }
 
     private void Awake()
     {
@@ -28,39 +25,72 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    public void ResetState(int startingMoney, int startingLives)
+    private void Start()
     {
-        money = startingMoney;
-        lives = startingLives;
+        NotifyStateChanged();
+    }
+
+    public void ResetGameState()
+    {
+        lives = startLives;
         isGameOver = false;
         Time.timeScale = 1f;
+        NotifyStateChanged();
+    }
+
+    public void ResetState(int startingMoney, int startingLives)
+    {
+        money = Mathf.Max(0, startingMoney);
+        lives = Mathf.Max(0, startingLives);
+        isGameOver = false;
+        Time.timeScale = 1f;
+        NotifyStateChanged();
+    }
+
+    public void ResetMoney(int amount)
+    {
+        money = Mathf.Max(0, amount);
+        MoneyChanged?.Invoke(money);
     }
 
     public void AddMoney(int amount)
     {
+        if (amount <= 0)
+        {
+            return;
+        }
+
         money += amount;
+        MoneyChanged?.Invoke(money);
     }
 
     public bool SpendMoney(int amount)
     {
+        if (amount < 0)
+        {
+            Debug.LogWarning("SpendMoney called with negative amount.");
+            return false;
+        }
+
         if (money < amount)
         {
             return false;
         }
 
         money -= amount;
+        MoneyChanged?.Invoke(money);
         return true;
     }
 
     public void LoseLife(int amount)
     {
-        if (isGameOver)
+        if (isGameOver || amount <= 0)
         {
             return;
         }
 
-        lives -= amount;
-        Debug.Log($"Lives: {lives}");
+        lives = Mathf.Max(0, lives - amount);
+        LivesChanged?.Invoke(lives);
 
         if (lives <= 0)
         {
@@ -93,15 +123,15 @@ public class GameManager : MonoBehaviour
         }
 
         RestartManager restartManager = FindFirstObjectByType<RestartManager>();
-
         if (restartManager != null)
         {
             restartManager.ShowRestart();
         }
     }
 
-    public void ResetMoney(int amount)
+    private void NotifyStateChanged()
     {
-        money = amount;
+        MoneyChanged?.Invoke(money);
+        LivesChanged?.Invoke(lives);
     }
 }

@@ -8,36 +8,48 @@ public class FloatingDamageText : MonoBehaviour
     [SerializeField] private float moveSpeed = 1.2f;
     [SerializeField] private float fadeSpeed = 2f;
 
+    private Transform cachedTransform;
     private float timer;
     private Color startColor;
 
     private void Awake()
     {
+        cachedTransform = transform;
+
         if (text == null)
         {
-            text = GetComponent<TextMeshPro>();
+            text = GetComponentInChildren<TextMeshPro>();
         }
 
-        startColor = text.color;
+        if (text != null)
+        {
+            startColor = text.color;
+        }
     }
 
     public void Init(int damage)
     {
-        text.text = "-" + damage;
+        if (text != null)
+        {
+            text.text = "-" + damage;
+        }
+
         timer = lifetime;
     }
 
     private void Update()
     {
-        transform.position += Vector3.up * moveSpeed * Time.deltaTime;
+        cachedTransform.position += Vector3.up * moveSpeed * Time.deltaTime;
 
         timer -= Time.deltaTime;
 
-        float alpha = Mathf.Clamp01(timer * fadeSpeed);
-
-        Color color = startColor;
-        color.a = alpha;
-        text.color = color;
+        if (text != null)
+        {
+            float alpha = Mathf.Clamp01(timer * fadeSpeed);
+            Color color = startColor;
+            color.a = alpha;
+            text.color = color;
+        }
 
         if (timer <= 0f)
         {
