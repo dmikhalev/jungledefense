@@ -77,6 +77,11 @@ public class Enemy : MonoBehaviour
 
         currentHealth -= damage;
 
+        if (DamageTextSpawner.Instance != null)
+        {
+            DamageTextSpawner.Instance.Spawn(transform.position, Mathf.RoundToInt(damage));
+        }
+
         if (hitFlash != null)
         {
             hitFlash.Flash();
