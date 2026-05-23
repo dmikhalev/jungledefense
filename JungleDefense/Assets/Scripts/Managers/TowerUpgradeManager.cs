@@ -21,6 +21,12 @@ public class TowerUpgradeManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
         mainCamera = Camera.main;
 
@@ -58,15 +64,8 @@ public class TowerUpgradeManager : MonoBehaviour
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(screenPosition);
         worldPosition.z = 0f;
 
-        Collider2D hit = Physics2D.OverlapPoint(worldPosition);
-
-        if (hit == null)
-        {
-            HideUI();
-            return;
-        }
-
-        Tower tower = hit.GetComponent<Tower>();
+        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
+        Tower tower = FindTower(hits);
 
         if (tower == null)
         {
@@ -74,7 +73,7 @@ public class TowerUpgradeManager : MonoBehaviour
             return;
         }
 
-        if (selectedTower != null)
+        if (selectedTower != null && selectedTower != tower)
         {
             selectedTower.HideRange();
         }
@@ -83,6 +82,28 @@ public class TowerUpgradeManager : MonoBehaviour
         selectedTower.ShowRange();
 
         ShowUI();
+    }
+
+    private Tower FindTower(Collider2D[] hits)
+    {
+        foreach (Collider2D hit in hits)
+        {
+            Tower tower = hit.GetComponent<Tower>();
+
+            if (tower != null)
+            {
+                return tower;
+            }
+
+            tower = hit.GetComponentInParent<Tower>();
+
+            if (tower != null)
+            {
+                return tower;
+            }
+        }
+
+        return null;
     }
 
     private void ShowUI()
