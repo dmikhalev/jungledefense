@@ -15,6 +15,9 @@ public class Tower : MonoBehaviour
     [Header("Projectile")]
     public GameObject projectilePrefab;
 
+    [Header("Info")]
+    public string towerName = "Tower";
+
     [Header("Upgrade")]
     public int level = 1;
     public int maxLevel = 3;
@@ -204,5 +207,35 @@ public class Tower : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, range);
+    }
+
+    public bool CanUpgrade()
+    {
+        return !IsMaxLevel && GameManager.Instance.money >= upgradeCost;
+    }
+
+    public string GetTitleText()
+    {
+        return $"{towerName} Lv. {level}/{maxLevel}";
+    }
+
+    public string GetStatsText()
+    {
+        if (IsMaxLevel)
+        {
+            return
+                $"Damage: {damage}\n" +
+                $"Range: {range:0.0}\n" +
+                $"Fire Rate: {fireRate:0.0}\n" +
+                $"Upgrade: MAX\n" +
+                $"Sell: +{SellRefund}";
+        }
+
+        return
+            $"Damage: {damage} → {damage + damageIncrease}\n" +
+            $"Range: {range:0.0} → {range + rangeIncrease:0.0}\n" +
+            $"Fire Rate: {fireRate:0.0} → {fireRate + fireRateIncrease:0.0}\n" +
+            $"Upgrade: {upgradeCost}\n" +
+            $"Sell: +{SellRefund}";
     }
 }

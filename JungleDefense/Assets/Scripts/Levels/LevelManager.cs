@@ -92,7 +92,6 @@ public class LevelManager : MonoBehaviour
     private void ClearRuntimeObjects()
     {
         TowerPlacementManager.Instance?.ClearSelection();
-        TowerUpgradeManager.Instance?.ClearSelection();
 
         foreach (Enemy enemy in FindObjectsByType<Enemy>(FindObjectsSortMode.None))
         {

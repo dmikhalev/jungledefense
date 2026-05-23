@@ -1,30 +1,29 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerUpgradeManager : MonoBehaviour
 {
     public static TowerUpgradeManager Instance { get; private set; }
 
-    [SerializeField] private GameObject upgradeButton;
-    [SerializeField] private GameObject deleteButton;
+    [Header("Panel")]
+    [SerializeField] private GameObject towerInfoPanel;
+    [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private TextMeshProUGUI statsText;
 
-    private Camera mainCamera;
+    [Header("Buttons")]
+    [SerializeField] private Button upgradeButton;
+    [SerializeField] private Button sellButton;
+
     private Tower selectedTower;
-
-    public Tower SelectedTower => selectedTower;
+    private Camera mainCamera;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         Instance = this;
         mainCamera = Camera.main;
 
-        HideUpgradeButton();
-        HideDeleteButton();
+        HideUI();
     }
 
     private void Update()
@@ -34,7 +33,8 @@ public class TowerUpgradeManager : MonoBehaviour
             return;
         }
 
-        if (TowerPlacementManager.Instance != null && TowerPlacementManager.Instance.IsBuildMode)
+        if (TowerPlacementManager.Instance != null &&
+            TowerPlacementManager.Instance.IsBuildMode)
         {
             return;
         }
@@ -50,25 +50,23 @@ public class TowerUpgradeManager : MonoBehaviour
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(screenPosition);
         worldPosition.z = 0f;
 
-        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
+        Collider2D hit = Physics2D.OverlapPoint(worldPosition);
 
-        foreach (Collider2D hit in hits)
+        if (hit == null)
         {
-            Tower tower = hit.GetComponent<Tower>();
-
-            if (tower != null)
-            {
-                SelectTower(tower);
-                return;
-            }
+            HideUI();
+            return;
         }
 
-        ClearSelection();
-    }
+        Tower tower = hit.GetComponent<Tower>();
 
-    private void SelectTower(Tower tower)
-    {
-        if (selectedTower != null && selectedTower != tower)
+        if (tower == null)
+        {
+            HideUI();
+            return;
+        }
+
+        if (selectedTower != null)
         {
             selectedTower.HideRange();
         }
@@ -76,17 +74,52 @@ public class TowerUpgradeManager : MonoBehaviour
         selectedTower = tower;
         selectedTower.ShowRange();
 
+        ShowUI();
+    }
+
+    private void ShowUI()
+    {
+        if (selectedTower == null)
+        {
+            HideUI();
+            return;
+        }
+
+        if (towerInfoPanel != null)
+        {
+            towerInfoPanel.SetActive(true);
+        }
+
+        RefreshUI();
+    }
+
+    private void RefreshUI()
+    {
+        if (selectedTower == null)
+        {
+            HideUI();
+            return;
+        }
+
+        if (titleText != null)
+        {
+            titleText.text = selectedTower.GetTitleText();
+        }
+
+        if (statsText != null)
+        {
+            statsText.text = selectedTower.GetStatsText();
+        }
+
         if (upgradeButton != null)
         {
-            upgradeButton.SetActive(!selectedTower.IsMaxLevel);
+            upgradeButton.interactable = selectedTower.CanUpgrade();
         }
 
-        if (deleteButton != null)
+        if (sellButton != null)
         {
-            deleteButton.SetActive(true);
+            sellButton.interactable = true;
         }
-
-        Debug.Log($"Selected tower level: {selectedTower.Level}");
     }
 
     public void UpgradeSelectedTower()
@@ -96,45 +129,8 @@ public class TowerUpgradeManager : MonoBehaviour
             return;
         }
 
-        bool upgraded = selectedTower.UpgradeTower();
-
-        if (!upgraded)
-        {
-            return;
-        }
-
-        if (selectedTower.IsMaxLevel)
-        {
-            HideUpgradeButton();
-        }
-    }
-
-    public void ClearSelection()
-    {
-        if (selectedTower != null)
-        {
-            selectedTower.HideRange();
-        }
-
-        selectedTower = null;
-        HideUpgradeButton();
-        HideDeleteButton();
-    }
-
-    private void HideUpgradeButton()
-    {
-        if (upgradeButton != null)
-        {
-            upgradeButton.SetActive(false);
-        }
-    }
-
-    private void HideDeleteButton()
-    {
-        if (deleteButton != null)
-        {
-            deleteButton.SetActive(false);
-        }
+        selectedTower.UpgradeTower();
+        RefreshUI();
     }
 
     public void DeleteSelectedTower()
@@ -150,9 +146,16 @@ public class TowerUpgradeManager : MonoBehaviour
 
     public void HideUI()
     {
+        if (selectedTower != null)
+        {
+            selectedTower.HideRange();
+        }
+
         selectedTower = null;
 
-        HideUpgradeButton();
-        HideDeleteButton();
+        if (towerInfoPanel != null)
+        {
+            towerInfoPanel.SetActive(false);
+        }
     }
 }
