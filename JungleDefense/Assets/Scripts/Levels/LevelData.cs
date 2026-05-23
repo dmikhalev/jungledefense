@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewLevel", menuName = "TD/Level")]
+[CreateAssetMenu(fileName = "LevelData", menuName = "Jungle Defense/Level Data")]
 public class LevelData : ScriptableObject
 {
     public int width;
@@ -9,5 +9,9 @@ public class LevelData : ScriptableObject
     public string[] rows;
 
     public Wave[] waves;
-    public int startMoney;
+
+    public int startMoney = 100;
+
+    [Header("Visual")]
+    public Sprite backgroundSprite;
 }

@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private LevelBuilder levelBuilder;
     [SerializeField] private WaveManager waveManager;
     [SerializeField] private GameObject victoryText;
+    [SerializeField] private LevelBackgroundManager backgroundManager;
 
     private int currentLevelIndex;
 
@@ -58,6 +59,12 @@ public class LevelManager : MonoBehaviour
         ClearRuntimeObjects();
 
         LevelData level = levels[currentLevelIndex];
+
+        if (backgroundManager != null)
+        {
+            backgroundManager.SetBackground(level.backgroundSprite);
+        }
+
 
         GameManager.Instance.ResetMoney(level.startMoney);
 
