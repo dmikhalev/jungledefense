@@ -162,7 +162,7 @@ public class WaveManager : MonoBehaviour
         startWaveButton.SetActive(true);
     }
 
-    private void HideStartWaveButton()
+    public void HideStartWaveButton()
     {
         if (startWaveButton != null)
         {

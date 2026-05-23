@@ -145,6 +145,11 @@ public class TowerUpgradeManager : MonoBehaviour
         }
 
         selectedTower.DeleteTower();
+        HideUI();
+    }
+
+    public void HideUI()
+    {
         selectedTower = null;
 
         HideUpgradeButton();

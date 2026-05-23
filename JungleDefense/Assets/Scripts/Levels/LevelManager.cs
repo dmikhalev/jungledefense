@@ -130,11 +130,30 @@ public class LevelManager : MonoBehaviour
 
         Debug.Log("All levels completed");
 
+        HideGameplayUI();
+
         if (victoryText != null)
         {
             victoryText.SetActive(true);
         }
 
         Time.timeScale = 0f;
+    }
+
+    private void HideGameplayUI()
+    {
+        TowerUpgradeManager towerUpgrade = FindFirstObjectByType<TowerUpgradeManager>();
+
+        if (towerUpgrade != null)
+        {
+            towerUpgrade.HideUI();
+        }
+
+        WaveManager waveManager = FindFirstObjectByType<WaveManager>();
+
+        if (waveManager != null)
+        {
+            waveManager.HideStartWaveButton();
+        }
     }
 }

@@ -80,6 +80,18 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Game Over");
 
+        TowerUpgradeManager towerUpgrade = FindFirstObjectByType<TowerUpgradeManager>();
+        if (towerUpgrade != null)
+        {
+            towerUpgrade.HideUI();
+        }
+
+        WaveManager waveManager = FindFirstObjectByType<WaveManager>();
+        if (waveManager != null)
+        {
+            waveManager.HideStartWaveButton();
+        }
+
         RestartManager restartManager = FindFirstObjectByType<RestartManager>();
 
         if (restartManager != null)
