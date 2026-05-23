@@ -186,6 +186,9 @@ public class TowerPlacementManager : MonoBehaviour
 
         previewObject = new GameObject("TowerBuildPreview");
 
+        previewObject.transform.localScale =
+            selectedTowerPrefab.transform.localScale;
+
         SpriteRenderer sourceSprite = selectedTowerPrefab.GetComponent<SpriteRenderer>();
 
         if (sourceSprite != null)
