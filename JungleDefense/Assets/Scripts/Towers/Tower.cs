@@ -15,6 +15,9 @@ public class Tower : MonoBehaviour
     [Header("Projectile")]
     public GameObject projectilePrefab;
 
+    [Header("UI")]
+    public Sprite icon;
+
     [Header("Info")]
     public string towerName = "Tower";
 

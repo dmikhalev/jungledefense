@@ -111,6 +111,7 @@ MonoBehaviour:
   damage: 3
   targetRefreshInterval: 0.15
   projectilePrefab: {fileID: 3745231535095687233, guid: 670cbd5b76bbf4c4a9c5f52cb11fdd6d, type: 3}
+  icon: {fileID: 7698153592123181104, guid: 4fbda39c14d3a40fb8b8db84f167eb28, type: 3}
   towerName: Tiger Tower
   level: 1
   maxLevel: 3

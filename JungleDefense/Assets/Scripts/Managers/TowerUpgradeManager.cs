@@ -10,6 +10,7 @@ public class TowerUpgradeManager : MonoBehaviour
     [SerializeField] private GameObject towerInfoPanel;
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private TextMeshProUGUI statsText;
+    [SerializeField] private UnityEngine.UI.Image towerIcon;
 
     [Header("Buttons")]
     [SerializeField] private Button upgradeButton;
@@ -31,6 +32,13 @@ public class TowerUpgradeManager : MonoBehaviour
         if (GameManager.Instance != null && GameManager.Instance.isGameOver)
         {
             return;
+        }
+
+        if (towerInfoPanel != null &&
+            towerInfoPanel.activeSelf &&
+            selectedTower != null)
+        {
+            RefreshUI();
         }
 
         if (TowerPlacementManager.Instance != null &&
@@ -120,6 +128,12 @@ public class TowerUpgradeManager : MonoBehaviour
         {
             sellButton.interactable = true;
         }
+
+        if (towerIcon != null)
+        {
+            towerIcon.sprite = selectedTower.icon;
+            towerIcon.enabled = selectedTower.icon != null;
+        }
     }
 
     public void UpgradeSelectedTower()
@@ -156,6 +170,11 @@ public class TowerUpgradeManager : MonoBehaviour
         if (towerInfoPanel != null)
         {
             towerInfoPanel.SetActive(false);
+        }
+
+        if (towerIcon != null)
+        {
+            towerIcon.enabled = false;
         }
     }
 }
