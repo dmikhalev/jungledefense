@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 806ef54485a244a2d93d547ebb90baed
+guid: 169116025abcf46ea806c956ea5f0fb8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7915946947241000407
-    second: watermelon-projectile_0
+      213: -4923124918129288218
+    second: monkey-tower_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: watermelon-projectile_0
+      name: monkey-tower_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 2
-        width: 180
-        height: 178
+        x: 29
+        y: 0
+        width: 394
+        height: 440
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7dd332bdec71bdd60800000000000000
-      internalID: 7915946947241000407
+      spriteID: 6eb970688fb8dabb0800000000000000
+      internalID: -4923124918129288218
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      watermelon-projectile_0: 7915946947241000407
+      monkey-tower_0: -4923124918129288218
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

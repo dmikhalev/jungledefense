@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 1946327560234758262}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -84,8 +84,8 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.25698647, g: 0.3898249, b: 0.5188679, a: 1}
+  m_Sprite: {fileID: 1007468282754382503, guid: 7b08328a2f7a941a29f55ed7cbb50294, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -112,6 +112,7 @@ MonoBehaviour:
   damage: 10
   targetRefreshInterval: 0.15
   shootFeedback: {fileID: -1618172998459067746}
+  rotatingPart: {fileID: 9004581417232304336}
   projectilePrefab: {fileID: 5587139513212977153, guid: c1e5092b708404219b690ff856b45405, type: 3}
   icon: {fileID: 7940848989955988120, guid: a66300feb216944b69da62494da163eb, type: 3}
   towerName: Hippo Tower
