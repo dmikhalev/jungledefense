@@ -49,8 +49,28 @@ public class TowerPlacementManager : MonoBehaviour
 
     public void SelectTowerForBuilding(GameObject towerPrefab)
     {
+        if (towerPrefab == null)
+        {
+            ClearSelection();
+            return;
+        }
+
+        if (selectedTowerPrefab == towerPrefab)
+        {
+            ClearSelection();
+            return;
+        }
+
         selectedTowerPrefab = towerPrefab;
-        selectedTowerTemplate = towerPrefab != null ? towerPrefab.GetComponent<Tower>() : null;
+        selectedTowerTemplate = selectedTowerPrefab.GetComponent<Tower>();
+
+        if (selectedTowerTemplate == null)
+        {
+            Debug.LogError("Selected tower prefab has no Tower component.");
+            ClearSelection();
+            return;
+        }
+
         CreatePreview();
     }
 
