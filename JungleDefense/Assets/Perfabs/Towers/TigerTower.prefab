@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4431848639942802947}
   - component: {fileID: 8105452346581340071}
   - component: {fileID: 1484755100542748264}
+  - component: {fileID: -4089563049247155503}
   m_Layer: 0
   m_Name: TigerTower
   m_TagString: Untagged
@@ -110,6 +111,7 @@ MonoBehaviour:
   fireRate: 1.2
   damage: 3
   targetRefreshInterval: 0.15
+  shootFeedback: {fileID: -4089563049247155503}
   projectilePrefab: {fileID: 864307042844028786, guid: 2203706f36de24fe6a5a6f1a235f8321, type: 3}
   icon: {fileID: 7698153592123181104, guid: 4fbda39c14d3a40fb8b8db84f167eb28, type: 3}
   towerName: Tiger Tower
@@ -155,3 +157,17 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &-4089563049247155503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1564398317561726871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42f5c3e175a704492b2ac06b61797cd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerShootFeedback
+  scaleMultiplier: 1.12
+  duration: 0.08

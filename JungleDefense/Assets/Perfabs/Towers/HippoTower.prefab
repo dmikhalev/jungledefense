@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4273800060326353501}
   - component: {fileID: 3309270343600836413}
   - component: {fileID: -2780298819694831913}
+  - component: {fileID: -1618172998459067746}
   m_Layer: 0
   m_Name: HippoTower
   m_TagString: Untagged
@@ -110,6 +111,7 @@ MonoBehaviour:
   fireRate: 0.45
   damage: 10
   targetRefreshInterval: 0.15
+  shootFeedback: {fileID: -1618172998459067746}
   projectilePrefab: {fileID: 5587139513212977153, guid: c1e5092b708404219b690ff856b45405, type: 3}
   icon: {fileID: 7940848989955988120, guid: a66300feb216944b69da62494da163eb, type: 3}
   towerName: Hippo Tower
@@ -155,3 +157,17 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &-1618172998459067746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1946327560234758262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42f5c3e175a704492b2ac06b61797cd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerShootFeedback
+  scaleMultiplier: 1.12
+  duration: 0.08

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7671295448952519939}
   - component: {fileID: 8005328528312492044}
   - component: {fileID: 5279669789680748820}
+  - component: {fileID: 6788498873305266205}
   m_Layer: 0
   m_Name: MonkeyTower
   m_TagString: Untagged
@@ -110,6 +111,7 @@ MonoBehaviour:
   fireRate: 3
   damage: 1
   targetRefreshInterval: 0.15
+  shootFeedback: {fileID: 6788498873305266205}
   projectilePrefab: {fileID: 8100876565920421516, guid: 2a516567182e64e638fcfba35a29f66e, type: 3}
   icon: {fileID: 4496506227281778190, guid: f0c22262d6ff74dcb965b844432caa61, type: 3}
   towerName: Monkey Tower
@@ -155,3 +157,17 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &6788498873305266205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342170415055187682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42f5c3e175a704492b2ac06b61797cd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerShootFeedback
+  scaleMultiplier: 1.12
+  duration: 0.08

@@ -12,6 +12,8 @@ public class Tower : MonoBehaviour
     public int damage = 1;
     [SerializeField] private float targetRefreshInterval = 0.15f;
 
+    [SerializeField] private TowerShootFeedback shootFeedback;
+
     [Header("Projectile")]
     public GameObject projectilePrefab;
 
@@ -133,6 +135,11 @@ public class Tower : MonoBehaviour
 
         projectile.damage = damage;
         projectile.SetTarget(target.transform);
+
+        if (shootFeedback != null)
+        {
+            shootFeedback.Play();
+        }
     }
 
     public void ShowRange()
