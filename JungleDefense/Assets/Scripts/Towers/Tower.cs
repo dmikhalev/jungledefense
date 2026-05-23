@@ -13,6 +13,7 @@ public class Tower : MonoBehaviour
     [SerializeField] private float targetRefreshInterval = 0.15f;
 
     [SerializeField] private TowerShootFeedback shootFeedback;
+    [SerializeField] private Transform rotatingPart;
 
     [Header("Projectile")]
     public GameObject projectilePrefab;
@@ -111,11 +112,39 @@ public class Tower : MonoBehaviour
         target = nearestEnemy;
     }
 
-    private void Shoot()
+    private void RotateToTarget()
     {
-        if (projectilePrefab == null || target == null)
+        Transform part = rotatingPart != null ? rotatingPart : transform;
+
+        if (target == null)
         {
             return;
+        }
+
+        Vector3 direction = target.transform.position - part.position;
+
+        if (direction.sqrMagnitude <= 0.001f)
+        {
+            return;
+        }
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        part.rotation = Quaternion.Euler(0f, 0f, angle + 90f);
+    }
+
+    private void Shoot()
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        RotateToTarget();
+
+        if (shootFeedback != null)
+        {
+            shootFeedback.Play();
         }
 
         GameObject projectileObject = Instantiate(
@@ -128,18 +157,13 @@ public class Tower : MonoBehaviour
 
         if (projectile == null)
         {
-            Debug.LogError("Projectile component missing.");
+            Debug.LogError("Projectile component missing");
             Destroy(projectileObject);
             return;
         }
 
         projectile.damage = damage;
         projectile.SetTarget(target.transform);
-
-        if (shootFeedback != null)
-        {
-            shootFeedback.Play();
-        }
     }
 
     public void ShowRange()
