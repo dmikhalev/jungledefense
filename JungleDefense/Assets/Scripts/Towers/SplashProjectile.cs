@@ -7,6 +7,9 @@ public class SplashProjectile : Projectile
 
     [SerializeField] private float splashRadius = 1.5f;
 
+    protected override float SpinSpeedDegrees => 180f;
+    protected override float ArcScaleAmount => 0.18f;
+
     protected override void HitTarget()
     {
         int hitCount = Physics2D.OverlapCircleNonAlloc(

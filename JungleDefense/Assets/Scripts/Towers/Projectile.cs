@@ -9,9 +9,25 @@ public class Projectile : MonoBehaviour
 
     protected Transform target;
 
+    private Vector3 originalScale;
+    private float initialDistanceToTarget;
+
+    protected virtual float SpinSpeedDegrees => 0f;
+    protected virtual float ArcScaleAmount => 0f;
+
+    protected virtual void Awake()
+    {
+        originalScale = transform.localScale;
+    }
+
     public void SetTarget(Transform newTarget)
     {
         target = newTarget;
+
+        if (target != null)
+        {
+            initialDistanceToTarget = Vector3.Distance(transform.position, target.position);
+        }
     }
 
     protected virtual void Update()
@@ -33,6 +49,19 @@ public class Projectile : MonoBehaviour
 
         transform.Translate(direction.normalized * distanceThisFrame, Space.World);
 
+        UpdateVisual(direction);
+    }
+
+    protected virtual void UpdateVisual(Vector3 direction)
+    {
+        ApplyArcScale();
+
+        if (Mathf.Abs(SpinSpeedDegrees) > 0.01f)
+        {
+            transform.Rotate(0f, 0f, SpinSpeedDegrees * Time.deltaTime);
+            return;
+        }
+
         RotateToDirection(direction);
     }
 
@@ -40,6 +69,20 @@ public class Projectile : MonoBehaviour
     {
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+
+    private void ApplyArcScale()
+    {
+        if (ArcScaleAmount <= 0f || initialDistanceToTarget <= 0.001f || target == null)
+        {
+            return;
+        }
+
+        float remainingDistance = Vector3.Distance(transform.position, target.position);
+        float progress = 1f - Mathf.Clamp01(remainingDistance / initialDistanceToTarget);
+        float arc = Mathf.Sin(progress * Mathf.PI) * ArcScaleAmount;
+
+        transform.localScale = originalScale * (1f + arc);
     }
 
     protected void SpawnHitEffect()

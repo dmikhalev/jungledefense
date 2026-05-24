@@ -133,6 +133,24 @@ public class Tower : MonoBehaviour
         part.rotation = Quaternion.Euler(0f, 0f, angle + 90f);
     }
 
+    private Vector3 GetDirectionToTarget()
+    {
+        if (target == null)
+        {
+            return Vector3.zero;
+        }
+
+        Transform part = rotatingPart != null ? rotatingPart : transform;
+        Vector3 direction = target.transform.position - part.position;
+
+        if (direction.sqrMagnitude <= 0.001f)
+        {
+            return Vector3.zero;
+        }
+
+        return direction.normalized;
+    }
+
     private void Shoot()
     {
         if (target == null)
@@ -140,11 +158,13 @@ public class Tower : MonoBehaviour
             return;
         }
 
+        Vector3 shotDirection = GetDirectionToTarget();
+
         RotateToTarget();
 
         if (shootFeedback != null)
         {
-            shootFeedback.Play();
+            shootFeedback.Play(shotDirection);
         }
 
         if (projectilePrefab == null)
