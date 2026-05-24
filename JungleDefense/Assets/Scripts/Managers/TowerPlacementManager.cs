@@ -14,6 +14,7 @@ public class TowerPlacementManager : MonoBehaviour
     private RangeCircleRenderer previewRangeCircle;
     private Tower selectedTowerTemplate;
     private Tile pendingTile;
+    private bool isDraggingTower;
 
     private void Awake()
     {
@@ -40,6 +41,12 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
+        if (isDraggingTower)
+        {
+            UpdateDragPreview();
+            return;
+        }
+
         UpdatePreview();
 
         if (InputHelper.TryGetTapBegan(out Vector2 screenPosition))
@@ -62,18 +69,44 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
-        selectedTowerPrefab = towerPrefab;
-        selectedTowerTemplate = selectedTowerPrefab.GetComponent<Tower>();
+        SetSelectedTower(towerPrefab);
+        pendingTile = null;
+        CreatePreview();
+    }
 
-        if (selectedTowerTemplate == null)
+    public void BeginTowerDrag(GameObject towerPrefab)
+    {
+        if (towerPrefab == null)
         {
-            Debug.LogError("Selected tower prefab has no Tower component.");
             ClearSelection();
             return;
         }
 
+        SetSelectedTower(towerPrefab);
         pendingTile = null;
+        isDraggingTower = true;
         CreatePreview();
+        UpdateDragPreview();
+    }
+
+    public void EndTowerDrag(Vector2 screenPosition)
+    {
+        if (!isDraggingTower)
+        {
+            return;
+        }
+
+        isDraggingTower = false;
+
+        Tile tile = GetTileAtScreenPosition(screenPosition);
+
+        if (tile == null || !IsTileValidForPlacement(tile) || !CanAffordSelectedTower())
+        {
+            ClearSelection();
+            return;
+        }
+
+        PlaceTower(tile);
     }
 
     public void ClearSelection()
@@ -81,8 +114,21 @@ public class TowerPlacementManager : MonoBehaviour
         selectedTowerPrefab = null;
         selectedTowerTemplate = null;
         pendingTile = null;
+        isDraggingTower = false;
 
         DestroyPreview();
+    }
+
+    private void SetSelectedTower(GameObject towerPrefab)
+    {
+        selectedTowerPrefab = towerPrefab;
+        selectedTowerTemplate = selectedTowerPrefab.GetComponent<Tower>();
+
+        if (selectedTowerTemplate == null)
+        {
+            Debug.LogError("Selected tower prefab has no Tower component.");
+            ClearSelection();
+        }
     }
 
     private void TryConfirmOrMovePreview(Vector2 screenPosition)
@@ -163,6 +209,32 @@ public class TowerPlacementManager : MonoBehaviour
             MovePreviewToTile(pendingTile);
             SetPreviewValid(IsTileValidForPlacement(pendingTile) && CanAffordSelectedTower());
             return;
+        }
+
+        if (!InputHelper.TryGetPointerScreenPosition(out Vector2 screenPosition))
+        {
+            return;
+        }
+
+        Tile tile = GetTileAtScreenPosition(screenPosition);
+
+        if (tile != null)
+        {
+            MovePreviewToTile(tile);
+            SetPreviewValid(IsTileValidForPlacement(tile) && CanAffordSelectedTower());
+        }
+        else
+        {
+            MovePreviewToWorldPosition(GetWorldPosition(screenPosition));
+            SetPreviewValid(false);
+        }
+    }
+
+    private void UpdateDragPreview()
+    {
+        if (previewObject == null)
+        {
+            CreatePreview();
         }
 
         if (!InputHelper.TryGetPointerScreenPosition(out Vector2 screenPosition))
