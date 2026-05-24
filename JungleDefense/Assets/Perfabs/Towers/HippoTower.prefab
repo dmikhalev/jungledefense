@@ -107,9 +107,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
   cost: 150
-  range: 4.5
+  range: 3.5
   fireRate: 0.45
-  damage: 10
+  damage: 9
   targetRefreshInterval: 0.15
   shootFeedback: {fileID: -1618172998459067746}
   rotatingPart: {fileID: 9004581417232304336}
@@ -118,7 +118,7 @@ MonoBehaviour:
   towerName: Hippo Tower
   level: 1
   maxLevel: 3
-  upgradeCost: 50
+  upgradeCost: 100
   damageIncrease: 1
   rangeIncrease: 0.5
   fireRateIncrease: 0.3
@@ -170,5 +170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f5c3e175a704492b2ac06b61797cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerShootFeedback
+  feedbackTarget: {fileID: 0}
   scaleMultiplier: 1.12
-  duration: 0.08
+  recoilDistance: 0.08
+  recoilDuration: 0.06
+  returnDuration: 0.08

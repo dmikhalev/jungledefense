@@ -108,7 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Tower
   cost: 90
   range: 3.5
-  fireRate: 1.2
+  fireRate: 1.5
   damage: 3
   targetRefreshInterval: 0.15
   shootFeedback: {fileID: -4089563049247155503}
@@ -121,7 +121,7 @@ MonoBehaviour:
   upgradeCost: 50
   damageIncrease: 1
   rangeIncrease: 0.5
-  fireRateIncrease: 0.3
+  fireRateIncrease: 0.5
 --- !u!58 &1484755100542748264
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -170,5 +170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f5c3e175a704492b2ac06b61797cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerShootFeedback
+  feedbackTarget: {fileID: 0}
   scaleMultiplier: 1.12
-  duration: 0.08
+  recoilDistance: 0.08
+  recoilDuration: 0.06
+  returnDuration: 0.08

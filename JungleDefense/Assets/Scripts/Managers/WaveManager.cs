@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
     [SerializeField] private GameObject startWaveButton;
+
+    [Header("UI")]
+    [SerializeField] private TMP_Text waveButtonText;
 
     private LevelData currentLevel;
     private int currentWaveIndex;
@@ -152,6 +156,8 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
+        UpdateWaveButtonText();
+
         if (GameManager.Instance != null &&
             GameManager.Instance.isGameOver)
         {
@@ -160,6 +166,28 @@ public class WaveManager : MonoBehaviour
         }
 
         startWaveButton.SetActive(true);
+    }
+
+    private void UpdateWaveButtonText()
+    {
+        if (waveButtonText == null ||
+            currentLevel == null)
+        {
+            return;
+        }
+
+        int waveNumber = currentWaveIndex + 1;
+        int totalWaves = currentLevel.waves.Length;
+
+        string prefix =
+            currentWaveIndex == 0
+            ? "START WAVE"
+            : "NEXT WAVE";
+
+        waveButtonText.text =
+            prefix +
+            "\\n" +
+            "Wave " + waveNumber + " / " + totalWaves;
     }
 
     public void HideStartWaveButton()

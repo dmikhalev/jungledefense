@@ -17,6 +17,23 @@ public class Enemy : MonoBehaviour
     public Action OnRemoved;
 
     public bool IsAlive => !isDead;
+    public int CurrentWaypointIndex => waypointIndex;
+
+    public float DistanceToCurrentWaypointSqr
+    {
+        get
+        {
+            if (waypoints == null ||
+                waypointIndex < 0 ||
+                waypointIndex >= waypoints.Count ||
+                waypoints[waypointIndex] == null)
+            {
+                return Mathf.Infinity;
+            }
+
+            return (waypoints[waypointIndex].position - transform.position).sqrMagnitude;
+        }
+    }
 
     public void SetPath(List<Transform> path)
     {

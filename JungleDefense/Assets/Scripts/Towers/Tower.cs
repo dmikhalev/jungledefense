@@ -60,6 +60,9 @@ public class Tower : MonoBehaviour
 
         if (target == null)
         {
+            // If the tower is idle, it should be ready to fire as soon as
+            // a valid enemy enters its range.
+            fireCooldown = 0f;
             return;
         }
 
@@ -88,8 +91,9 @@ public class Tower : MonoBehaviour
         IReadOnlyList<Enemy> enemies = EnemyRegistry.Enemies;
 
         float rangeSqr = range * range;
-        float shortestDistanceSqr = Mathf.Infinity;
-        Enemy nearestEnemy = null;
+        Enemy leadingEnemy = null;
+        int bestWaypointIndex = int.MinValue;
+        float bestDistanceToWaypointSqr = Mathf.Infinity;
 
         for (int i = 0; i < enemies.Count; i++)
         {
@@ -100,16 +104,30 @@ public class Tower : MonoBehaviour
                 continue;
             }
 
-            float distanceSqr = (enemy.transform.position - transform.position).sqrMagnitude;
+            float distanceToTowerSqr = (enemy.transform.position - transform.position).sqrMagnitude;
 
-            if (distanceSqr <= rangeSqr && distanceSqr < shortestDistanceSqr)
+            if (distanceToTowerSqr > rangeSqr)
             {
-                shortestDistanceSqr = distanceSqr;
-                nearestEnemy = enemy;
+                continue;
+            }
+
+            int waypointIndex = enemy.CurrentWaypointIndex;
+            float distanceToWaypointSqr = enemy.DistanceToCurrentWaypointSqr;
+
+            bool enemyIsFurtherAlongPath =
+                waypointIndex > bestWaypointIndex ||
+                (waypointIndex == bestWaypointIndex &&
+                 distanceToWaypointSqr < bestDistanceToWaypointSqr);
+
+            if (enemyIsFurtherAlongPath)
+            {
+                bestWaypointIndex = waypointIndex;
+                bestDistanceToWaypointSqr = distanceToWaypointSqr;
+                leadingEnemy = enemy;
             }
         }
 
-        target = nearestEnemy;
+        target = leadingEnemy;
     }
 
     private void RotateToTarget()
