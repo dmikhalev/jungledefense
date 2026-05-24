@@ -82,3 +82,4 @@ MonoBehaviour:
       count: 30
       delayBetweenEnemies: 0.12
   startMoney: 150
+  backgroundSprite: {fileID: 4400651955071789837, guid: 5ec4a61841b314bd09881fe6547787c1, type: 3}
