@@ -164,8 +164,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   levels:
-  - {fileID: 11400000, guid: 9c1326e0652f4d9c9bb1d3ad45c9b5e1, type: 2}
   - {fileID: 11400000, guid: e33f85a56964c40fbb986248d80d5b76, type: 2}
+  - {fileID: 11400000, guid: 9c1326e0652f4d9c9bb1d3ad45c9b5e1, type: 2}
   levelBuilder: {fileID: 680711179}
   waveManager: {fileID: 1838406154}
   victoryText: {fileID: 1090194358}

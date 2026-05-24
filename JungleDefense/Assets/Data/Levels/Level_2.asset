@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e4dc5c51a0619d49a0d24463fac6497, type: 3}
-  m_Name: Level_7
+  m_Name: Level_2
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   width: 7
-  height: 14
+  height: 13
   rows:
   - PPPPPP1
   - 11111P1
@@ -27,7 +27,6 @@ MonoBehaviour:
   - 11P1111
   - 11P1111
   - 11PPPP1
-  - 11111P1
   - 11111P1
   waves:
   - enemyGroups:
@@ -79,3 +78,4 @@ MonoBehaviour:
       count: 42
       delayBetweenEnemies: 0.08
   startMoney: 230
+  backgroundSprite: {fileID: 0}

@@ -13,6 +13,7 @@ public class TowerPlacementManager : MonoBehaviour
     private SpriteRenderer previewSpriteRenderer;
     private RangeCircleRenderer previewRangeCircle;
     private Tower selectedTowerTemplate;
+    private Tile pendingTile;
 
     private void Awake()
     {
@@ -43,7 +44,7 @@ public class TowerPlacementManager : MonoBehaviour
 
         if (InputHelper.TryGetTapBegan(out Vector2 screenPosition))
         {
-            TryPlaceTower(screenPosition);
+            TryConfirmOrMovePreview(screenPosition);
         }
     }
 
@@ -71,6 +72,7 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
+        pendingTile = null;
         CreatePreview();
     }
 
@@ -78,67 +80,51 @@ public class TowerPlacementManager : MonoBehaviour
     {
         selectedTowerPrefab = null;
         selectedTowerTemplate = null;
+        pendingTile = null;
 
         DestroyPreview();
     }
 
-    private void TryPlaceTower(Vector2 screenPosition)
+    private void TryConfirmOrMovePreview(Vector2 screenPosition)
     {
-        if (cam == null)
-        {
-            cam = Camera.main;
-        }
+        Tile tile = GetTileAtScreenPosition(screenPosition);
 
-        if (cam == null)
+        if (tile == null || !tile.isBuildable || tile.isOccupied)
         {
-            Debug.LogError("Main camera is missing.");
+            pendingTile = null;
+            SetPreviewValid(false);
             return;
         }
 
-        if (cam == null)
+        MovePreviewToTile(tile);
+
+        bool canAfford = CanAffordSelectedTower();
+        SetPreviewValid(canAfford);
+
+        if (pendingTile != tile)
         {
-            cam = Camera.main;
+            pendingTile = tile;
+            return;
         }
 
-        if (cam == null)
+        if (!canAfford)
         {
             return;
         }
 
-        Vector3 worldPosition = cam.ScreenToWorldPoint(screenPosition);
-        worldPosition.z = 0f;
+        PlaceTower(tile);
+    }
 
-        Collider2D[] hits = Physics2D.OverlapPointAll(worldPosition);
-        Tile tile = FindTile(hits);
-
-        if (tile == null)
+    private void PlaceTower(Tile tile)
+    {
+        if (selectedTowerPrefab == null || selectedTowerTemplate == null)
         {
-            Debug.Log("No tile hit.");
-            return;
-        }
-
-        if (!tile.isBuildable)
-        {
-            Debug.Log("Tile is not buildable.");
-            return;
-        }
-
-        if (tile.isOccupied)
-        {
-            Debug.Log("Tile is occupied.");
-            return;
-        }
-
-        if (selectedTowerTemplate == null)
-        {
-            Debug.LogError("Selected tower prefab has no Tower component.");
             ClearSelection();
             return;
         }
 
         if (GameManager.Instance == null || !GameManager.Instance.SpendMoney(selectedTowerTemplate.cost))
         {
-            Debug.Log("Not enough money.");
             return;
         }
 
@@ -158,8 +144,6 @@ public class TowerPlacementManager : MonoBehaviour
         tile.isOccupied = true;
 
         ClearSelection();
-
-        Debug.Log("Tower placed.");
     }
 
     private void UpdatePreview()
@@ -174,24 +158,28 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
+        if (pendingTile != null)
+        {
+            MovePreviewToTile(pendingTile);
+            SetPreviewValid(IsTileValidForPlacement(pendingTile) && CanAffordSelectedTower());
+            return;
+        }
+
         if (!InputHelper.TryGetPointerScreenPosition(out Vector2 screenPosition))
         {
             return;
         }
 
-        Vector3 worldPosition = cam.ScreenToWorldPoint(screenPosition);
-        worldPosition.z = 0f;
-
-        Tile tile = FindTile(Physics2D.OverlapPointAll(worldPosition));
+        Tile tile = GetTileAtScreenPosition(screenPosition);
 
         if (tile != null)
         {
-            previewObject.transform.position = tile.transform.position;
-            SetPreviewValid(tile.isBuildable && !tile.isOccupied);
+            MovePreviewToTile(tile);
+            SetPreviewValid(IsTileValidForPlacement(tile) && CanAffordSelectedTower());
         }
         else
         {
-            previewObject.transform.position = worldPosition;
+            MovePreviewToWorldPosition(GetWorldPosition(screenPosition));
             SetPreviewValid(false);
         }
     }
@@ -206,9 +194,7 @@ public class TowerPlacementManager : MonoBehaviour
         }
 
         previewObject = new GameObject("TowerBuildPreview");
-
-        previewObject.transform.localScale =
-            selectedTowerPrefab.transform.localScale;
+        previewObject.transform.localScale = selectedTowerPrefab.transform.localScale;
 
         SpriteRenderer sourceSprite = selectedTowerPrefab.GetComponent<SpriteRenderer>();
 
@@ -220,7 +206,8 @@ public class TowerPlacementManager : MonoBehaviour
             previewSpriteRenderer.sortingOrder = sourceSprite.sortingOrder + 100;
         }
 
-        previewRangeCircle = previewObject.AddComponent<RangeCircleRenderer>();
+        GameObject rangeObject = new GameObject("TowerBuildPreviewRange");
+        previewRangeCircle = rangeObject.AddComponent<RangeCircleRenderer>();
 
         float range = selectedTowerTemplate != null ? selectedTowerTemplate.range : 1f;
         previewRangeCircle.Draw(range);
@@ -235,7 +222,37 @@ public class TowerPlacementManager : MonoBehaviour
             Destroy(previewObject);
             previewObject = null;
             previewSpriteRenderer = null;
+        }
+
+        if (previewRangeCircle != null)
+        {
+            Destroy(previewRangeCircle.gameObject);
             previewRangeCircle = null;
+        }
+    }
+
+    private void MovePreviewToTile(Tile tile)
+    {
+        if (tile == null)
+        {
+            return;
+        }
+
+        MovePreviewToWorldPosition(tile.transform.position);
+    }
+
+    private void MovePreviewToWorldPosition(Vector3 worldPosition)
+    {
+        worldPosition.z = 0f;
+
+        if (previewObject != null)
+        {
+            previewObject.transform.position = worldPosition;
+        }
+
+        if (previewRangeCircle != null)
+        {
+            previewRangeCircle.transform.position = worldPosition;
         }
     }
 
@@ -249,6 +266,41 @@ public class TowerPlacementManager : MonoBehaviour
         {
             previewSpriteRenderer.color = color;
         }
+    }
+
+    private bool CanAffordSelectedTower()
+    {
+        return GameManager.Instance != null &&
+            selectedTowerTemplate != null &&
+            GameManager.Instance.money >= selectedTowerTemplate.cost;
+    }
+
+    private bool IsTileValidForPlacement(Tile tile)
+    {
+        return tile != null && tile.isBuildable && !tile.isOccupied;
+    }
+
+    private Tile GetTileAtScreenPosition(Vector2 screenPosition)
+    {
+        return FindTile(Physics2D.OverlapPointAll(GetWorldPosition(screenPosition)));
+    }
+
+    private Vector3 GetWorldPosition(Vector2 screenPosition)
+    {
+        if (cam == null)
+        {
+            cam = Camera.main;
+        }
+
+        if (cam == null)
+        {
+            Debug.LogError("Main camera is missing.");
+            return Vector3.zero;
+        }
+
+        Vector3 worldPosition = cam.ScreenToWorldPoint(screenPosition);
+        worldPosition.z = 0f;
+        return worldPosition;
     }
 
     private Tile FindTile(Collider2D[] hits)
