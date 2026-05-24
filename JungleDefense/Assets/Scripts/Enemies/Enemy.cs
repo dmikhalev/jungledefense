@@ -157,7 +157,7 @@ public class Enemy : MonoBehaviour
             GameManager.Instance.AddMoney(data.reward);
         }
         SpawnDeathEffect();
-        RemoveEnemy();
+        RemoveEnemyWithFeedback();
     }
 
     private void ReachEnd()
@@ -188,5 +188,24 @@ public class Enemy : MonoBehaviour
     {
         OnRemoved?.Invoke();
         Destroy(gameObject);
+    }
+
+    private void RemoveEnemyWithFeedback()
+    {
+        OnRemoved?.Invoke();
+
+        if (healthBar != null)
+        {
+            healthBar.Hide();
+        }
+
+        EnemyDeathFeedback deathFeedback = GetComponent<EnemyDeathFeedback>();
+
+        if (deathFeedback == null)
+        {
+            deathFeedback = gameObject.AddComponent<EnemyDeathFeedback>();
+        }
+
+        deathFeedback.Play();
     }
 }

@@ -6,6 +6,9 @@ public class Projectile : MonoBehaviour
     public int damage = 1;
 
     [SerializeField] private GameObject hitEffectPrefab;
+    [SerializeField] private bool spawnFruitSplat = true;
+    [SerializeField] private Color fruitSplatColor = new Color(1f, 0.84f, 0.18f, 0.55f);
+    [SerializeField] private float fruitSplatSize = 0.35f;
 
     protected Transform target;
 
@@ -91,6 +94,18 @@ public class Projectile : MonoBehaviour
         {
             Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
         }
+
+        SpawnFruitSplat();
+    }
+
+    protected virtual void SpawnFruitSplat()
+    {
+        if (!spawnFruitSplat)
+        {
+            return;
+        }
+
+        FruitSplatDecalSpawner.Spawn(transform.position, fruitSplatColor, fruitSplatSize);
     }
 
     protected virtual int CalculateDamage()
