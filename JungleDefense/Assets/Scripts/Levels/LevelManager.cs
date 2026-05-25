@@ -45,6 +45,11 @@ public class LevelManager : MonoBehaviour
             GameSpeedManager.Instance.ResetSpeed();
         }
 
+        if (PauseManager.Instance != null)
+        {
+            PauseManager.Instance.ResetPauseState();
+        }
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.ResetGameState();
@@ -182,6 +187,11 @@ public class LevelManager : MonoBehaviour
         if (waveManager != null)
         {
             waveManager.HideStartWaveButton();
+        }
+
+        if (PauseManager.Instance != null)
+        {
+            PauseManager.Instance.HideAll();
         }
     }
 }

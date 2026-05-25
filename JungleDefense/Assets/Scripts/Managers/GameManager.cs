@@ -35,6 +35,12 @@ public class GameManager : MonoBehaviour
         lives = startLives;
         isGameOver = false;
         Time.timeScale = 1f;
+
+        if (PauseManager.Instance != null)
+        {
+            PauseManager.Instance.ResetPauseState();
+        }
+
         NotifyStateChanged();
     }
 
@@ -44,6 +50,12 @@ public class GameManager : MonoBehaviour
         lives = Mathf.Max(0, startingLives);
         isGameOver = false;
         Time.timeScale = 1f;
+
+        if (PauseManager.Instance != null)
+        {
+            PauseManager.Instance.ResetPauseState();
+        }
+
         NotifyStateChanged();
     }
 
@@ -126,6 +138,11 @@ public class GameManager : MonoBehaviour
         if (restartManager != null)
         {
             restartManager.ShowRestart();
+        }
+
+        if (PauseManager.Instance != null)
+        {
+            PauseManager.Instance.HideAll();
         }
     }
 

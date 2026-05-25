@@ -23,6 +23,11 @@ public class GameSpeedManager : MonoBehaviour
 
     public void ToggleSpeed()
     {
+        if (PauseManager.Instance != null && PauseManager.Instance.IsPaused)
+        {
+            return;
+        }
+
         SetSpeed(!isFastMode);
     }
 
@@ -31,11 +36,20 @@ public class GameSpeedManager : MonoBehaviour
         SetSpeed(false);
     }
 
+    public void ApplyCurrentSpeed()
+    {
+        SetSpeed(isFastMode);
+    }
+
     private void SetSpeed(bool fast)
     {
         isFastMode = fast;
 
         if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+        {
+            Time.timeScale = 0f;
+        }
+        else if (PauseManager.Instance != null && PauseManager.Instance.IsPaused)
         {
             Time.timeScale = 0f;
         }
