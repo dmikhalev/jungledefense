@@ -15,6 +15,9 @@ public class LevelManager : MonoBehaviour
 
     private int currentLevelIndex;
 
+    public int CurrentLevelIndex => currentLevelIndex;
+    public int LevelCount => levels != null ? levels.Length : 0;
+
     public LevelData CurrentLevel =>
         levels != null && levels.Length > 0 && currentLevelIndex >= 0 && currentLevelIndex < levels.Length
             ? levels[currentLevelIndex]
@@ -152,6 +155,8 @@ public class LevelManager : MonoBehaviour
 
     private void OnLevelCompleted()
     {
+        SaveManager.Instance?.CompleteLevel(currentLevelIndex, CalculateStarsForCurrentLevel());
+
         int nextLevelIndex = currentLevelIndex + 1;
 
         if (nextLevelIndex < levels.Length)
@@ -171,6 +176,30 @@ public class LevelManager : MonoBehaviour
         }
 
         Time.timeScale = 0f;
+    }
+
+    private int CalculateStarsForCurrentLevel()
+    {
+        if (GameManager.Instance == null)
+        {
+            return 1;
+        }
+
+        float livesRatio = GameManager.Instance.startLives <= 0
+            ? 0f
+            : (float)GameManager.Instance.lives / GameManager.Instance.startLives;
+
+        if (livesRatio >= 0.8f)
+        {
+            return 3;
+        }
+
+        if (livesRatio >= 0.4f)
+        {
+            return 2;
+        }
+
+        return 1;
     }
 
     private void HideGameplayUI()
