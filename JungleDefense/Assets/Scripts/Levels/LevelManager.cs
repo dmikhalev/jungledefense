@@ -40,6 +40,11 @@ public class LevelManager : MonoBehaviour
     {
         Time.timeScale = 1f;
 
+        if (GameSpeedManager.Instance != null)
+        {
+            GameSpeedManager.Instance.ResetSpeed();
+        }
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.ResetGameState();

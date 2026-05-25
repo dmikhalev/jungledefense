@@ -184,10 +184,7 @@ public class WaveManager : MonoBehaviour
             ? "START WAVE"
             : "NEXT WAVE";
 
-        waveButtonText.text =
-            prefix +
-            "\\n" +
-            "Wave " + waveNumber + " / " + totalWaves;
+        waveButtonText.text = prefix + " " + waveNumber + " / " + totalWaves;
     }
 
     public void HideStartWaveButton()

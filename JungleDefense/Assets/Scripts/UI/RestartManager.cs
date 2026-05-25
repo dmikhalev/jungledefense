@@ -29,6 +29,11 @@ public class RestartManager : MonoBehaviour
     {
         Time.timeScale = 1f;
 
+        if (GameSpeedManager.Instance != null)
+        {
+            GameSpeedManager.Instance.ResetSpeed();
+        }
+
         if (LevelManager.Instance != null)
         {
             LevelManager.Instance.RestartCurrentLevel();
