@@ -129,4 +129,14 @@ public class SaveManager : MonoBehaviour
             levelStars = new System.Collections.Generic.List<LevelStarsData>()
         };
     }
+
+    // public void DeleteSave()
+    // {
+    //     if (File.Exists(savePath))
+    //     {
+    //         File.Delete(savePath);
+    //     }
+    //     saveData = new SaveData();
+    //     Save();
+    // }
 }
