@@ -36,6 +36,7 @@ public class Tower : MonoBehaviour
     private float fireCooldown;
     private float targetRefreshCooldown;
     private Enemy target;
+    private bool hadTargetLastFrame;
     private RangeCircleRenderer rangeCircle;
     private Tile occupiedTile;
 
@@ -45,34 +46,33 @@ public class Tower : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
-        {
-            return;
-        }
+        FindTarget();
 
-        targetRefreshCooldown -= Time.deltaTime;
+        bool hasTarget = target != null;
 
-        if (targetRefreshCooldown <= 0f || !IsTargetValid(target))
+        if (!hasTarget)
         {
-            FindTarget();
-            targetRefreshCooldown = targetRefreshInterval;
-        }
-
-        if (target == null)
-        {
-            // If the tower is idle, it should be ready to fire as soon as
-            // a valid enemy enters its range.
+            hadTargetLastFrame = false;
             fireCooldown = 0f;
             return;
         }
 
+        if (!hadTargetLastFrame)
+        {
+            fireCooldown = 0f;
+        }
+
+        hadTargetLastFrame = true;
+
         fireCooldown -= Time.deltaTime;
 
-        if (fireCooldown <= 0f)
+        if (fireCooldown > 0f)
         {
-            Shoot();
-            fireCooldown = 1f / fireRate;
+            return;
         }
+
+        fireCooldown = 1f / fireRate;
+        Shoot();
     }
 
     private bool IsTargetValid(Enemy enemy)
