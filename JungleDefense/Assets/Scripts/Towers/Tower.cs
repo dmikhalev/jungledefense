@@ -34,9 +34,7 @@ public class Tower : MonoBehaviour
     public float fireRateIncrease = 0.3f;
 
     private float fireCooldown;
-    private float targetRefreshCooldown;
     private Enemy target;
-    private bool hadTargetLastFrame;
     private RangeCircleRenderer rangeCircle;
     private Tile occupiedTile;
 
@@ -46,33 +44,33 @@ public class Tower : MonoBehaviour
 
     private void Update()
     {
+        TickCooldown();
+
         FindTarget();
 
-        bool hasTarget = target != null;
-
-        if (!hasTarget)
-        {
-            hadTargetLastFrame = false;
-            fireCooldown = 0f;
-            return;
-        }
-
-        if (!hadTargetLastFrame)
-        {
-            fireCooldown = 0f;
-        }
-
-        hadTargetLastFrame = true;
-
-        fireCooldown -= Time.deltaTime;
-
-        if (fireCooldown > 0f)
+        if (target == null || fireCooldown > 0f)
         {
             return;
         }
 
-        fireCooldown = 1f / fireRate;
         Shoot();
+
+        fireCooldown = GetFireInterval();
+    }
+
+    private void TickCooldown()
+    {
+        if (fireCooldown <= 0f)
+        {
+            return;
+        }
+
+        fireCooldown = Mathf.Max(0f, fireCooldown - Time.deltaTime);
+    }
+
+    private float GetFireInterval()
+    {
+        return 1f / Mathf.Max(0.01f, fireRate);
     }
 
     private bool IsTargetValid(Enemy enemy)
