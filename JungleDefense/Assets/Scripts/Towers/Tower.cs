@@ -285,12 +285,13 @@ public class Tower : MonoBehaviour
     {
         if (rangeCircle == null)
         {
-            GameObject rangeObject = new GameObject("RangeCircle");
-            rangeObject.transform.SetParent(transform);
-            rangeObject.transform.localPosition = Vector3.zero;
-
+            GameObject rangeObject = new GameObject($"{name}_RangeCircle");
             rangeCircle = rangeObject.AddComponent<RangeCircleRenderer>();
         }
+
+        rangeCircle.transform.position = transform.position;
+        rangeCircle.transform.rotation = Quaternion.identity;
+        rangeCircle.transform.localScale = Vector3.one;
 
         rangeCircle.gameObject.SetActive(true);
         rangeCircle.Draw(range);
@@ -353,6 +354,15 @@ public class Tower : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void OnDestroy()
+    {
+        if (rangeCircle != null)
+        {
+            Destroy(rangeCircle.gameObject);
+            rangeCircle = null;
+        }
+    }
+
     private void ApplyLevelSprite()
     {
         if (spriteRenderer == null ||
@@ -378,7 +388,9 @@ public class Tower : MonoBehaviour
 
     public bool CanUpgrade()
     {
-        return !IsMaxLevel && GameManager.Instance.money >= upgradeCost;
+        return !IsMaxLevel &&
+               GameManager.Instance != null &&
+               GameManager.Instance.money >= upgradeCost;
     }
 
     public string GetTitleText()

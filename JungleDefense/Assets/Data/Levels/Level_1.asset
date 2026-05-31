@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_1
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   width: 7
-  height: 14
+  height: 13
   rows:
   - PPPPP11
   - 1111P11
@@ -28,7 +28,6 @@ MonoBehaviour:
   - 11PPPP1
   - 11P1111
   - 11PPPP1
-  - 11111P1
   waves:
   - enemyGroups:
     - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}

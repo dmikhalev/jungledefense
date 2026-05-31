@@ -44,8 +44,8 @@ public class RangeCircleRenderer : MonoBehaviour
         lineRenderer.useWorldSpace = false;
         lineRenderer.loop = true;
         lineRenderer.widthMultiplier = lineWidth;
-        lineRenderer.sortingLayerName = "Projectiles";
-        lineRenderer.sortingOrder = 20;
+        lineRenderer.sortingLayerName = "UIWorld";
+        lineRenderer.sortingOrder = 10;
 
         lineRenderer.sharedMaterial = GetSharedMaterial();
 
