@@ -107,8 +107,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
   cost: 50
-  range: 2.5
-  fireRate: 3
+  range: 2
+  fireRate: 2.6
   damage: 1
   targetRefreshInterval: 0.15
   shootFeedback: {fileID: 6788498873305266205}
@@ -134,10 +134,10 @@ MonoBehaviour:
   towerName: Monkey Tower
   level: 1
   maxLevel: 3
-  upgradeCost: 50
+  upgradeCost: 60
   damageIncrease: 1
-  rangeIncrease: 0.5
-  fireRateIncrease: 1
+  rangeIncrease: 0.35
+  fireRateIncrease: 0.55
 --- !u!58 &5279669789680748820
 CircleCollider2D:
   m_ObjectHideFlags: 0

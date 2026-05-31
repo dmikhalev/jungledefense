@@ -107,9 +107,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
   cost: 90
-  range: 3.5
-  fireRate: 1.5
-  damage: 3
+  range: 3
+  fireRate: 1.1
+  damage: 4
   targetRefreshInterval: 0.15
   shootFeedback: {fileID: -4089563049247155503}
   rotatingPart: {fileID: 3559377170122960889}
@@ -134,10 +134,10 @@ MonoBehaviour:
   towerName: Tiger Tower
   level: 1
   maxLevel: 3
-  upgradeCost: 50
-  damageIncrease: 1
-  rangeIncrease: 0.5
-  fireRateIncrease: 0.5
+  upgradeCost: 80
+  damageIncrease: 2
+  rangeIncrease: 0.35
+  fireRateIncrease: 0.25
 --- !u!58 &1484755100542748264
 CircleCollider2D:
   m_ObjectHideFlags: 0
