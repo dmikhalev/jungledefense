@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     private float currentHealth;
     private int waypointIndex;
     private bool isDead;
+    private float stunTimer;
     private List<Transform> waypoints;
 
     public Action OnRemoved;
@@ -76,7 +77,23 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        if (stunTimer > 0f)
+        {
+            stunTimer -= Time.deltaTime;
+            return;
+        }
+
         MoveAlongPath();
+    }
+
+    public void Stun(float duration)
+    {
+        if (duration <= 0f || isDead)
+        {
+            return;
+        }
+
+        stunTimer = Mathf.Max(stunTimer, duration);
     }
 
     public void TakeDamage(float damage)

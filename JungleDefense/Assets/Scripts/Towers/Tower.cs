@@ -14,9 +14,28 @@ public class Tower : MonoBehaviour
 
     [SerializeField] private TowerShootFeedback shootFeedback;
     [SerializeField] private Transform rotatingPart;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     [Header("Projectile")]
     public GameObject projectilePrefab;
+
+    [Header("Level Visuals")]
+    [SerializeField] private Sprite[] levelSprites;
+
+    [Header("Special Abilities")]
+    [SerializeField] private bool enableDoubleShot;
+    [SerializeField] private int doubleShotLevel = 3;
+    [SerializeField, Range(0f, 1f)] private float doubleShotChance = 0.3f;
+    [SerializeField] private float doubleShotOffset = 0.18f;
+
+    [SerializeField] private bool enableCriticalHit;
+    [SerializeField] private int criticalHitLevel = 3;
+    [SerializeField, Range(0f, 1f)] private float criticalChance = 0.25f;
+    [SerializeField] private float criticalMultiplier = 2f;
+
+    [SerializeField] private bool enableSplashStun;
+    [SerializeField] private int splashStunLevel = 3;
+    [SerializeField] private float splashStunDuration = 0.35f;
 
     [Header("UI")]
     public Sprite icon;
@@ -41,6 +60,16 @@ public class Tower : MonoBehaviour
     public int Level => level;
     public bool IsMaxLevel => level >= maxLevel;
     public int SellRefund => cost / 2;
+
+    private void Awake()
+    {
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        ApplyLevelSprite();
+    }
 
     private void Update()
     {
@@ -183,15 +212,33 @@ public class Tower : MonoBehaviour
             shootFeedback.Play(shotDirection);
         }
 
+        SpawnProjectile(shotDirection, 0f);
+
+        if (ShouldDoubleShot())
+        {
+            SpawnProjectile(shotDirection, doubleShotOffset);
+        }
+    }
+
+    private void SpawnProjectile(Vector3 shotDirection, float sideOffset)
+    {
         if (projectilePrefab == null)
         {
             Debug.LogError($"{name} has no projectile prefab assigned.");
             return;
         }
 
+        Vector3 spawnPosition = transform.position;
+
+        if (Mathf.Abs(sideOffset) > 0.001f && shotDirection.sqrMagnitude > 0.001f)
+        {
+            Vector3 sideDirection = new Vector3(-shotDirection.y, shotDirection.x, 0f);
+            spawnPosition += sideDirection.normalized * sideOffset;
+        }
+
         GameObject projectileObject = Instantiate(
             projectilePrefab,
-            transform.position,
+            spawnPosition,
             Quaternion.identity
         );
 
@@ -204,8 +251,34 @@ public class Tower : MonoBehaviour
             return;
         }
 
-        projectile.damage = damage;
+        projectile.damage = CalculateProjectileDamage();
         projectile.SetTarget(target.transform);
+
+        if (enableSplashStun &&
+            level >= splashStunLevel &&
+            projectile is SplashProjectile splashProjectile)
+        {
+            splashProjectile.SetStunDuration(splashStunDuration);
+        }
+    }
+
+    private int CalculateProjectileDamage()
+    {
+        if (!enableCriticalHit ||
+            level < criticalHitLevel ||
+            Random.value > criticalChance)
+        {
+            return damage;
+        }
+
+        return Mathf.Max(1, Mathf.RoundToInt(damage * criticalMultiplier));
+    }
+
+    private bool ShouldDoubleShot()
+    {
+        return enableDoubleShot &&
+               level >= doubleShotLevel &&
+               Random.value <= doubleShotChance;
     }
 
     public void ShowRange()
@@ -246,6 +319,7 @@ public class Tower : MonoBehaviour
         }
 
         level++;
+        ApplyLevelSprite();
 
         damage += damageIncrease;
         range += rangeIncrease;
@@ -277,6 +351,23 @@ public class Tower : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    private void ApplyLevelSprite()
+    {
+        if (spriteRenderer == null ||
+            levelSprites == null ||
+            levelSprites.Length == 0)
+        {
+            return;
+        }
+
+        int spriteIndex = Mathf.Clamp(level - 1, 0, levelSprites.Length - 1);
+
+        if (levelSprites[spriteIndex] != null)
+        {
+            spriteRenderer.sprite = levelSprites[spriteIndex];
+        }
     }
 
     private void OnDrawGizmosSelected()

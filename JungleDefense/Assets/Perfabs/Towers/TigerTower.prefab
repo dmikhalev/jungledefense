@@ -113,7 +113,23 @@ MonoBehaviour:
   targetRefreshInterval: 0.15
   shootFeedback: {fileID: -4089563049247155503}
   rotatingPart: {fileID: 3559377170122960889}
+  spriteRenderer: {fileID: 0}
   projectilePrefab: {fileID: 864307042844028786, guid: 2203706f36de24fe6a5a6f1a235f8321, type: 3}
+  levelSprites:
+  - {fileID: -6712255803019568892, guid: deb889c7c8a694c3f87e47e137ef85f8, type: 3}
+  - {fileID: -6712255803019568892, guid: deb889c7c8a694c3f87e47e137ef85f8, type: 3}
+  - {fileID: -6712255803019568892, guid: deb889c7c8a694c3f87e47e137ef85f8, type: 3}
+  enableDoubleShot: 0
+  doubleShotLevel: 3
+  doubleShotChance: 0.3
+  doubleShotOffset: 0.18
+  enableCriticalHit: 1
+  criticalHitLevel: 3
+  criticalChance: 0.25
+  criticalMultiplier: 2
+  enableSplashStun: 0
+  splashStunLevel: 3
+  splashStunDuration: 0.35
   icon: {fileID: 7698153592123181104, guid: 4fbda39c14d3a40fb8b8db84f167eb28, type: 3}
   towerName: Tiger Tower
   level: 1

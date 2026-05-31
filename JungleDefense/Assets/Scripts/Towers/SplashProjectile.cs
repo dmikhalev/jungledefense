@@ -6,12 +6,19 @@ public class SplashProjectile : Projectile
     private static readonly Collider2D[] SplashHits = new Collider2D[MaxSplashHits];
 
     [SerializeField] private float splashRadius = 1.5f;
+    private float stunDuration;
+
     [Header("Watermelon Projectile")]
     [SerializeField] private Color watermelonSplatColor = new Color(0.1f, 0.85f, 0.35f, 0.55f);
     [SerializeField] private float watermelonSplatSize = 0.55f;
 
     protected override float SpinSpeedDegrees => 180f;
     protected override float ArcScaleAmount => 0.18f;
+
+    public void SetStunDuration(float duration)
+    {
+        stunDuration = Mathf.Max(0f, duration);
+    }
 
     protected override void SpawnFruitSplat()
     {
@@ -45,6 +52,11 @@ public class SplashProjectile : Projectile
             if (enemy != null)
             {
                 enemy.TakeDamage(calculatedDamage);
+
+                if (stunDuration > 0f)
+                {
+                    enemy.Stun(stunDuration);
+                }
             }
         }
 

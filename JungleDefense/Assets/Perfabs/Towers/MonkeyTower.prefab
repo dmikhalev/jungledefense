@@ -113,7 +113,23 @@ MonoBehaviour:
   targetRefreshInterval: 0.15
   shootFeedback: {fileID: 6788498873305266205}
   rotatingPart: {fileID: 8161344809490091026}
+  spriteRenderer: {fileID: 0}
   projectilePrefab: {fileID: 8100876565920421516, guid: 2a516567182e64e638fcfba35a29f66e, type: 3}
+  levelSprites:
+  - {fileID: -4923124918129288218, guid: 169116025abcf46ea806c956ea5f0fb8, type: 3}
+  - {fileID: -4923124918129288218, guid: 169116025abcf46ea806c956ea5f0fb8, type: 3}
+  - {fileID: -4923124918129288218, guid: 169116025abcf46ea806c956ea5f0fb8, type: 3}
+  enableDoubleShot: 1
+  doubleShotLevel: 3
+  doubleShotChance: 0.3
+  doubleShotOffset: 0.18
+  enableCriticalHit: 0
+  criticalHitLevel: 3
+  criticalChance: 0.25
+  criticalMultiplier: 2
+  enableSplashStun: 0
+  splashStunLevel: 3
+  splashStunDuration: 0.35
   icon: {fileID: 4496506227281778190, guid: f0c22262d6ff74dcb965b844432caa61, type: 3}
   towerName: Monkey Tower
   level: 1

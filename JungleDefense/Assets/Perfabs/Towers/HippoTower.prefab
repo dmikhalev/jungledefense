@@ -113,7 +113,23 @@ MonoBehaviour:
   targetRefreshInterval: 0.15
   shootFeedback: {fileID: -1618172998459067746}
   rotatingPart: {fileID: 9004581417232304336}
+  spriteRenderer: {fileID: 0}
   projectilePrefab: {fileID: 5587139513212977153, guid: c1e5092b708404219b690ff856b45405, type: 3}
+  levelSprites:
+  - {fileID: 1007468282754382503, guid: 7b08328a2f7a941a29f55ed7cbb50294, type: 3}
+  - {fileID: 1007468282754382503, guid: 7b08328a2f7a941a29f55ed7cbb50294, type: 3}
+  - {fileID: 1007468282754382503, guid: 7b08328a2f7a941a29f55ed7cbb50294, type: 3}
+  enableDoubleShot: 0
+  doubleShotLevel: 3
+  doubleShotChance: 0.3
+  doubleShotOffset: 0.18
+  enableCriticalHit: 0
+  criticalHitLevel: 3
+  criticalChance: 0.25
+  criticalMultiplier: 2
+  enableSplashStun: 1
+  splashStunLevel: 3
+  splashStunDuration: 0.35
   icon: {fileID: 7940848989955988120, guid: a66300feb216944b69da62494da163eb, type: 3}
   towerName: Hippo Tower
   level: 1
