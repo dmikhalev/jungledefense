@@ -98,6 +98,12 @@ public class TowerPlacementManager : MonoBehaviour
 
         isDraggingTower = false;
 
+        if (InputHelper.IsScreenPositionOverUI(screenPosition))
+        {
+            ClearSelection();
+            return;
+        }
+
         Tile tile = GetTileAtScreenPosition(screenPosition);
 
         if (tile == null || !IsTileValidForPlacement(tile) || !CanAffordSelectedTower())
@@ -388,5 +394,31 @@ public class TowerPlacementManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void UpdateTowerDrag(Vector2 screenPosition)
+    {
+        if (!isDraggingTower)
+        {
+            return;
+        }
+
+        if (previewObject == null)
+        {
+            CreatePreview();
+        }
+
+        Tile tile = GetTileAtScreenPosition(screenPosition);
+
+        if (tile != null)
+        {
+            MovePreviewToTile(tile);
+            SetPreviewValid(IsTileValidForPlacement(tile) && CanAffordSelectedTower());
+        }
+        else
+        {
+            MovePreviewToWorldPosition(GetWorldPosition(screenPosition));
+            SetPreviewValid(false);
+        }
     }
 }

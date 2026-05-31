@@ -2197,42 +2197,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 483258677}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 65a0e02570cbd475c95e97dc7ed6f5f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 110393281}
-          m_TargetAssemblyTypeName: TowerSelectUI, Assembly-CSharp
-          m_MethodName: BeginDragHippo
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 110393281}
-          m_TargetAssemblyTypeName: TowerSelectUI, Assembly-CSharp
-          m_MethodName: EndDrag
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDragButton
+  towerPrefab: {fileID: 1946327560234758262, guid: 842089e1d78f95b4fa998889e8572cbe, type: 3}
 --- !u!1 &490588548
 GameObject:
   m_ObjectHideFlags: 0
@@ -6188,42 +6156,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1796693370}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 65a0e02570cbd475c95e97dc7ed6f5f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 110393281}
-          m_TargetAssemblyTypeName: TowerSelectUI, Assembly-CSharp
-          m_MethodName: BeginDragMonkey
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 110393281}
-          m_TargetAssemblyTypeName: TowerSelectUI, Assembly-CSharp
-          m_MethodName: EndDrag
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDragButton
+  towerPrefab: {fileID: 342170415055187682, guid: 46f218e4da143cc43b4fa2c5723197ef, type: 3}
 --- !u!1 &1814510715
 GameObject:
   m_ObjectHideFlags: 0
@@ -6368,42 +6304,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1814510715}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 65a0e02570cbd475c95e97dc7ed6f5f4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 110393281}
-          m_TargetAssemblyTypeName: TowerSelectUI, Assembly-CSharp
-          m_MethodName: BeginDragTiger
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 110393281}
-          m_TargetAssemblyTypeName: TowerSelectUI, Assembly-CSharp
-          m_MethodName: EndDrag
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDragButton
+  towerPrefab: {fileID: 1564398317561726871, guid: 418e6f7398d7c3942bba9021e30740d1, type: 3}
 --- !u!1 &1838406153
 GameObject:
   m_ObjectHideFlags: 0

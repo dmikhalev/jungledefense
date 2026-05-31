@@ -3,10 +3,15 @@ using UnityEngine.EventSystems;
 
 public class TowerSelectUI : MonoBehaviour
 {
+    private const float DragClickSuppressThreshold = 25f;
+
     [Header("Tower prefabs")]
     [SerializeField] private GameObject monkeyTower;
     [SerializeField] private GameObject tigerTower;
     [SerializeField] private GameObject hippoTower;
+
+    private Vector2 dragStartPosition;
+    private bool suppressNextClick;
 
     public void SelectMonkey()
     {
@@ -25,17 +30,17 @@ public class TowerSelectUI : MonoBehaviour
 
     public void BeginDragMonkey(BaseEventData eventData)
     {
-        BeginDrag(monkeyTower);
+        BeginDrag(monkeyTower, eventData);
     }
 
     public void BeginDragTiger(BaseEventData eventData)
     {
-        BeginDrag(tigerTower);
+        BeginDrag(tigerTower, eventData);
     }
 
     public void BeginDragHippo(BaseEventData eventData)
     {
-        BeginDrag(hippoTower);
+        BeginDrag(hippoTower, eventData);
     }
 
     public void EndDrag(BaseEventData eventData)
@@ -52,11 +57,20 @@ public class TowerSelectUI : MonoBehaviour
             return;
         }
 
+        float dragDistance = Vector2.Distance(dragStartPosition, pointerData.position);
+        suppressNextClick = dragDistance >= DragClickSuppressThreshold;
+
         TowerPlacementManager.Instance.EndTowerDrag(pointerData.position);
     }
 
     private void SelectTower(GameObject towerPrefab)
     {
+        if (suppressNextClick)
+        {
+            suppressNextClick = false;
+            return;
+        }
+
         if (towerPrefab == null)
         {
             Debug.LogError("Tower prefab is not assigned.");
@@ -72,8 +86,15 @@ public class TowerSelectUI : MonoBehaviour
         TowerPlacementManager.Instance.SelectTowerForBuilding(towerPrefab);
     }
 
-    private void BeginDrag(GameObject towerPrefab)
+    private void BeginDrag(GameObject towerPrefab, BaseEventData eventData)
     {
+        suppressNextClick = false;
+
+        if (eventData is PointerEventData pointerData)
+        {
+            dragStartPosition = pointerData.position;
+        }
+
         if (towerPrefab == null)
         {
             Debug.LogError("Tower prefab is not assigned.");
