@@ -94,6 +94,12 @@ public class LevelManager : MonoBehaviour
         }
 
         levelBuilder.BuildLevel(level);
+
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.SetPreparingWave();
+        }
+
         waveManager.StartLevel(level, OnLevelCompleted);
         if (victoryText != null)
         {
@@ -167,6 +173,11 @@ public class LevelManager : MonoBehaviour
         }
 
         Debug.Log("All levels completed");
+
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.SetVictory();
+        }
 
         HideGameplayUI();
 

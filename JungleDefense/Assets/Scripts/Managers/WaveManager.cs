@@ -50,6 +50,12 @@ public class WaveManager : MonoBehaviour
         }
 
         HideStartWaveButton();
+
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.SetWaveRunning();
+        }
+
         StartCoroutine(SpawnWave(currentLevel.waves[currentWaveIndex]));
     }
 
@@ -91,6 +97,11 @@ public class WaveManager : MonoBehaviour
         }
         else
         {
+            if (GameStateManager.Instance != null)
+            {
+                GameStateManager.Instance.SetPreparingWave();
+            }
+
             ShowStartWaveButton();
         }
     }

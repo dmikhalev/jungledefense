@@ -37,6 +37,11 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
+        if (GameStateManager.Instance != null && !GameStateManager.Instance.IsGameplayActive)
+        {
+            return;
+        }
+
         if (!IsBuildMode)
         {
             DestroyPreview();
@@ -59,6 +64,11 @@ public class TowerPlacementManager : MonoBehaviour
 
     public void SelectTowerForBuilding(GameObject towerPrefab)
     {
+        if (GameStateManager.Instance != null && !GameStateManager.Instance.IsGameplayActive)
+        {
+            return;
+        }
+
         if (towerPrefab == null)
         {
             ClearSelection();
@@ -78,6 +88,11 @@ public class TowerPlacementManager : MonoBehaviour
 
     public void BeginTowerDrag(GameObject towerPrefab)
     {
+        if (GameStateManager.Instance != null && !GameStateManager.Instance.IsGameplayActive)
+        {
+            return;
+        }
+
         if (towerPrefab == null)
         {
             ClearSelection();

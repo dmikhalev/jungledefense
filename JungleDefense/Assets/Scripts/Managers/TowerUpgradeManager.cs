@@ -43,6 +43,11 @@ public class TowerUpgradeManager : MonoBehaviour
             return;
         }
 
+        if (GameStateManager.Instance != null && !GameStateManager.Instance.IsGameplayActive)
+        {
+            return;
+        }
+
         if (towerInfoPanel != null &&
             towerInfoPanel.activeSelf &&
             selectedTower != null)

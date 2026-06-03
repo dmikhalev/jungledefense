@@ -118,6 +118,12 @@ public class GameManager : MonoBehaviour
         }
 
         isGameOver = true;
+
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.SetDefeat();
+        }
+
         Time.timeScale = 0f;
 
         Debug.Log("Game Over");

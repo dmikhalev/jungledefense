@@ -52,6 +52,11 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 0f;
         isPaused = true;
 
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.SetPaused();
+        }
+
         if (pausePanel != null)
         {
             pausePanel.SetActive(true);
@@ -67,6 +72,11 @@ public class PauseManager : MonoBehaviour
 
         Time.timeScale = cachedTimeScale <= 0f ? 1f : cachedTimeScale;
         isPaused = false;
+
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.ResumeFromPause();
+        }
 
         if (pausePanel != null)
         {
