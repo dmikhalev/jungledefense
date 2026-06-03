@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class TowerPlacementManager : MonoBehaviour
@@ -15,6 +16,7 @@ public class TowerPlacementManager : MonoBehaviour
     private Tower selectedTowerTemplate;
     private Tile pendingTile;
     private bool isDraggingTower;
+    private Coroutine invalidPreviewRoutine;
 
     private void Awake()
     {
@@ -108,6 +110,7 @@ public class TowerPlacementManager : MonoBehaviour
 
         if (tile == null || !IsTileValidForPlacement(tile) || !CanAffordSelectedTower())
         {
+            PlayInvalidPreviewFeedback();
             ClearSelection();
             return;
         }
@@ -145,6 +148,7 @@ public class TowerPlacementManager : MonoBehaviour
         {
             pendingTile = null;
             SetPreviewValid(false);
+            PlayInvalidPreviewFeedback();
             return;
         }
 
@@ -161,6 +165,7 @@ public class TowerPlacementManager : MonoBehaviour
 
         if (!canAfford)
         {
+            PlayInvalidPreviewFeedback();
             return;
         }
 
@@ -177,6 +182,7 @@ public class TowerPlacementManager : MonoBehaviour
 
         if (GameManager.Instance == null || !GameManager.Instance.SpendMoney(selectedTowerTemplate.cost))
         {
+            PlayInvalidPreviewFeedback();
             return;
         }
 
@@ -192,6 +198,15 @@ public class TowerPlacementManager : MonoBehaviour
         {
             tower.SetOccupiedTile(tile);
         }
+
+        TowerPlacementFeedback placementFeedback = towerObject.GetComponent<TowerPlacementFeedback>();
+
+        if (placementFeedback == null)
+        {
+            placementFeedback = towerObject.AddComponent<TowerPlacementFeedback>();
+        }
+
+        placementFeedback.PlaySpawn();
 
         tile.isOccupied = true;
 
@@ -295,6 +310,12 @@ public class TowerPlacementManager : MonoBehaviour
 
     private void DestroyPreview()
     {
+        if (invalidPreviewRoutine != null)
+        {
+            StopCoroutine(invalidPreviewRoutine);
+            invalidPreviewRoutine = null;
+        }
+
         if (previewObject != null)
         {
             Destroy(previewObject);
@@ -344,6 +365,45 @@ public class TowerPlacementManager : MonoBehaviour
         {
             previewSpriteRenderer.color = color;
         }
+    }
+
+    private void PlayInvalidPreviewFeedback()
+    {
+        if (previewSpriteRenderer == null || previewObject == null)
+        {
+            return;
+        }
+
+        if (invalidPreviewRoutine != null)
+        {
+            StopCoroutine(invalidPreviewRoutine);
+        }
+
+        invalidPreviewRoutine = StartCoroutine(InvalidPreviewFeedbackRoutine());
+    }
+
+    private IEnumerator InvalidPreviewFeedbackRoutine()
+    {
+        Vector3 originalScale = previewObject.transform.localScale;
+        Color invalidColor = new Color(1f, 0.12f, 0.12f, 0.85f);
+        Color normalInvalidColor = new Color(1f, 0.25f, 0.25f, 0.65f);
+
+        previewSpriteRenderer.color = invalidColor;
+        previewObject.transform.localScale = originalScale * 1.08f;
+
+        yield return new WaitForSecondsRealtime(0.08f);
+
+        if (previewObject != null)
+        {
+            previewObject.transform.localScale = originalScale;
+        }
+
+        if (previewSpriteRenderer != null)
+        {
+            previewSpriteRenderer.color = normalInvalidColor;
+        }
+
+        invalidPreviewRoutine = null;
     }
 
     private bool CanAffordSelectedTower()
