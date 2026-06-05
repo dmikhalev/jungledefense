@@ -128,25 +128,22 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
-        GameObject enemyObject = Instantiate(
+        Enemy enemy = EnemyPool.Instance.Spawn(
             enemyPrefab,
             PathManager.Instance.startPoint.position,
             Quaternion.identity
         );
 
-        Enemy enemy = enemyObject.GetComponent<Enemy>();
-
         if (enemy == null)
         {
-            Debug.LogError("Enemy prefab does not have Enemy component");
-            Destroy(enemyObject);
+            Debug.LogError("Enemy prefab does not have an Enemy component");
             return;
         }
 
         aliveEnemies++;
 
-        enemy.SetPath(PathManager.Instance.waypoints);
         enemy.OnRemoved += OnEnemyRemoved;
+        enemy.InitializeForSpawn(PathManager.Instance.waypoints);
     }
 
     private void OnEnemyRemoved()

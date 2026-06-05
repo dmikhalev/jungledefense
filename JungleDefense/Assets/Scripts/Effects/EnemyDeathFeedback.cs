@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,27 +11,31 @@ public class EnemyDeathFeedback : MonoBehaviour
     private SpriteRenderer[] renderers;
     private Color[] originalColors;
     private Vector3 originalScale;
+    private Coroutine routine;
 
     private void Awake()
     {
-        renderers = GetComponentsInChildren<SpriteRenderer>();
-        originalColors = new Color[renderers.Length];
-
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            originalColors[i] = renderers[i].color;
-        }
-
-        originalScale = transform.localScale;
+        CacheVisualState();
     }
 
     public void Play()
     {
-        DisableColliders();
-        StartCoroutine(PlayRoutine());
+        Play(null);
     }
 
-    private IEnumerator PlayRoutine()
+    public void Play(Action onComplete)
+    {
+        if (routine != null)
+        {
+            StopCoroutine(routine);
+        }
+
+        CacheVisualState();
+        DisableColliders();
+        routine = StartCoroutine(PlayRoutine(onComplete));
+    }
+
+    private IEnumerator PlayRoutine(Action onComplete)
     {
         float timer = 0f;
 
@@ -63,7 +68,29 @@ public class EnemyDeathFeedback : MonoBehaviour
             yield return null;
         }
 
-        Destroy(gameObject);
+        routine = null;
+
+        if (onComplete != null)
+        {
+            onComplete.Invoke();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void CacheVisualState()
+    {
+        renderers = GetComponentsInChildren<SpriteRenderer>(true);
+        originalColors = new Color[renderers.Length];
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            originalColors[i] = renderers[i].color;
+        }
+
+        originalScale = transform.localScale;
     }
 
     private void DisableColliders()

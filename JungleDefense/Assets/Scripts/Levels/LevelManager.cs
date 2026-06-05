@@ -133,7 +133,7 @@ public class LevelManager : MonoBehaviour
 
         foreach (Enemy enemy in FindObjectsByType<Enemy>(FindObjectsSortMode.None))
         {
-            Destroy(enemy.gameObject);
+            enemy.DespawnImmediately();
         }
 
         foreach (Tower tower in FindObjectsByType<Tower>(FindObjectsSortMode.None))

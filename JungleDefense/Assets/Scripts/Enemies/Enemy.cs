@@ -14,6 +14,12 @@ public class Enemy : MonoBehaviour
     private bool isDead;
     private float stunTimer;
     private List<Transform> waypoints;
+    private EnemyPool pool;
+    private GameObject sourcePrefab;
+    private Collider2D[] colliders;
+    private SpriteRenderer[] spriteRenderers;
+    private Color[] originalRendererColors;
+    private Vector3 originalScale;
 
     public Action OnRemoved;
 
@@ -36,10 +42,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void SetPath(List<Transform> path)
+    private void Awake()
     {
-        waypoints = path;
-        waypointIndex = 0;
+        colliders = GetComponentsInChildren<Collider2D>(true);
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+        originalRendererColors = new Color[spriteRenderers.Length];
+        originalScale = transform.localScale;
+
+        for (int i = 0; i < spriteRenderers.Length; i++)
+        {
+            originalRendererColors[i] = spriteRenderers[i].color;
+        }
     }
 
     private void OnEnable()
@@ -47,12 +60,19 @@ public class Enemy : MonoBehaviour
         EnemyRegistry.Register(this);
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         EnemyRegistry.Unregister(this);
+        OnRemoved = null;
     }
 
-    private void Start()
+    public void SetPool(EnemyPool ownerPool, GameObject prefab)
+    {
+        pool = ownerPool;
+        sourcePrefab = prefab;
+    }
+
+    public void InitializeForSpawn(List<Transform> path)
     {
         if (data == null)
         {
@@ -61,13 +81,24 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        enabled = true;
+        waypoints = path;
+        waypointIndex = 0;
+        isDead = false;
+        stunTimer = 0f;
         currentHealth = data.maxHealth;
+
+        ResetVisualState();
 
         if (healthBar != null)
         {
             healthBar.SetHealth(currentHealth, data.maxHealth);
         }
+    }
 
+    public void SetPath(List<Transform> path)
+    {
+        InitializeForSpawn(path);
     }
 
     private void Update()
@@ -124,6 +155,19 @@ public class Enemy : MonoBehaviour
         {
             Die();
         }
+    }
+
+    public void DespawnImmediately()
+    {
+        if (isDead)
+        {
+            ReleaseToPool();
+            return;
+        }
+
+        isDead = true;
+        NotifyRemoved();
+        ReleaseToPool();
     }
 
     private void MoveAlongPath()
@@ -190,6 +234,7 @@ public class Enemy : MonoBehaviour
         {
             GameManager.Instance.AddMoney(data.reward);
         }
+
         SpawnDeathEffect();
         RemoveEnemyWithFeedback();
     }
@@ -207,6 +252,7 @@ public class Enemy : MonoBehaviour
         {
             GameManager.Instance.LoseLife(1);
         }
+
         RemoveEnemy();
     }
 
@@ -220,13 +266,13 @@ public class Enemy : MonoBehaviour
 
     private void RemoveEnemy()
     {
-        OnRemoved?.Invoke();
-        Destroy(gameObject);
+        NotifyRemoved();
+        ReleaseToPool();
     }
 
     private void RemoveEnemyWithFeedback()
     {
-        OnRemoved?.Invoke();
+        NotifyRemoved();
 
         if (healthBar != null)
         {
@@ -240,6 +286,48 @@ public class Enemy : MonoBehaviour
             deathFeedback = gameObject.AddComponent<EnemyDeathFeedback>();
         }
 
-        deathFeedback.Play();
+        deathFeedback.Play(ReleaseToPool);
+    }
+
+    private void NotifyRemoved()
+    {
+        Action removed = OnRemoved;
+        OnRemoved = null;
+        removed?.Invoke();
+    }
+
+    private void ReleaseToPool()
+    {
+        waypoints = null;
+        stunTimer = 0f;
+
+        if (pool != null && sourcePrefab != null)
+        {
+            pool.Release(sourcePrefab, this);
+            return;
+        }
+
+        Destroy(gameObject);
+    }
+
+    private void ResetVisualState()
+    {
+        transform.localScale = originalScale;
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i] != null)
+            {
+                colliders[i].enabled = true;
+            }
+        }
+
+        for (int i = 0; i < spriteRenderers.Length; i++)
+        {
+            if (spriteRenderers[i] != null)
+            {
+                spriteRenderers[i].color = originalRendererColors[i];
+            }
+        }
     }
 }
