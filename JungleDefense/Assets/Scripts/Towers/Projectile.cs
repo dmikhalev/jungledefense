@@ -14,6 +14,8 @@ public class Projectile : MonoBehaviour
 
     private Vector3 originalScale;
     private float initialDistanceToTarget;
+    private ProjectilePool pool;
+    private GameObject sourcePrefab;
 
     protected virtual float SpinSpeedDegrees => 0f;
     protected virtual float ArcScaleAmount => 0f;
@@ -21,6 +23,19 @@ public class Projectile : MonoBehaviour
     protected virtual void Awake()
     {
         originalScale = transform.localScale;
+    }
+
+    public void SetPool(ProjectilePool ownerPool, GameObject prefab)
+    {
+        pool = ownerPool;
+        sourcePrefab = prefab;
+    }
+
+    public void Launch(Transform newTarget, int projectileDamage)
+    {
+        damage = projectileDamage;
+        SetTarget(newTarget);
+        ResetVisualState();
     }
 
     public void SetTarget(Transform newTarget)
@@ -31,13 +46,22 @@ public class Projectile : MonoBehaviour
         {
             initialDistanceToTarget = Vector3.Distance(transform.position, target.position);
         }
+        else
+        {
+            initialDistanceToTarget = 0f;
+        }
+    }
+
+    protected virtual void OnDisable()
+    {
+        target = null;
     }
 
     protected virtual void Update()
     {
         if (target == null)
         {
-            Destroy(gameObject);
+            Release();
             return;
         }
 
@@ -123,6 +147,25 @@ public class Projectile : MonoBehaviour
         }
 
         SpawnHitEffect();
+        Release();
+    }
+
+    protected void Release()
+    {
+        target = null;
+        ResetVisualState();
+
+        if (pool != null && sourcePrefab != null)
+        {
+            pool.Release(sourcePrefab, this);
+            return;
+        }
+
         Destroy(gameObject);
+    }
+
+    private void ResetVisualState()
+    {
+        transform.localScale = originalScale;
     }
 }

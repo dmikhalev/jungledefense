@@ -60,6 +60,6 @@ public class SplashProjectile : Projectile
             }
         }
 
-        Destroy(gameObject);
+        Release();
     }
 }

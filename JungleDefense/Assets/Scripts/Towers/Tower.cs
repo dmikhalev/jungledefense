@@ -236,23 +236,19 @@ public class Tower : MonoBehaviour
             spawnPosition += sideDirection.normalized * sideOffset;
         }
 
-        GameObject projectileObject = Instantiate(
+        Projectile projectile = ProjectilePool.Instance.Spawn(
             projectilePrefab,
             spawnPosition,
             Quaternion.identity
         );
 
-        Projectile projectile = projectileObject.GetComponent<Projectile>();
-
         if (projectile == null)
         {
-            Debug.LogError("Projectile component missing");
-            Destroy(projectileObject);
+            Debug.LogError($"Projectile prefab {projectilePrefab.name} has no Projectile component.");
             return;
         }
 
-        projectile.damage = CalculateProjectileDamage();
-        projectile.SetTarget(target.transform);
+        projectile.Launch(target.transform, CalculateProjectileDamage());
 
         if (enableSplashStun &&
             level >= splashStunLevel &&
