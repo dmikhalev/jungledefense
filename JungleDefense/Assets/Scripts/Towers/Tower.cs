@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    [Header("Economy")]
+    [Header("Data")]
+    [SerializeField] private TowerData towerData;
+
+    [Header("Economy Fallback")]
     public int cost = 50;
 
-    [Header("Combat")]
+    [Header("Combat Fallback")]
     public float range = 5f;
     public float fireRate = 1f;
     public int damage = 1;
@@ -16,13 +19,13 @@ public class Tower : MonoBehaviour
     [SerializeField] private Transform rotatingPart;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
-    [Header("Projectile")]
+    [Header("Projectile Fallback")]
     public GameObject projectilePrefab;
 
-    [Header("Level Visuals")]
+    [Header("Level Visuals Fallback")]
     [SerializeField] private Sprite[] levelSprites;
 
-    [Header("Special Abilities")]
+    [Header("Special Abilities Fallback")]
     [SerializeField] private bool enableDoubleShot;
     [SerializeField] private int doubleShotLevel = 3;
     [SerializeField, Range(0f, 1f)] private float doubleShotChance = 0.3f;
@@ -37,13 +40,13 @@ public class Tower : MonoBehaviour
     [SerializeField] private int splashStunLevel = 3;
     [SerializeField] private float splashStunDuration = 0.35f;
 
-    [Header("UI")]
+    [Header("UI Fallback")]
     public Sprite icon;
 
-    [Header("Info")]
+    [Header("Info Fallback")]
     public string towerName = "Tower";
 
-    [Header("Upgrade")]
+    [Header("Upgrade Fallback")]
     public int level = 1;
     public int maxLevel = 3;
     public int upgradeCost = 50;
@@ -59,7 +62,9 @@ public class Tower : MonoBehaviour
 
     public int Level => level;
     public bool IsMaxLevel => level >= maxLevel;
-    public int SellRefund => cost / 2;
+    public int Cost => towerData != null ? towerData.Cost : cost;
+    public float PlacementRange => GetConfiguredRangeForLevel(1);
+    public int SellRefund => Mathf.RoundToInt(Cost * GetSellRefundPercent() / 100f);
 
     private void Awake()
     {
@@ -68,7 +73,7 @@ public class Tower : MonoBehaviour
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        ApplyLevelSprite();
+        ApplyCurrentLevelData();
     }
 
     private void Update()
@@ -316,12 +321,19 @@ public class Tower : MonoBehaviour
         }
 
         level++;
-        ApplyLevelSprite();
 
-        damage += damageIncrease;
-        range += rangeIncrease;
-        fireRate += fireRateIncrease;
-        upgradeCost += 50;
+        if (towerData == null)
+        {
+            damage += damageIncrease;
+            range += rangeIncrease;
+            fireRate += fireRateIncrease;
+            upgradeCost += 50;
+            ApplyLevelSprite();
+        }
+        else
+        {
+            ApplyCurrentLevelData();
+        }
 
         ShowRange();
 
@@ -359,21 +371,112 @@ public class Tower : MonoBehaviour
         }
     }
 
-    private void ApplyLevelSprite()
+    private void ApplyCurrentLevelData()
     {
-        if (spriteRenderer == null ||
-            levelSprites == null ||
-            levelSprites.Length == 0)
+        if (towerData == null)
+        {
+            ApplyLevelSprite();
+            return;
+        }
+
+        maxLevel = towerData.MaxLevel;
+        cost = towerData.Cost;
+        towerName = towerData.DisplayName;
+        icon = towerData.Icon;
+
+        if (towerData.ProjectilePrefab != null)
+        {
+            projectilePrefab = towerData.ProjectilePrefab;
+        }
+
+        enableDoubleShot = towerData.EnableDoubleShot;
+        doubleShotLevel = towerData.DoubleShotLevel;
+        doubleShotChance = towerData.DoubleShotChance;
+        doubleShotOffset = towerData.DoubleShotOffset;
+
+        enableCriticalHit = towerData.EnableCriticalHit;
+        criticalHitLevel = towerData.CriticalHitLevel;
+        criticalChance = towerData.CriticalChance;
+        criticalMultiplier = towerData.CriticalMultiplier;
+
+        enableSplashStun = towerData.EnableSplashStun;
+        splashStunLevel = towerData.SplashStunLevel;
+        splashStunDuration = towerData.SplashStunDuration;
+
+        TowerLevelData levelData = towerData.GetLevel(level);
+
+        if (levelData == null)
         {
             return;
         }
 
-        int spriteIndex = Mathf.Clamp(level - 1, 0, levelSprites.Length - 1);
+        damage = levelData.damage;
+        range = levelData.range;
+        fireRate = levelData.fireRate;
+        upgradeCost = levelData.upgradeCost;
 
-        if (levelSprites[spriteIndex] != null)
+        ApplyLevelSprite();
+    }
+
+    private void ApplyLevelSprite()
+    {
+        if (spriteRenderer == null)
         {
-            spriteRenderer.sprite = levelSprites[spriteIndex];
+            return;
         }
+
+        Sprite sprite = GetConfiguredSpriteForLevel(level);
+
+        if (sprite != null)
+        {
+            spriteRenderer.sprite = sprite;
+        }
+    }
+
+    private Sprite GetConfiguredSpriteForLevel(int levelNumber)
+    {
+        if (towerData != null)
+        {
+            TowerLevelData configuredLevel = towerData.GetLevel(levelNumber);
+
+            if (configuredLevel != null && configuredLevel.sprite != null)
+            {
+                return configuredLevel.sprite;
+            }
+        }
+
+        if (levelSprites == null || levelSprites.Length == 0)
+        {
+            return null;
+        }
+
+        int spriteIndex = Mathf.Clamp(levelNumber - 1, 0, levelSprites.Length - 1);
+        return levelSprites[spriteIndex];
+    }
+
+    private float GetConfiguredRangeForLevel(int levelNumber)
+    {
+        if (towerData != null)
+        {
+            TowerLevelData configuredLevel = towerData.GetLevel(levelNumber);
+
+            if (configuredLevel != null)
+            {
+                return configuredLevel.range;
+            }
+        }
+
+        if (levelNumber <= 1)
+        {
+            return range;
+        }
+
+        return range + rangeIncrease * (levelNumber - 1);
+    }
+
+    private int GetSellRefundPercent()
+    {
+        return towerData != null ? towerData.SellRefundPercent : 50;
     }
 
     private void OnDrawGizmosSelected()
@@ -404,6 +507,21 @@ public class Tower : MonoBehaviour
                 $"Fire Rate: {fireRate:0.0}\n" +
                 $"Upgrade: MAX\n" +
                 $"Sell: +{SellRefund}";
+        }
+
+        if (towerData != null)
+        {
+            TowerLevelData nextLevel = towerData.GetLevel(level + 1);
+
+            if (nextLevel != null)
+            {
+                return
+                    $"Damage: {damage} → {nextLevel.damage}\n" +
+                    $"Range: {range:0.0} → {nextLevel.range:0.0}\n" +
+                    $"Fire Rate: {fireRate:0.0} → {nextLevel.fireRate:0.0}\n" +
+                    $"Upgrade: {upgradeCost}\n" +
+                    $"Sell: +{SellRefund}";
+            }
         }
 
         return

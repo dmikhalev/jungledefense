@@ -195,7 +195,7 @@ public class TowerPlacementManager : MonoBehaviour
             return;
         }
 
-        if (GameManager.Instance == null || !GameManager.Instance.SpendMoney(selectedTowerTemplate.cost))
+        if (GameManager.Instance == null || !GameManager.Instance.SpendMoney(selectedTowerTemplate.Cost))
         {
             PlayInvalidPreviewFeedback();
             return;
@@ -317,7 +317,7 @@ public class TowerPlacementManager : MonoBehaviour
         GameObject rangeObject = new GameObject("TowerBuildPreviewRange");
         previewRangeCircle = rangeObject.AddComponent<RangeCircleRenderer>();
 
-        float range = selectedTowerTemplate != null ? selectedTowerTemplate.range : 1f;
+        float range = selectedTowerTemplate != null ? selectedTowerTemplate.PlacementRange : 1f;
         previewRangeCircle.Draw(range);
 
         SetPreviewValid(false);
@@ -425,7 +425,7 @@ public class TowerPlacementManager : MonoBehaviour
     {
         return GameManager.Instance != null &&
             selectedTowerTemplate != null &&
-            GameManager.Instance.money >= selectedTowerTemplate.cost;
+            GameManager.Instance.money >= selectedTowerTemplate.Cost;
     }
 
     private bool IsTileValidForPlacement(Tile tile)
