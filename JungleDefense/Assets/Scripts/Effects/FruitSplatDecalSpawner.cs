@@ -1,25 +1,80 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class FruitSplatDecalSpawner
 {
+    private static readonly Queue<FruitSplatDecal> pool = new();
     private static Sprite splatSprite;
+    private static Transform poolRoot;
 
     public static void Spawn(Vector3 position, Color color, float size)
     {
         EnsureSprite();
+        EnsureRoot();
 
-        GameObject decal = new GameObject("FruitSplatDecal");
-        decal.transform.position = new Vector3(position.x, position.y, 0f);
-        decal.transform.rotation = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
-        decal.transform.localScale = Vector3.one * Random.Range(size * 0.8f, size * 1.2f);
+        FruitSplatDecal decal = Get();
+        Transform decalTransform = decal.transform;
 
-        SpriteRenderer renderer = decal.AddComponent<SpriteRenderer>();
+        decalTransform.SetParent(poolRoot, false);
+        decalTransform.position = new Vector3(position.x, position.y, 0f);
+        decalTransform.rotation = Quaternion.Euler(0f, 0f, Random.Range(0f, 360f));
+        decalTransform.localScale = Vector3.one * Random.Range(size * 0.8f, size * 1.2f);
+
+        decal.gameObject.SetActive(true);
+        decal.Init(color, Release);
+    }
+
+    private static FruitSplatDecal Get()
+    {
+        while (pool.Count > 0)
+        {
+            FruitSplatDecal decal = pool.Dequeue();
+
+            if (decal != null)
+            {
+                return decal;
+            }
+        }
+
+        return CreateNewDecal();
+    }
+
+    private static FruitSplatDecal CreateNewDecal()
+    {
+        GameObject decalObject = new GameObject("FruitSplatDecal");
+
+        SpriteRenderer renderer = decalObject.AddComponent<SpriteRenderer>();
         renderer.sprite = splatSprite;
-        renderer.color = color;
         renderer.sortingLayerName = "Effects";
         renderer.sortingOrder = -10;
 
-        decal.AddComponent<FruitSplatDecal>();
+        FruitSplatDecal decal = decalObject.AddComponent<FruitSplatDecal>();
+        decalObject.SetActive(false);
+
+        return decal;
+    }
+
+    private static void Release(FruitSplatDecal decal)
+    {
+        if (decal == null)
+        {
+            return;
+        }
+
+        decal.gameObject.SetActive(false);
+        decal.transform.SetParent(poolRoot, false);
+        pool.Enqueue(decal);
+    }
+
+    private static void EnsureRoot()
+    {
+        if (poolRoot != null)
+        {
+            return;
+        }
+
+        GameObject root = new GameObject("FruitSplatDecalPool");
+        poolRoot = root.transform;
     }
 
     private static void EnsureSprite()

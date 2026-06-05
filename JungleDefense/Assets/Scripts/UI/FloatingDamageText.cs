@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class FloatingDamageText : MonoBehaviour
     [SerializeField] private float fadeSpeed = 2f;
 
     private Transform cachedTransform;
+    private Action<FloatingDamageText> releaseCallback;
     private float timer;
     private Color startColor;
 
@@ -27,11 +29,14 @@ public class FloatingDamageText : MonoBehaviour
         }
     }
 
-    public void Init(int damage)
+    public void Init(int damage, Action<FloatingDamageText> onRelease)
     {
+        releaseCallback = onRelease;
+
         if (text != null)
         {
             text.text = "-" + damage;
+            text.color = startColor;
         }
 
         timer = lifetime;
@@ -53,7 +58,7 @@ public class FloatingDamageText : MonoBehaviour
 
         if (timer <= 0f)
         {
-            Destroy(gameObject);
+            releaseCallback?.Invoke(this);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,17 +9,31 @@ public class FruitSplatDecal : MonoBehaviour
     [SerializeField] private float fadeDuration = 1.0f;
 
     private SpriteRenderer spriteRenderer;
+    private Coroutine fadeRoutine;
+    private Action<FruitSplatDecal> releaseCallback;
     private Color startColor;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        startColor = spriteRenderer.color;
     }
 
-    private void Start()
+    public void Init(Color color, Action<FruitSplatDecal> onRelease)
     {
-        StartCoroutine(FadeRoutine());
+        releaseCallback = onRelease;
+        startColor = color;
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = startColor;
+        }
+
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+        }
+
+        fadeRoutine = StartCoroutine(FadeRoutine());
     }
 
     private IEnumerator FadeRoutine()
@@ -39,11 +54,16 @@ public class FruitSplatDecal : MonoBehaviour
 
             Color color = startColor;
             color.a = Mathf.Lerp(startColor.a, 0f, t);
-            spriteRenderer.color = color;
+
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = color;
+            }
 
             yield return null;
         }
 
-        Destroy(gameObject);
+        fadeRoutine = null;
+        releaseCallback?.Invoke(this);
     }
 }
