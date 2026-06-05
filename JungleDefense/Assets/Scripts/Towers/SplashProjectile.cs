@@ -51,7 +51,7 @@ public class SplashProjectile : Projectile
 
             if (enemy != null)
             {
-                enemy.TakeDamage(calculatedDamage);
+                enemy.TakeDamage(calculatedDamage, DamageType.Splash);
 
                 if (stunDuration > 0f)
                 {

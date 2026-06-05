@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: NormalEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Normal
+  enemyType: 1
+  sprite: {fileID: 0}
   maxHealth: 18
   speed: 2
   reward: 14
-  color: {r: 1, g: 1, b: 1, a: 1}
+  damageToBase: 1
+  directDamageMultiplier: 1.0
+  splashDamageMultiplier: 1.0
+  stunDurationMultiplier: 1.0

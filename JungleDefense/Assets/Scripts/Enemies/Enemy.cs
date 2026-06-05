@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject deathEffect;
     [SerializeField] private EnemyHealthBar healthBar;
     [SerializeField] private EnemyHitFlash hitFlash;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     private float currentHealth;
     private int waypointIndex;
@@ -19,6 +20,7 @@ public class Enemy : MonoBehaviour
     private Collider2D[] colliders;
     private SpriteRenderer[] spriteRenderers;
     private Color[] originalRendererColors;
+    private Sprite originalSprite;
     private Vector3 originalScale;
 
     public Action OnRemoved;
@@ -48,6 +50,21 @@ public class Enemy : MonoBehaviour
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
         originalRendererColors = new Color[spriteRenderers.Length];
         originalScale = transform.localScale;
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+
+            if (spriteRenderer == null && spriteRenderers.Length > 0)
+            {
+                spriteRenderer = spriteRenderers[0];
+            }
+        }
+
+        if (spriteRenderer != null)
+        {
+            originalSprite = spriteRenderer.sprite;
+        }
 
         for (int i = 0; i < spriteRenderers.Length; i++)
         {
@@ -89,6 +106,7 @@ public class Enemy : MonoBehaviour
         currentHealth = data.maxHealth;
 
         ResetVisualState();
+        ApplyDataVisuals();
 
         if (healthBar != null)
         {
@@ -124,21 +142,42 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        stunTimer = Mathf.Max(stunTimer, duration);
+        float adjustedDuration = data != null
+            ? data.GetAdjustedStunDuration(duration)
+            : duration;
+
+        if (adjustedDuration <= 0f)
+        {
+            return;
+        }
+
+        stunTimer = Mathf.Max(stunTimer, adjustedDuration);
     }
 
     public void TakeDamage(float damage)
+    {
+        TakeDamage(damage, DamageType.Direct);
+    }
+
+    public void TakeDamage(float damage, DamageType damageType)
     {
         if (isDead)
         {
             return;
         }
 
-        currentHealth -= damage;
+        float finalDamage = damage;
+
+        if (data != null)
+        {
+            finalDamage *= data.GetDamageMultiplier(damageType);
+        }
+
+        currentHealth -= finalDamage;
 
         if (DamageTextSpawner.Instance != null)
         {
-            DamageTextSpawner.Instance.Spawn(transform.position, Mathf.RoundToInt(damage));
+            DamageTextSpawner.Instance.Spawn(transform.position, Mathf.RoundToInt(finalDamage));
         }
 
         if (hitFlash != null)
@@ -250,7 +289,7 @@ public class Enemy : MonoBehaviour
 
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.LoseLife(1);
+            GameManager.Instance.LoseLife(data != null ? data.damageToBase : 1);
         }
 
         RemoveEnemy();
@@ -310,6 +349,14 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void ApplyDataVisuals()
+    {
+        if (spriteRenderer != null && data != null && data.sprite != null)
+        {
+            spriteRenderer.sprite = data.sprite;
+        }
+    }
+
     private void ResetVisualState()
     {
         transform.localScale = originalScale;
@@ -320,6 +367,11 @@ public class Enemy : MonoBehaviour
             {
                 colliders[i].enabled = true;
             }
+        }
+
+        if (spriteRenderer != null && originalSprite != null)
+        {
+            spriteRenderer.sprite = originalSprite;
         }
 
         for (int i = 0; i < spriteRenderers.Length; i++)

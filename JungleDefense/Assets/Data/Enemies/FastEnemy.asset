@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: FastEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Fast
+  enemyType: 0
+  sprite: {fileID: 0}
   maxHealth: 6
   speed: 4.2
   reward: 7
-  color: {r: 1, g: 1, b: 1, a: 1}
+  damageToBase: 1
+  directDamageMultiplier: 1.15
+  splashDamageMultiplier: 1.0
+  stunDurationMultiplier: 1.25

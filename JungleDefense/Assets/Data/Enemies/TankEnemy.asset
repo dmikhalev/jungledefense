@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: TankEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Tank
+  enemyType: 2
+  sprite: {fileID: 0}
   maxHealth: 70
   speed: 0.9
   reward: 32
-  color: {r: 1, g: 1, b: 1, a: 1}
+  damageToBase: 2
+  directDamageMultiplier: 1.0
+  splashDamageMultiplier: 0.7
+  stunDurationMultiplier: 0.55
