@@ -4,7 +4,7 @@ using System.Collections.Generic;
 [Serializable]
 public class SaveData
 {
-    public int version = 1;
+    public int version = 2;
     public int highestUnlockedLevel = 0;
     public List<int> completedLevels = new List<int>();
     public List<LevelStarsData> levelStars = new List<LevelStarsData>();
