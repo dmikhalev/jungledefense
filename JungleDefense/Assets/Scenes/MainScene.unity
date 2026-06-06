@@ -166,6 +166,7 @@ MonoBehaviour:
   levels:
   - {fileID: 11400000, guid: 9c1326e0652f4d9c9bb1d3ad45c9b5e1, type: 2}
   - {fileID: 11400000, guid: e33f85a56964c40fbb986248d80d5b76, type: 2}
+  - {fileID: 11400000, guid: e1a58eec4e3104c2c8a41fabb41356b5, type: 2}
   levelBuilder: {fileID: 680711179}
   waveManager: {fileID: 1838406154}
   victoryText: {fileID: 1090194358}
@@ -6451,6 +6452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78ecdea3950954856aa1fc5399016a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatisticsManager
+  autoSaveInterval: 15
 --- !u!1 &1838406153
 GameObject:
   m_ObjectHideFlags: 0

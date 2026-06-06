@@ -15,67 +15,25 @@ MonoBehaviour:
   width: 7
   height: 13
   rows:
+  - P111111
   - PPPPPP1
   - 11111P1
-  - 1PPPPP1
-  - 1P11111
-  - 1P11111
-  - 1PPPPPP
-  - 111111P
-  - 111111P
-  - 11PPPPP
-  - 11P1111
-  - 11P1111
-  - 11PPPP1
   - 11111P1
-  waves:
-  - enemyGroups:
-    - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
-      count: 12
-      delayBetweenEnemies: 0.35
-    - enemyPrefab: {fileID: 7486318691096851657, guid: 785f537b5a34340cbb74973a6712c20f, type: 3}
-      count: 5
-      delayBetweenEnemies: 0.6
-  - enemyGroups:
-    - enemyPrefab: {fileID: 7486318691096851657, guid: 785f537b5a34340cbb74973a6712c20f, type: 3}
-      count: 10
-      delayBetweenEnemies: 0.42
-    - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
-      count: 12
-      delayBetweenEnemies: 0.28
-  - enemyGroups:
-    - enemyPrefab: {fileID: 3816809235310866407, guid: 1325f5e71be8245f58dddaa48640d8a0, type: 3}
-      count: 4
-      delayBetweenEnemies: 1.1
-    - enemyPrefab: {fileID: 7486318691096851657, guid: 785f537b5a34340cbb74973a6712c20f, type: 3}
-      count: 11
-      delayBetweenEnemies: 0.34
-  - enemyGroups:
-    - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
-      count: 18
-      delayBetweenEnemies: 0.18
-    - enemyPrefab: {fileID: 3816809235310866407, guid: 1325f5e71be8245f58dddaa48640d8a0, type: 3}
-      count: 5
-      delayBetweenEnemies: 0.85
-  - enemyGroups:
-    - enemyPrefab: {fileID: 7486318691096851657, guid: 785f537b5a34340cbb74973a6712c20f, type: 3}
-      count: 15
-      delayBetweenEnemies: 0.28
-    - enemyPrefab: {fileID: 3816809235310866407, guid: 1325f5e71be8245f58dddaa48640d8a0, type: 3}
-      count: 6
-      delayBetweenEnemies: 0.75
-    - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
-      count: 18
-      delayBetweenEnemies: 0.16
-  - enemyGroups:
-    - enemyPrefab: {fileID: 3816809235310866407, guid: 1325f5e71be8245f58dddaa48640d8a0, type: 3}
-      count: 8
-      delayBetweenEnemies: 0.65
-    - enemyPrefab: {fileID: 7486318691096851657, guid: 785f537b5a34340cbb74973a6712c20f, type: 3}
-      count: 18
-      delayBetweenEnemies: 0.24
-    - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
-      count: 22
-      delayBetweenEnemies: 0.14
+  - 11PPPP1
+  - 11P1111
+  - 11PPPPP
+  - 111111P
+  - 1PPPPPP
+  - 1P11111
+  - 1PPPPP1
+  - 11111P1
+  - 11111PP
   startMoney: 210
+  waves:
+  - {fileID: 11400000, guid: 17c2b55af3b014d96ba662383f8d8759, type: 2}
+  - {fileID: 11400000, guid: c31670d11f94d4eeea1ce1101d7aaf05, type: 2}
+  - {fileID: 11400000, guid: 2717b3474a8624f0da2a150b014a6d06, type: 2}
+  - {fileID: 11400000, guid: 4f19392eef4114680af3dad219de6a13, type: 2}
+  - {fileID: 11400000, guid: cfb819fbd06d74e54a2d670ccfc4d2dc, type: 2}
+  - {fileID: 11400000, guid: 3ca47857b67f24de2a74cd48ce7496b4, type: 2}
   backgroundSprite: {fileID: 0}
