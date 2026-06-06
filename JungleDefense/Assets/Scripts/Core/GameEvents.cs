@@ -71,3 +71,44 @@ public readonly struct WaveCompletedEvent
 public readonly struct LevelCompletedEvent
 {
 }
+
+
+public readonly struct BossSpawnedEvent
+{
+    public readonly Enemy Boss;
+    public readonly string BossName;
+    public readonly float CurrentHealth;
+    public readonly float MaxHealth;
+
+    public BossSpawnedEvent(Enemy boss, string bossName, float currentHealth, float maxHealth)
+    {
+        Boss = boss;
+        BossName = bossName;
+        CurrentHealth = currentHealth;
+        MaxHealth = maxHealth;
+    }
+}
+
+public readonly struct BossHealthChangedEvent
+{
+    public readonly Enemy Boss;
+    public readonly float CurrentHealth;
+    public readonly float MaxHealth;
+
+    public BossHealthChangedEvent(Enemy boss, float currentHealth, float maxHealth)
+    {
+        Boss = boss;
+        CurrentHealth = currentHealth;
+        MaxHealth = maxHealth;
+    }
+}
+
+public readonly struct BossRemovedEvent
+{
+    public readonly Enemy Boss;
+
+    public BossRemovedEvent(Enemy boss)
+    {
+        Boss = boss;
+    }
+}

@@ -22,10 +22,18 @@ public class Enemy : MonoBehaviour
     private Color[] originalRendererColors;
     private Sprite originalSprite;
     private Vector3 originalScale;
+    private bool bossUiActive;
 
     public Action OnRemoved;
 
     public bool IsAlive => !isDead;
+    public EnemyData Data => data;
+    public float CurrentHealth => currentHealth;
+    public float MaxHealth => data != null ? data.maxHealth : 0f;
+    public bool IsBoss => data != null && data.enemyType == EnemyType.Boss;
+    public string DisplayName => data != null && !string.IsNullOrWhiteSpace(data.enemyName)
+        ? data.enemyName
+        : name;
     public int CurrentWaypointIndex => waypointIndex;
 
     public float DistanceToCurrentWaypointSqr
@@ -103,6 +111,7 @@ public class Enemy : MonoBehaviour
         waypointIndex = 0;
         isDead = false;
         stunTimer = 0f;
+        bossUiActive = false;
         currentHealth = data.maxHealth;
 
         ResetVisualState();
@@ -112,6 +121,8 @@ public class Enemy : MonoBehaviour
         {
             healthBar.SetHealth(currentHealth, data.maxHealth);
         }
+
+        ShowBossUIIfNeeded();
     }
 
     public void SetPath(List<Transform> path)
@@ -190,6 +201,8 @@ public class Enemy : MonoBehaviour
             healthBar.SetHealth(currentHealth, data.maxHealth);
         }
 
+        RaiseBossHealthChangedIfNeeded();
+
         if (currentHealth <= 0f)
         {
             Die();
@@ -200,11 +213,13 @@ public class Enemy : MonoBehaviour
     {
         if (isDead)
         {
+            HideBossUIIfNeeded();
             ReleaseToPool();
             return;
         }
 
         isDead = true;
+        HideBossUIIfNeeded();
         NotifyRemoved();
         ReleaseToPool();
     }
@@ -277,6 +292,7 @@ public class Enemy : MonoBehaviour
         }
 
         EventBus.Raise(new EnemyKilledEvent(this, reward));
+        HideBossUIIfNeeded();
 
         SpawnDeathEffect();
         RemoveEnemyWithFeedback();
@@ -299,6 +315,7 @@ public class Enemy : MonoBehaviour
         }
 
         EventBus.Raise(new EnemyReachedBaseEvent(this, damageToBase));
+        HideBossUIIfNeeded();
 
         RemoveEnemy();
     }
@@ -355,6 +372,49 @@ public class Enemy : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+
+    private void ShowBossUIIfNeeded()
+    {
+        if (!IsBoss || bossUiActive)
+        {
+            return;
+        }
+
+        bossUiActive = true;
+
+        EventBus.Raise(new BossSpawnedEvent(
+            this,
+            DisplayName,
+            currentHealth,
+            MaxHealth
+        ));
+    }
+
+    private void RaiseBossHealthChangedIfNeeded()
+    {
+        if (!bossUiActive)
+        {
+            return;
+        }
+
+        EventBus.Raise(new BossHealthChangedEvent(
+            this,
+            currentHealth,
+            MaxHealth
+        ));
+    }
+
+    private void HideBossUIIfNeeded()
+    {
+        if (!bossUiActive)
+        {
+            return;
+        }
+
+        bossUiActive = false;
+        EventBus.Raise(new BossRemovedEvent(this));
     }
 
     private void ApplyDataVisuals()
