@@ -225,6 +225,11 @@ public class TowerPlacementManager : MonoBehaviour
 
         tile.isOccupied = true;
 
+        if (tower != null)
+        {
+            EventBus.Raise(new TowerPlacedEvent(tower));
+        }
+
         ClearSelection();
     }
 

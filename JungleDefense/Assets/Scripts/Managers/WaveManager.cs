@@ -56,6 +56,8 @@ public class WaveManager : MonoBehaviour
             GameStateManager.Instance.SetWaveRunning();
         }
 
+        EventBus.Raise(new WaveStartedEvent(currentWaveIndex));
+
         StartCoroutine(SpawnWave(currentLevel.waves[currentWaveIndex]));
     }
 
@@ -82,8 +84,12 @@ public class WaveManager : MonoBehaviour
             yield return null;
         }
 
+        int completedWaveIndex = currentWaveIndex;
+
         currentWaveIndex++;
         isWaveRunning = false;
+
+        EventBus.Raise(new WaveCompletedEvent(completedWaveIndex));
 
         if (GameManager.Instance != null &&
             GameManager.Instance.isGameOver)
@@ -154,6 +160,9 @@ public class WaveManager : MonoBehaviour
     private void CompleteLevel()
     {
         HideStartWaveButton();
+
+        EventBus.Raise(new LevelCompletedEvent());
+
         onLevelCompleted?.Invoke();
     }
 

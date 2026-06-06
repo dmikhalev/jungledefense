@@ -337,6 +337,8 @@ public class Tower : MonoBehaviour
 
         ShowRange();
 
+        EventBus.Raise(new TowerUpgradedEvent(this, level));
+
         Debug.Log("Tower upgraded to level " + level);
         return true;
     }

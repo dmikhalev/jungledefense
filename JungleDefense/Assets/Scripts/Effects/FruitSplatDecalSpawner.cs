@@ -45,8 +45,8 @@ public static class FruitSplatDecalSpawner
 
         SpriteRenderer renderer = decalObject.AddComponent<SpriteRenderer>();
         renderer.sprite = splatSprite;
-        renderer.sortingLayerName = "Effects";
-        renderer.sortingOrder = -10;
+        renderer.sortingLayerName = "Ground";
+        renderer.sortingOrder = 100;
 
         FruitSplatDecal decal = decalObject.AddComponent<FruitSplatDecal>();
         decalObject.SetActive(false);

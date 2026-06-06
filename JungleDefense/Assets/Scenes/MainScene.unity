@@ -4087,7 +4087,7 @@ MonoBehaviour:
   pauseButton: {fileID: 640806693}
   speedButton: {fileID: 1329664468}
   startWaveButton: {fileID: 492654173}
-  restartButton: {fileID: 369700508}
+  restartButton: {fileID: 1478012270}
   towerInfoPanel: {fileID: 1983223988}
 --- !u!1 &999841938
 GameObject:
@@ -5066,6 +5066,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DamageTextSpawner
   damageTextPrefab: {fileID: 3886711492228709922, guid: 7c151ece213c24aea970930051fa4df7, type: 3}
   spawnOffset: {x: 0, y: 0.6, z: 0}
+  prewarmCount: 12
 --- !u!4 &1438977663
 Transform:
   m_ObjectHideFlags: 0

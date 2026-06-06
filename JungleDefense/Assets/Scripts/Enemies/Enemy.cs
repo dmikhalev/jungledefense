@@ -269,10 +269,14 @@ public class Enemy : MonoBehaviour
 
         isDead = true;
 
+        int reward = data != null ? data.reward : 0;
+
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.AddMoney(data.reward);
+            GameManager.Instance.AddMoney(reward);
         }
+
+        EventBus.Raise(new EnemyKilledEvent(this, reward));
 
         SpawnDeathEffect();
         RemoveEnemyWithFeedback();
@@ -287,10 +291,14 @@ public class Enemy : MonoBehaviour
 
         isDead = true;
 
+        int damageToBase = data != null ? data.damageToBase : 1;
+
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.LoseLife(data != null ? data.damageToBase : 1);
+            GameManager.Instance.LoseLife(damageToBase);
         }
+
+        EventBus.Raise(new EnemyReachedBaseEvent(this, damageToBase));
 
         RemoveEnemy();
     }
