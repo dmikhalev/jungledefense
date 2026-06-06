@@ -11,8 +11,11 @@ public class SaveManager : MonoBehaviour
     private const string SaveFileName = "save_data.json";
     private const string BackupSaveFileName = "save_data.backup.json";
     private const string TempSaveFileName = "save_data.tmp.json";
+    private const float AutoSaveIntervalSeconds = 15f;
 
     private SaveData saveData;
+    private bool hasUnsavedChanges;
+    private float nextAutoSaveTime;
 
     public SaveData Data => saveData;
 
@@ -37,6 +40,16 @@ public class SaveManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         Load();
+    }
+
+    private void Update()
+    {
+        if (!hasUnsavedChanges || Time.unscaledTime < nextAutoSaveTime)
+        {
+            return;
+        }
+
+        Save();
     }
 
     public bool IsLevelUnlocked(int levelIndex)
@@ -75,9 +88,84 @@ public class SaveManager : MonoBehaviour
         Save();
     }
 
+    public void RecordEnemyKilled(int reward)
+    {
+        EnsureData();
+
+        saveData.totalEnemiesKilled++;
+        saveData.totalMoneyEarnedFromKills += Mathf.Max(0, reward);
+
+        MarkDirty();
+    }
+
+    public void RecordEnemyReachedBase()
+    {
+        EnsureData();
+
+        saveData.totalEnemiesReachedBase++;
+
+        MarkDirty();
+    }
+
+    public void RecordTowerPlaced()
+    {
+        EnsureData();
+
+        saveData.totalTowersPlaced++;
+
+        MarkDirty();
+    }
+
+    public void RecordTowerUpgraded()
+    {
+        EnsureData();
+
+        saveData.totalTowersUpgraded++;
+
+        MarkDirty();
+    }
+
+    public void RecordWaveStarted()
+    {
+        EnsureData();
+
+        saveData.totalWavesStarted++;
+
+        MarkDirty();
+    }
+
+    public void RecordWaveCompleted()
+    {
+        EnsureData();
+
+        saveData.totalWavesCompleted++;
+
+        MarkDirty();
+    }
+
+    public void RecordLevelCompleted()
+    {
+        EnsureData();
+
+        saveData.totalLevelsCompleted++;
+
+        MarkDirty();
+    }
+
+    public void FlushIfDirty()
+    {
+        if (!hasUnsavedChanges)
+        {
+            return;
+        }
+
+        Save();
+    }
+
     public void ResetProgress()
     {
         saveData = CreateDefaultSaveData();
+        hasUnsavedChanges = false;
         Save();
     }
 
@@ -88,6 +176,7 @@ public class SaveManager : MonoBehaviour
         TryDeleteFile(TempSaveFilePath);
 
         saveData = CreateDefaultSaveData();
+        hasUnsavedChanges = false;
         Save();
     }
 
@@ -121,11 +210,36 @@ public class SaveManager : MonoBehaviour
             File.Move(TempSaveFilePath, SaveFilePath);
 
             File.Copy(SaveFilePath, BackupSaveFilePath, true);
+
+            hasUnsavedChanges = false;
         }
         catch (Exception exception)
         {
             Debug.LogError("Failed to save progress: " + exception.Message);
         }
+    }
+
+    private void MarkDirty()
+    {
+        hasUnsavedChanges = true;
+
+        if (nextAutoSaveTime <= Time.unscaledTime)
+        {
+            nextAutoSaveTime = Time.unscaledTime + AutoSaveIntervalSeconds;
+        }
+    }
+
+    private void OnApplicationPause(bool paused)
+    {
+        if (paused)
+        {
+            FlushIfDirty();
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        FlushIfDirty();
     }
 
     private void Load()

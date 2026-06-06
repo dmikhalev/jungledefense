@@ -8,6 +8,16 @@ public class SaveData
     public int highestUnlockedLevel = 0;
     public List<int> completedLevels = new List<int>();
     public List<LevelStarsData> levelStars = new List<LevelStarsData>();
+    public StatisticsData statistics = new StatisticsData();
+
+    public int totalEnemiesKilled;
+    public int totalEnemiesReachedBase;
+    public int totalTowersPlaced;
+    public int totalTowersUpgraded;
+    public int totalWavesStarted;
+    public int totalWavesCompleted;
+    public int totalLevelsCompleted;
+    public int totalMoneyEarnedFromKills;
 
     public bool IsLevelCompleted(int levelIndex)
     {
@@ -63,4 +73,19 @@ public class LevelStarsData
 {
     public int levelIndex;
     public int stars;
+}
+
+[System.Serializable]
+public class StatisticsData
+{
+    public int enemiesKilled;
+    public int enemiesReachedBase;
+
+    public int towersPlaced;
+    public int towersUpgraded;
+
+    public int wavesStarted;
+    public int wavesCompleted;
+
+    public int levelsCompleted;
 }
