@@ -43,7 +43,7 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
-        if (currentWaveIndex >= currentLevel.waves.Length)
+        if (currentWaveIndex >= currentLevel.WaveCount)
         {
             CompleteLevel();
             return;
@@ -58,22 +58,22 @@ public class WaveManager : MonoBehaviour
 
         EventBus.Raise(new WaveStartedEvent(currentWaveIndex));
 
-        StartCoroutine(SpawnWave(currentLevel.waves[currentWaveIndex]));
+        StartCoroutine(SpawnWave(currentLevel.GetWave(currentWaveIndex)));
     }
 
-    private IEnumerator SpawnWave(Wave wave)
+    private IEnumerator SpawnWave(WaveData wave)
     {
         isWaveRunning = true;
 
         Debug.Log("Starting wave " + (currentWaveIndex + 1));
 
-        if (wave.enemyGroups == null || wave.enemyGroups.Length == 0)
+        if (wave == null || wave.IsEmpty)
         {
             Debug.LogWarning("Wave has no enemy groups");
         }
         else
         {
-            foreach (WaveEnemyGroup group in wave.enemyGroups)
+            foreach (WaveEnemyGroup group in wave.EnemyGroups)
             {
                 yield return StartCoroutine(SpawnEnemyGroup(group));
             }
@@ -97,7 +97,7 @@ public class WaveManager : MonoBehaviour
             yield break;
         }
 
-        if (currentWaveIndex >= currentLevel.waves.Length)
+        if (currentWaveIndex >= currentLevel.WaveCount)
         {
             CompleteLevel();
         }
@@ -194,7 +194,7 @@ public class WaveManager : MonoBehaviour
         }
 
         int waveNumber = currentWaveIndex + 1;
-        int totalWaves = currentLevel.waves.Length;
+        int totalWaves = currentLevel.WaveCount;
 
         string prefix =
             currentWaveIndex == 0
