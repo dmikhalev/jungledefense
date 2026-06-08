@@ -31,6 +31,7 @@ MonoBehaviour:
   startMoney: 170
   waves:
   - {fileID: 11400000, guid: 9728609c673954487be9d13981a21095, type: 2}
+  - {fileID: 11400000, guid: a644f93094d9246688f550bd2436aa0d, type: 2}
   - {fileID: 11400000, guid: 655ac375ad7c54276a86b33df6c5eeaa, type: 2}
   - {fileID: 11400000, guid: 18505f9a5e6e54207b76f10df64755cc, type: 2}
   - {fileID: 11400000, guid: 0e014e18c0c054cb59b25f811547df3b, type: 2}

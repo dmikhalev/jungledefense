@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class BossHealthBar : MonoBehaviour
 {
-    [SerializeField] private GameObject root;
+    [SerializeField] private GameObject visualRoot;
     [SerializeField] private TMP_Text bossNameText;
     [SerializeField] private Image fillImage;
 
@@ -29,9 +29,9 @@ public class BossHealthBar : MonoBehaviour
 
     private void OnBossSpawned(BossSpawnedEvent e)
     {
-        if (root != null)
+        if (visualRoot != null)
         {
-            root.SetActive(true);
+            visualRoot.SetActive(true);
         }
 
         if (bossNameText != null)
@@ -58,21 +58,16 @@ public class BossHealthBar : MonoBehaviour
         {
             return;
         }
-
-        if (maxHealth <= 0f)
-        {
-            fillImage.fillAmount = 0f;
-            return;
-        }
-
-        fillImage.fillAmount = Mathf.Clamp01(currentHealth / maxHealth);
+        fillImage.fillAmount = maxHealth <= 0f
+            ? 0f
+            : Mathf.Clamp01(currentHealth / maxHealth);
     }
 
     private void Hide()
     {
-        if (root != null)
+        if (visualRoot != null)
         {
-            root.SetActive(false);
+            visualRoot.SetActive(false);
         }
     }
 }
