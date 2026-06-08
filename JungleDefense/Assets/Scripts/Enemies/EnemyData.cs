@@ -25,6 +25,23 @@ public class EnemyData : ScriptableObject
     [Tooltip("1 = normal stun duration, 0.5 = 50% shorter stun, 0 = immune to stun")]
     [Min(0f)] public float stunDurationMultiplier = 1f;
 
+
+    [Header("Boss Ability")]
+    public BossAbilityType bossAbility = BossAbilityType.None;
+
+    [Header("Boss Rage")]
+    [Tooltip("HP percentages that trigger rage. 0.75 = 75% HP.")]
+    public float[] rageHealthThresholds = { 0.75f, 0.5f, 0.25f };
+
+    [Tooltip("Speed multiplier applied once per triggered rage threshold.")]
+    [Min(1f)] public float rageSpeedMultiplier = 1.2f;
+
+    [Header("Boss Regeneration")]
+    [Min(0.1f)] public float regenerationInterval = 5f;
+
+    [Tooltip("Percent of max health restored every regeneration tick. 0.03 = 3%.")]
+    [Range(0f, 1f)] public float regenerationPercentOfMaxHealth = 0.03f;
+
     public float GetDamageMultiplier(DamageType damageType)
     {
         return damageType == DamageType.Splash

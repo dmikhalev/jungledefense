@@ -23,6 +23,9 @@ public class Enemy : MonoBehaviour
     private Sprite originalSprite;
     private Vector3 originalScale;
     private bool bossUiActive;
+    private float currentSpeed;
+    private float regenerationTimer;
+    private bool[] triggeredRageThresholds;
 
     public Action OnRemoved;
 
@@ -113,6 +116,9 @@ public class Enemy : MonoBehaviour
         stunTimer = 0f;
         bossUiActive = false;
         currentHealth = data.maxHealth;
+        currentSpeed = data.speed;
+        regenerationTimer = 0f;
+        InitializeBossAbilityRuntimeState();
 
         ResetVisualState();
         ApplyDataVisuals();
@@ -143,6 +149,7 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        UpdateBossAbilities();
         MoveAlongPath();
     }
 
@@ -184,7 +191,9 @@ public class Enemy : MonoBehaviour
             finalDamage *= data.GetDamageMultiplier(damageType);
         }
 
-        currentHealth -= finalDamage;
+        currentHealth = Mathf.Max(0f, currentHealth - finalDamage);
+
+        UpdateBossRageIfNeeded();
 
         if (DamageTextSpawner.Instance != null)
         {
@@ -248,7 +257,7 @@ public class Enemy : MonoBehaviour
         transform.position = Vector3.MoveTowards(
             currentPosition,
             targetPosition,
-            data.speed * Time.deltaTime
+            currentSpeed * Time.deltaTime
         );
 
         if ((transform.position - targetPosition).sqrMagnitude <= 0.01f)
@@ -364,6 +373,8 @@ public class Enemy : MonoBehaviour
     {
         waypoints = null;
         stunTimer = 0f;
+        regenerationTimer = 0f;
+        currentSpeed = data != null ? data.speed : currentSpeed;
 
         if (pool != null && sourcePrefab != null)
         {
@@ -374,6 +385,109 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
+
+    private void InitializeBossAbilityRuntimeState()
+    {
+        if (!IsBoss || data == null)
+        {
+            triggeredRageThresholds = null;
+            return;
+        }
+
+        if (data.bossAbility == BossAbilityType.Rage &&
+            data.rageHealthThresholds != null)
+        {
+            triggeredRageThresholds = new bool[data.rageHealthThresholds.Length];
+        }
+        else
+        {
+            triggeredRageThresholds = null;
+        }
+    }
+
+    private void UpdateBossAbilities()
+    {
+        if (!IsBoss || data == null || isDead)
+        {
+            return;
+        }
+
+        if (data.bossAbility == BossAbilityType.Regeneration)
+        {
+            UpdateBossRegeneration();
+        }
+    }
+
+    private void UpdateBossRegeneration()
+    {
+        if (currentHealth <= 0f || currentHealth >= data.maxHealth)
+        {
+            regenerationTimer = 0f;
+            return;
+        }
+
+        regenerationTimer += Time.deltaTime;
+
+        if (regenerationTimer < data.regenerationInterval)
+        {
+            return;
+        }
+
+        regenerationTimer = 0f;
+
+        float healAmount = data.maxHealth * data.regenerationPercentOfMaxHealth;
+
+        if (healAmount <= 0f)
+        {
+            return;
+        }
+
+        currentHealth = Mathf.Min(data.maxHealth, currentHealth + healAmount);
+
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(currentHealth, data.maxHealth);
+        }
+
+        RaiseBossHealthChangedIfNeeded();
+    }
+
+    private void UpdateBossRageIfNeeded()
+    {
+        if (!IsBoss ||
+            data == null ||
+            data.bossAbility != BossAbilityType.Rage ||
+            data.rageHealthThresholds == null ||
+            triggeredRageThresholds == null)
+        {
+            return;
+        }
+
+        float healthPercent = data.maxHealth <= 0f
+            ? 0f
+            : currentHealth / data.maxHealth;
+
+        for (int i = 0; i < data.rageHealthThresholds.Length; i++)
+        {
+            if (triggeredRageThresholds[i])
+            {
+                continue;
+            }
+
+            if (healthPercent > data.rageHealthThresholds[i])
+            {
+                continue;
+            }
+
+            triggeredRageThresholds[i] = true;
+            currentSpeed *= data.rageSpeedMultiplier;
+
+            if (hitFlash != null)
+            {
+                hitFlash.Flash();
+            }
+        }
+    }
 
     private void ShowBossUIIfNeeded()
     {
