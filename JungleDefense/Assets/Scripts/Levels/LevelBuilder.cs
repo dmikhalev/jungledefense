@@ -6,6 +6,7 @@ public class LevelBuilder : MonoBehaviour
     [SerializeField] private GameObject buildTilePrefab;
     [SerializeField] private GameObject pathTilePrefab;
     [SerializeField] private float tileSize = 1f;
+    [SerializeField] private Vector2 levelOffset = new Vector2(0f, -0.7f);
 
     private readonly List<GameObject> spawnedTiles = new List<GameObject>();
     private readonly List<Vector3> pathPositions = new List<Vector3>();
@@ -69,8 +70,8 @@ public class LevelBuilder : MonoBehaviour
         float offsetY = (levelData.height - 1) / 2f;
 
         return new Vector3(
-            (x - offsetX) * tileSize,
-            (offsetY - y) * tileSize,
+            (x - offsetX) * tileSize + levelOffset.x,
+            (offsetY - y) * tileSize + levelOffset.y,
             0f
         );
     }
