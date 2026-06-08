@@ -316,14 +316,28 @@ public class Enemy : MonoBehaviour
 
         isDead = true;
 
-        int damageToBase = data != null ? data.damageToBase : 1;
-
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.LoseLife(damageToBase);
+            if (IsBoss)
+            {
+                GameManager.Instance.LoseLife(GameManager.Instance.lives);
+            }
+            else
+            {
+                int damageToBase = data != null ? data.damageToBase : 1;
+                GameManager.Instance.LoseLife(damageToBase);
+            }
         }
 
-        EventBus.Raise(new EnemyReachedBaseEvent(this, damageToBase));
+        EventBus.Raise(
+            new EnemyReachedBaseEvent(
+                this,
+                IsBoss
+                    ? 999
+                    : (data != null ? data.damageToBase : 1)
+            )
+        );
+
         HideBossUIIfNeeded();
 
         RemoveEnemy();
