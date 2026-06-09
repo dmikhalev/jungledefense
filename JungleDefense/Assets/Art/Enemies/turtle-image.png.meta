@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 38c512f75640f43d79901de8b284b683
+guid: a5412877b419c45579b3fadeca87e99d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2775918849945278375
-    second: gorilla-boss-enemy_0
+      213: 6368233121940731237
+    second: turtle-image_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: gorilla-boss-enemy_0
+      name: turtle-image_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 34
+        y: 23
         width: 400
-        height: 344
+        height: 355
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 95863bf6384f979d0800000000000000
-      internalID: -2775918849945278375
+      spriteID: 5657728b842806850800000000000000
+      internalID: 6368233121940731237
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      gorilla-boss-enemy_0: -2775918849945278375
+      turtle-image_0: 6368233121940731237
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

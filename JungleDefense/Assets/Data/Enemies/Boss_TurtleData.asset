@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f889842e6e7842b7ab93775e96b770a, type: 3}
-  m_Name: Boss_GorillaData
+  m_Name: Boss_TurtleData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyName: Gorilla Boss
+  enemyName: Turtle Boss
   enemyType: 3
   sprite: {fileID: 0}
-  maxHealth: 950
-  speed: 0.8
-  reward: 120
+  maxHealth: 1800
+  speed: 0.55
+  reward: 250
   damageToBase: 5
   directDamageMultiplier: 1
   splashDamageMultiplier: 0.55
   stunDurationMultiplier: 0.25
-  bossAbility: 1
+  bossAbility: 2
   rageHealthThresholds:
   - 0.75
   - 0.5

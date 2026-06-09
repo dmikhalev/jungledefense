@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 528495316610907072}
   - component: {fileID: -9567023925055682}
   m_Layer: 0
-  m_Name: Boss_Gorilla
+  m_Name: Boss_Turtle
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2775918849945278375, guid: 38c512f75640f43d79901de8b284b683, type: 3}
+  m_Sprite: {fileID: 6368233121940731237, guid: a5412877b419c45579b3fadeca87e99d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34485deb5e5eded4ca9d7a92db601ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  data: {fileID: 11400000, guid: 81499d53612e542f4aa2567d84f2acf2, type: 2}
+  data: {fileID: 11400000, guid: 9bc49c9d6a8c3412d870e5413bdd4985, type: 2}
   deathEffect: {fileID: 3326687224019949077, guid: e40ace64ae8364ac09630c4ff63bcc09, type: 3}
   healthBar: {fileID: 528495316610907072}
   hitFlash: {fileID: -9567023925055682}
@@ -151,7 +151,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4, y: 3.44}
+    oldSize: {x: 4, y: 3.55}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
