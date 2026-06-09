@@ -300,6 +300,11 @@ public class Enemy : MonoBehaviour
             GameManager.Instance.AddMoney(reward);
         }
 
+        if (IsBoss && CameraShake.Instance != null)
+        {
+            CameraShake.Instance.Shake(0.25f, 0.18f);
+        }
+
         EventBus.Raise(new EnemyKilledEvent(this, reward));
         HideBossUIIfNeeded();
 
