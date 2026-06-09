@@ -6,6 +6,7 @@ public class LevelSelectButton : MonoBehaviour
 {
     [SerializeField] private int levelIndex;
     [SerializeField] private TMP_Text label;
+    [SerializeField] private TMP_Text starsLabel;
     [SerializeField] private Button button;
     [SerializeField] private GameObject lockOverlay;
 
@@ -37,6 +38,15 @@ public class LevelSelectButton : MonoBehaviour
             label.text = (levelIndex + 1).ToString();
         }
 
+        if (starsLabel != null)
+        {
+            int stars = SaveManager.Instance != null
+                ? SaveManager.Instance.GetStars(levelIndex)
+                : 0;
+
+            starsLabel.text = FormatStars(stars);
+        }
+
         if (button != null)
         {
             button.onClick.RemoveAllListeners();
@@ -52,6 +62,19 @@ public class LevelSelectButton : MonoBehaviour
         {
             lockOverlay.SetActive(!unlocked);
         }
+    }
+
+    private static string FormatStars(int stars)
+    {
+        stars = Mathf.Clamp(stars, 0, 3);
+
+        return stars switch
+        {
+            3 => "* * *",
+            2 => "* *",
+            1 => "*",
+            _ => ""
+        };
     }
 
     private void LoadLevel()

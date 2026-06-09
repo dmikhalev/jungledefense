@@ -196,16 +196,22 @@ public class LevelManager : MonoBehaviour
             return 1;
         }
 
-        float livesRatio = GameManager.Instance.startLives <= 0
-            ? 0f
-            : (float)GameManager.Instance.lives / GameManager.Instance.startLives;
+        int startLives = Mathf.Max(0, GameManager.Instance.startLives);
+        int currentLives = Mathf.Clamp(GameManager.Instance.lives, 0, startLives);
 
-        if (livesRatio >= 0.8f)
+        if (startLives <= 0)
+        {
+            return 1;
+        }
+
+        int lostLives = startLives - currentLives;
+
+        if (lostLives == 0)
         {
             return 3;
         }
 
-        if (livesRatio >= 0.4f)
+        if (lostLives <= 2)
         {
             return 2;
         }
