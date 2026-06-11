@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e4dc5c51a0619d49a0d24463fac6497, type: 3}
+  m_Name: Level_6
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  width: 7
+  height: 13
+  rows:
+  - PPPPPPP
+  - 111111P
+  - 111111P
+  - 111PPPP
+  - 111P111
+  - PPPP111
+  - P111111
+  - P111111
+  - PPPPP11
+  - 1111P11
+  - 1111PPP
+  - 111111P
+  - 111111P
+  startMoney: 245
+  waves:
+  - {fileID: 11400000, guid: 0f29bd2ed5b488909bf40e5033820aa5, type: 2}
+  - {fileID: 11400000, guid: f40665ca5763e2a11a6e235255e2808b, type: 2}
+  - {fileID: 11400000, guid: 39b1582136cef26fd05bb847f9e84c30, type: 2}
+  - {fileID: 11400000, guid: 2b0f6a4df14c1b714e99e51b1645477e, type: 2}
+  - {fileID: 11400000, guid: a3055cd7a53ebbdcc99ece0053b02117, type: 2}
+  - {fileID: 11400000, guid: 7572427ecef0920e2b559b3b2e738aec, type: 2}
+  - {fileID: 11400000, guid: baf33b0bd5a63eb9858de5cd2c635dc4, type: 2}
+  - {fileID: 11400000, guid: 08799ea371ba6c4f0b39c3aab295015f, type: 2}
+  backgroundSprite: {fileID: 0}

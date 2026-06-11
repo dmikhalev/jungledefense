@@ -15,26 +15,26 @@ MonoBehaviour:
   width: 7
   height: 13
   rows:
-  - PPPP111
-  - 111P111
-  - 111PPPP
+  - PPPPPPP
   - 111111P
   - 1PPPPPP
   - 1P11111
+  - 1P11111
   - 1PPPPP1
   - 11111P1
-  - 11111P1
-  - PPPPPP1
-  - P111111
-  - PPPPPPP
+  - 11PPPP1
+  - 11P1111
+  - 11P1111
+  - 11PPPPP
   - 111111P
-  startMoney: 230
+  - 111111P
+  startMoney: 205
   waves:
-  - {fileID: 11400000, guid: 863ba04a8b76e475f8c49b9ed9602514, type: 2}
-  - {fileID: 11400000, guid: 053932785362141b3936897dde976ba5, type: 2}
-  - {fileID: 11400000, guid: f771cee8cf5704f0e917d8a98483f121, type: 2}
-  - {fileID: 11400000, guid: b1ceb00816d57474585a4948618b21bb, type: 2}
-  - {fileID: 11400000, guid: 94e8b38c765994b6e8cfddd71f91b38c, type: 2}
-  - {fileID: 11400000, guid: f83ebbcc6fe074120949390c05e3e34b, type: 2}
-  - {fileID: 11400000, guid: a644f93094d9246688f550bd2436aa0d, type: 2}
+  - {fileID: 11400000, guid: 7cb8004b048214ffda9bcf87b128673e, type: 2}
+  - {fileID: 11400000, guid: 9b88f3732477a9d0c7db9ce7f78396f7, type: 2}
+  - {fileID: 11400000, guid: 42e28321c5e57b4e9337bcf14de79698, type: 2}
+  - {fileID: 11400000, guid: 08bc9e2d9139938cb9d6f136d9bcdd7f, type: 2}
+  - {fileID: 11400000, guid: 1690c87cb23f56ea2678f121e509903c, type: 2}
+  - {fileID: 11400000, guid: 361b1d17693819f7e97d30d0d51d47f0, type: 2}
+  - {fileID: 11400000, guid: 84f864a91711ce7c4a309190c92683a5, type: 2}
   backgroundSprite: {fileID: 0}

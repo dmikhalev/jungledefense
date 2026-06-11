@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e80c05cb6ea4b998bd692d19e91876, type: 3}
+  m_Name: Level_7_Wave_01
+  m_EditorClassIdentifier: Assembly-CSharp::WaveData
+  enemyGroups:
+  - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
+    count: 8
+    delayBetweenEnemies: 0.18
+  - enemyPrefab: {fileID: 7486318691096851657, guid: 785f537b5a34340cbb74973a6712c20f, type: 3}
+    count: 8
+    delayBetweenEnemies: 0.28
+  - enemyPrefab: {fileID: 3816809235310866407, guid: 1325f5e71be8245f58dddaa48640d8a0, type: 3}
+    count: 4
+    delayBetweenEnemies: 0.45

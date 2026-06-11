@@ -30,9 +30,9 @@ MonoBehaviour:
   - 11PPPPP
   startMoney: 170
   waves:
-  - {fileID: 11400000, guid: 9728609c673954487be9d13981a21095, type: 2}
-  - {fileID: 11400000, guid: 655ac375ad7c54276a86b33df6c5eeaa, type: 2}
-  - {fileID: 11400000, guid: 18505f9a5e6e54207b76f10df64755cc, type: 2}
-  - {fileID: 11400000, guid: 0e014e18c0c054cb59b25f811547df3b, type: 2}
-  - {fileID: 11400000, guid: 3e004b215dd35409dbd746dd8d740300, type: 2}
+  - {fileID: 11400000, guid: 2f7141e2a5786accf7cdf236ea7ed918, type: 2}
+  - {fileID: 11400000, guid: 1193a261f09798be656e97131c293a51, type: 2}
+  - {fileID: 11400000, guid: 88ee289896eb885ffb5fc4934a098a0c, type: 2}
+  - {fileID: 11400000, guid: 09645c7b6adb7185f6b9ab918167d4c0, type: 2}
+  - {fileID: 11400000, guid: f0df39011254ae6461771bcdebc40c5d, type: 2}
   backgroundSprite: {fileID: 4400651955071789837, guid: 5ec4a61841b314bd09881fe6547787c1, type: 3}

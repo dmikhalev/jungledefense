@@ -11,7 +11,7 @@ public class SaveManager : MonoBehaviour
     private const string SaveFileName = "save_data.json";
     private const string BackupSaveFileName = "save_data.backup.json";
     private const string TempSaveFileName = "save_data.tmp.json";
-    private const float AutoSaveIntervalSeconds = 15f;
+    private const float AutoSaveIntervalSeconds = 30f;
 
     private SaveData saveData;
     private bool hasUnsavedChanges;
@@ -84,7 +84,7 @@ public class SaveManager : MonoBehaviour
             levelIndex + 1
         );
 
-        saveData.SetStars(levelIndex, Mathf.Max(currentBest, stars));
+        saveData.SetStars(levelIndex, Mathf.Max(saveData.GetStars(levelIndex), stars));
 
         Save();
     }
