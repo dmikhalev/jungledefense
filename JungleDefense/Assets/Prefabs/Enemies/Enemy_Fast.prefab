@@ -246,7 +246,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5818415987313216082}
@@ -327,6 +327,7 @@ MonoBehaviour:
   deathEffect: {fileID: 3326687224019949077, guid: e40ace64ae8364ac09630c4ff63bcc09, type: 3}
   healthBar: {fileID: -5348441665164509208}
   hitFlash: {fileID: -459034137379426343}
+  spriteRenderer: {fileID: 0}
 --- !u!61 &-4057379165698578625
 BoxCollider2D:
   m_ObjectHideFlags: 0

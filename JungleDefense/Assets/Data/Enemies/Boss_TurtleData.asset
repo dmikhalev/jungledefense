@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: Turtle Boss
   enemyType: 3
   sprite: {fileID: 0}
-  maxHealth: 1800
+  maxHealth: 2200
   speed: 0.55
   reward: 250
   damageToBase: 5

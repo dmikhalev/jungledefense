@@ -17,8 +17,16 @@ MonoBehaviour:
   sprite: {fileID: 0}
   maxHealth: 6
   speed: 4.2
-  reward: 7
+  reward: 5
   damageToBase: 1
   directDamageMultiplier: 1.15
-  splashDamageMultiplier: 1.0
+  splashDamageMultiplier: 1
   stunDurationMultiplier: 1.25
+  bossAbility: 0
+  rageHealthThresholds:
+  - 0.75
+  - 0.5
+  - 0.25
+  rageSpeedMultiplier: 1.2
+  regenerationInterval: 5
+  regenerationPercentOfMaxHealth: 0.03

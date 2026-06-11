@@ -314,7 +314,17 @@ public class TowerPlacementManager : MonoBehaviour
         if (sourceSprite != null)
         {
             previewSpriteRenderer = previewObject.AddComponent<SpriteRenderer>();
-            previewSpriteRenderer.sprite = sourceSprite.sprite;
+
+            Tower towerTemplate = selectedTowerPrefab.GetComponent<Tower>();
+            if (towerTemplate != null)
+            {
+                previewSpriteRenderer.sprite = towerTemplate.GetPreviewSprite();
+            }
+            else
+            {
+                previewSpriteRenderer.sprite = sourceSprite.sprite;
+            }
+
             previewSpriteRenderer.sortingLayerID = sourceSprite.sortingLayerID;
             previewSpriteRenderer.sortingOrder = sourceSprite.sortingOrder + 100;
         }

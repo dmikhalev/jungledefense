@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private EnemyHitFlash hitFlash;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    private float maxHealth;
     private float currentHealth;
     private float healthMultiplier = 1f;
     private int waypointIndex;
@@ -33,7 +34,7 @@ public class Enemy : MonoBehaviour
     public bool IsAlive => !isDead;
     public EnemyData Data => data;
     public float CurrentHealth => currentHealth;
-    public float MaxHealth => data != null ? data.maxHealth : 0f;
+    public float MaxHealth => maxHealth;
     public bool IsBoss => data != null && data.enemyType == EnemyType.Boss;
     public string DisplayName => data != null && !string.IsNullOrWhiteSpace(data.enemyName)
         ? data.enemyName
@@ -109,15 +110,22 @@ public class Enemy : MonoBehaviour
             enabled = false;
             return;
         }
-
-        this.healthMultiplier = healthMultiplier;
+        if (IsBoss)
+        {
+            this.healthMultiplier = 1f;
+        }
+        else
+        {
+            this.healthMultiplier = healthMultiplier;
+        }
         enabled = true;
         waypoints = path;
         waypointIndex = 0;
         isDead = false;
         stunTimer = 0f;
         bossUiActive = false;
-        currentHealth = data.maxHealth * healthMultiplier;
+        maxHealth = data.maxHealth * this.healthMultiplier;
+        currentHealth = maxHealth;
         currentSpeed = data.speed;
         regenerationTimer = 0f;
         InitializeBossAbilityRuntimeState();
@@ -127,7 +135,7 @@ public class Enemy : MonoBehaviour
 
         if (healthBar != null)
         {
-            healthBar.SetHealth(currentHealth, data.maxHealth);
+            healthBar.SetHealth(currentHealth, maxHealth);
         }
 
         ShowBossUIIfNeeded();
@@ -209,7 +217,7 @@ public class Enemy : MonoBehaviour
 
         if (healthBar != null)
         {
-            healthBar.SetHealth(currentHealth, data.maxHealth);
+            healthBar.SetHealth(currentHealth, maxHealth);
         }
 
         RaiseBossHealthChangedIfNeeded();
@@ -467,7 +475,7 @@ public class Enemy : MonoBehaviour
 
         if (healthBar != null)
         {
-            healthBar.SetHealth(currentHealth, data.maxHealth);
+            healthBar.SetHealth(currentHealth, maxHealth);
         }
 
         RaiseBossHealthChangedIfNeeded();

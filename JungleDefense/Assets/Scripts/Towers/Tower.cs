@@ -533,4 +533,18 @@ public class Tower : MonoBehaviour
             $"Upgrade: {upgradeCost}\n" +
             $"Sell: +{SellRefund}";
     }
+
+    public Sprite GetPreviewSprite()
+    {
+        Sprite sprite = GetConfiguredSpriteForLevel(1);
+
+        if (sprite != null)
+        {
+            return sprite;
+        }
+
+        return spriteRenderer != null
+            ? spriteRenderer.sprite
+            : null;
+    }
 }
