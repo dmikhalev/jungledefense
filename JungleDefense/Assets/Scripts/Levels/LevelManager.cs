@@ -10,8 +10,8 @@ public class LevelManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private LevelBuilder levelBuilder;
     [SerializeField] private WaveManager waveManager;
-    [SerializeField] private GameObject victoryText;
     [SerializeField] private LevelBackgroundManager backgroundManager;
+    [SerializeField] private LevelCompleteScreenUI levelCompleteScreen;
 
     private int currentLevelIndex;
 
@@ -101,9 +101,10 @@ public class LevelManager : MonoBehaviour
         }
 
         waveManager.StartLevel(level, OnLevelCompleted);
-        if (victoryText != null)
+
+        if (levelCompleteScreen != null)
         {
-            victoryText.SetActive(false);
+            levelCompleteScreen.HideInstant();
         }
 
         FindFirstObjectByType<RestartManager>()?.HideRestart();
@@ -161,18 +162,9 @@ public class LevelManager : MonoBehaviour
 
     private void OnLevelCompleted()
     {
-        SaveManager.Instance?.CompleteLevel(currentLevelIndex, CalculateStarsForCurrentLevel());
+        int stars = CalculateStarsForCurrentLevel();
 
-        int nextLevelIndex = currentLevelIndex + 1;
-
-        if (nextLevelIndex < levels.Length)
-        {
-            Debug.Log("Loading next level: " + nextLevelIndex);
-            LoadLevel(nextLevelIndex);
-            return;
-        }
-
-        Debug.Log("All levels completed");
+        SaveManager.Instance?.CompleteLevel(currentLevelIndex, stars);
 
         if (GameStateManager.Instance != null)
         {
@@ -181,9 +173,11 @@ public class LevelManager : MonoBehaviour
 
         HideGameplayUI();
 
-        if (victoryText != null)
+        bool hasNextLevel = levels != null && currentLevelIndex + 1 < levels.Length;
+
+        if (levelCompleteScreen != null)
         {
-            victoryText.SetActive(true);
+            levelCompleteScreen.Show(currentLevelIndex, stars, hasNextLevel);
         }
 
         Time.timeScale = 0f;
