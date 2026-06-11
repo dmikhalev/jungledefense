@@ -84,7 +84,8 @@ public class SaveManager : MonoBehaviour
             levelIndex + 1
         );
 
-        saveData.SetStars(levelIndex, stars);
+        saveData.SetStars(levelIndex, Mathf.Max(currentBest, stars));
+
         Save();
     }
 

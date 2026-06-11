@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
 
     private float currentHealth;
+    private float healthMultiplier = 1f;
     private int waypointIndex;
     private bool isDead;
     private float stunTimer;
@@ -100,7 +101,7 @@ public class Enemy : MonoBehaviour
         sourcePrefab = prefab;
     }
 
-    public void InitializeForSpawn(List<Transform> path)
+    public void InitializeForSpawn(List<Transform> path, float healthMultiplier = 1f)
     {
         if (data == null)
         {
@@ -109,13 +110,14 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        this.healthMultiplier = healthMultiplier;
         enabled = true;
         waypoints = path;
         waypointIndex = 0;
         isDead = false;
         stunTimer = 0f;
         bossUiActive = false;
-        currentHealth = data.maxHealth;
+        currentHealth = data.maxHealth * healthMultiplier;
         currentSpeed = data.speed;
         regenerationTimer = 0f;
         InitializeBossAbilityRuntimeState();

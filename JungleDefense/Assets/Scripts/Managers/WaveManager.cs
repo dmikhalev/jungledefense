@@ -10,6 +10,10 @@ public class WaveManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TMP_Text waveButtonText;
 
+    [Header("Scaling")]
+    [SerializeField]
+    private float waveHealthScaling = 1.12f;
+
     private LevelData currentLevel;
     private int currentWaveIndex;
     private int aliveEnemies;
@@ -149,7 +153,7 @@ public class WaveManager : MonoBehaviour
         aliveEnemies++;
 
         enemy.OnRemoved += OnEnemyRemoved;
-        enemy.InitializeForSpawn(PathManager.Instance.waypoints);
+        enemy.InitializeForSpawn(PathManager.Instance.waypoints, GetWaveHealthMultiplier());
     }
 
     private void OnEnemyRemoved()
@@ -210,5 +214,12 @@ public class WaveManager : MonoBehaviour
         {
             startWaveButton.SetActive(false);
         }
+    }
+
+    private float GetWaveHealthMultiplier()
+    {
+        return Mathf.Pow(
+            waveHealthScaling,
+            currentWaveIndex);
     }
 }
