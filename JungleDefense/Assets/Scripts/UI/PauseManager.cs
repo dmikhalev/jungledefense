@@ -6,6 +6,7 @@ public class PauseManager : MonoBehaviour
 
     [SerializeField] private GameObject pauseButton;
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject levelSelectPanel;
 
     private float cachedTimeScale = 1f;
     private bool isPaused;
@@ -129,6 +130,21 @@ public class PauseManager : MonoBehaviour
         if (pauseButton != null)
         {
             pauseButton.SetActive(false);
+        }
+    }
+
+    public void OpenLevelSelect()
+    {
+        Time.timeScale = 0f;
+
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(false);
+        }
+
+        if (levelSelectPanel != null)
+        {
+            levelSelectPanel.SetActive(true);
         }
     }
 }
