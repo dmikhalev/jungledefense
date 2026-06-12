@@ -20,17 +20,17 @@ MonoBehaviour:
   levels:
   - damage: 1
     range: 2
-    fireRate: 3
+    fireRate: 2.5
     upgradeCost: 60
     sprite: {fileID: -7183867382000652918, guid: 99f111df9703b4fcbb90f64873851936, type: 3}
   - damage: 2
     range: 2.5
-    fireRate: 4
+    fireRate: 3.2
     upgradeCost: 100
     sprite: {fileID: -1803344219818340821, guid: 9cd22bb79bfc6466cbd1f48e8ee20e2b, type: 3}
-  - damage: 4
+  - damage: 3
     range: 3
-    fireRate: 5
+    fireRate: 4
     upgradeCost: 0
     sprite: {fileID: -9078413553089952254, guid: 19abf24a31d854df8b73d287c3ad9007, type: 3}
   enableDoubleShot: 1

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0e80c05cb6ea4b998bd692d19e91876, type: 3}
-  m_Name: Level_5_Wave_Boss
+  m_Name: Level_15_Wave_Boss
   m_EditorClassIdentifier: Assembly-CSharp::WaveData
   enemyGroups:
-  - enemyPrefab: {fileID: 3816809235310866407, guid: eff65b80da7914dd78b16a26f1ad1dc9, type: 3}
+  - enemyPrefab: {fileID: 7127311442837645890, guid: 3d17cf98869cb4973843fb40575b8b63, type: 3}
     count: 1
     delayBetweenEnemies: 1
-  - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
-    count: 15
-    delayBetweenEnemies: 0.8
+  - enemyPrefab: {fileID: 3816809235310866407, guid: 1325f5e71be8245f58dddaa48640d8a0, type: 3}
+    count: 4
+    delayBetweenEnemies: 1.15

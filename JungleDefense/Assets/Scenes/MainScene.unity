@@ -174,6 +174,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 698b69810abe69d5f2d01a4322d4e9c5, type: 2}
   - {fileID: 11400000, guid: b68f8fa2e30b71bb813cab50e2ad8057, type: 2}
   - {fileID: 11400000, guid: 667931a7516e1c21d7c68068b2648a3b, type: 2}
+  - {fileID: 11400000, guid: a0b0eba24057d40afb753279eaa71482, type: 2}
+  - {fileID: 11400000, guid: abb1cdb910a914a4d9317e831cd8df54, type: 2}
+  - {fileID: 11400000, guid: a05f727c525284682959072cfe99cf73, type: 2}
+  - {fileID: 11400000, guid: 8a4674610b72c44ac92ef79df10db8bd, type: 2}
+  - {fileID: 11400000, guid: 9a907c28c7a4b4ed1a51053ca69d4ad3, type: 2}
   levelBuilder: {fileID: 680711179}
   waveManager: {fileID: 1838406154}
   backgroundManager: {fileID: 490588550}
@@ -10542,6 +10547,11 @@ MonoBehaviour:
   - {fileID: 1204136454}
   - {fileID: 956416247}
   - {fileID: 159464500}
+  - {fileID: 626403632}
+  - {fileID: 1856288502}
+  - {fileID: 197376192}
+  - {fileID: 1900586011}
+  - {fileID: 777114505}
 --- !u!114 &1336346372
 MonoBehaviour:
   m_ObjectHideFlags: 0
