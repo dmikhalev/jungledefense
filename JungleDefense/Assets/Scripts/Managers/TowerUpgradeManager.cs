@@ -192,8 +192,8 @@ public class TowerUpgradeManager : MonoBehaviour
 
         if (towerIcon != null)
         {
-            towerIcon.sprite = selectedTower.icon;
-            towerIcon.enabled = selectedTower.icon != null;
+            towerIcon.sprite = selectedTower.Icon;
+            towerIcon.enabled = selectedTower.Icon != null;
         }
     }
 

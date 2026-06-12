@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d4cb2516e93f4ef8894f1cd45dadd7a, type: 3}
+  m_Name: MonkeyTowerData
+  m_EditorClassIdentifier: Assembly-CSharp::TowerData
+  displayName: Monkey Tower
+  icon: {fileID: 0}
+  cost: 40
+  sellRefundPercent: 50
+  projectilePrefab: {fileID: 8100876565920421516, guid: 2a516567182e64e638fcfba35a29f66e, type: 3}
+  levels:
+  - damage: 1
+    range: 2
+    fireRate: 3
+    upgradeCost: 60
+    sprite: {fileID: -7183867382000652918, guid: 99f111df9703b4fcbb90f64873851936, type: 3}
+  - damage: 2
+    range: 2.5
+    fireRate: 4
+    upgradeCost: 100
+    sprite: {fileID: -1803344219818340821, guid: 9cd22bb79bfc6466cbd1f48e8ee20e2b, type: 3}
+  - damage: 4
+    range: 3
+    fireRate: 5
+    upgradeCost: 0
+    sprite: {fileID: -9078413553089952254, guid: 19abf24a31d854df8b73d287c3ad9007, type: 3}
+  enableDoubleShot: 1
+  doubleShotLevel: 3
+  doubleShotChance: 0.3
+  doubleShotOffset: 0.18
+  enableCriticalHit: 0
+  criticalHitLevel: 3
+  criticalChance: 0.25
+  criticalMultiplier: 2
+  enableSplashStun: 0
+  splashStunLevel: 3
+  splashStunDuration: 0.35

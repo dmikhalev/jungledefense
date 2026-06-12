@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8a6f7128ed3d544970c11698104801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
-  towerData: {fileID: 0}
+  towerData: {fileID: 11400000, guid: d9f21de08739b407ab186ec500b49d96, type: 2}
   cost: 50
   range: 2
   fireRate: 2.6

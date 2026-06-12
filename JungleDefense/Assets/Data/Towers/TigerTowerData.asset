@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d4cb2516e93f4ef8894f1cd45dadd7a, type: 3}
+  m_Name: TigerTowerData
+  m_EditorClassIdentifier: Assembly-CSharp::TowerData
+  displayName: Tiger Tower
+  icon: {fileID: 0}
+  cost: 90
+  sellRefundPercent: 50
+  projectilePrefab: {fileID: 864307042844028786, guid: 2203706f36de24fe6a5a6f1a235f8321, type: 3}
+  levels:
+  - damage: 4
+    range: 3
+    fireRate: 1.1
+    upgradeCost: 80
+    sprite: {fileID: 2442018169266494668, guid: 9532b73dfd1934d759c4fc38eea0f09e, type: 3}
+  - damage: 6
+    range: 3.5
+    fireRate: 1.4
+    upgradeCost: 120
+    sprite: {fileID: 6598039178668822646, guid: 9929032fe560047228c55a76290a0eb8, type: 3}
+  - damage: 8
+    range: 4
+    fireRate: 1.8
+    upgradeCost: 0
+    sprite: {fileID: -1161436153388462908, guid: e66c7e583435941a18417d6a02b73ddb, type: 3}
+  enableDoubleShot: 0
+  doubleShotLevel: 3
+  doubleShotChance: 0.3
+  doubleShotOffset: 0.18
+  enableCriticalHit: 1
+  criticalHitLevel: 3
+  criticalChance: 0.25
+  criticalMultiplier: 2
+  enableSplashStun: 0
+  splashStunLevel: 3
+  splashStunDuration: 0.35
