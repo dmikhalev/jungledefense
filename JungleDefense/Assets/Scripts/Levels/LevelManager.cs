@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
     private int currentLevelIndex;
 
     public int CurrentLevelIndex => currentLevelIndex;
+    public int CurrentLevelNumber => currentLevelIndex + 1;
     public int LevelCount => levels != null ? levels.Length : 0;
 
     public LevelData CurrentLevel =>
@@ -108,6 +109,7 @@ public class LevelManager : MonoBehaviour
         }
 
         FindFirstObjectByType<RestartManager>()?.HideRestart();
+        FindObjectOfType<CurrentLevelLabel>()?.Refresh();
     }
 
     public void LoadNextLevel()

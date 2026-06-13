@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   displayName: Monkey Tower
   icon: {fileID: 0}
-  cost: 40
+  cost: 50
   sellRefundPercent: 50
   projectilePrefab: {fileID: 8100876565920421516, guid: 2a516567182e64e638fcfba35a29f66e, type: 3}
   levels:
   - damage: 2
     range: 2
     fireRate: 2.5
-    upgradeCost: 60
+    upgradeCost: 70
     sprite: {fileID: -7183867382000652918, guid: 99f111df9703b4fcbb90f64873851936, type: 3}
   - damage: 3
     range: 2.5
     fireRate: 3.2
-    upgradeCost: 100
+    upgradeCost: 120
     sprite: {fileID: -1803344219818340821, guid: 9cd22bb79bfc6466cbd1f48e8ee20e2b, type: 3}
   - damage: 4
     range: 3

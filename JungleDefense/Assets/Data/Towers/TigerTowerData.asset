@@ -23,12 +23,12 @@ MonoBehaviour:
     fireRate: 1.2
     upgradeCost: 90
     sprite: {fileID: 2442018169266494668, guid: 9532b73dfd1934d759c4fc38eea0f09e, type: 3}
-  - damage: 6
+  - damage: 7
     range: 3.5
     fireRate: 1.5
     upgradeCost: 150
     sprite: {fileID: 6598039178668822646, guid: 9929032fe560047228c55a76290a0eb8, type: 3}
-  - damage: 9
+  - damage: 10
     range: 4
     fireRate: 2
     upgradeCost: 0

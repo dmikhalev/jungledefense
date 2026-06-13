@@ -60,7 +60,7 @@ public class GameSpeedManager : MonoBehaviour
 
         if (speedButtonText != null)
         {
-            speedButtonText.text = isFastMode ? "x1" : "x2";
+            speedButtonText.text = isFastMode ? "X1" : "X2";
         }
     }
 }
