@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class TowerPlacementManager : MonoBehaviour
     public static TowerPlacementManager Instance { get; private set; }
 
     public GameObject selectedTowerPrefab;
+
+    public event Action<GameObject> SelectionChanged;
 
     public bool IsBuildMode => selectedTowerPrefab != null;
 
@@ -58,6 +61,11 @@ public class TowerPlacementManager : MonoBehaviour
 
         if (InputHelper.TryGetTapBegan(out Vector2 screenPosition))
         {
+            if (InputHelper.IsScreenPositionOverUI(screenPosition))
+            {
+                return;
+            }
+
             TryConfirmOrMovePreview(screenPosition);
         }
     }
@@ -141,6 +149,7 @@ public class TowerPlacementManager : MonoBehaviour
         isDraggingTower = false;
 
         DestroyPreview();
+        SelectionChanged?.Invoke(null);
     }
 
     private void SetSelectedTower(GameObject towerPrefab)
@@ -152,7 +161,10 @@ public class TowerPlacementManager : MonoBehaviour
         {
             Debug.LogError("Selected tower prefab has no Tower component.");
             ClearSelection();
+            return;
         }
+
+        SelectionChanged?.Invoke(selectedTowerPrefab);
     }
 
     private void TryConfirmOrMovePreview(Vector2 screenPosition)
@@ -172,14 +184,9 @@ public class TowerPlacementManager : MonoBehaviour
         bool canAfford = CanAffordSelectedTower();
         SetPreviewValid(canAfford);
 
-        if (pendingTile != tile)
-        {
-            pendingTile = tile;
-            return;
-        }
-
         if (!canAfford)
         {
+            pendingTile = tile;
             PlayInvalidPreviewFeedback();
             return;
         }

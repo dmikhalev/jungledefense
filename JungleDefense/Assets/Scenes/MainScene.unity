@@ -3491,19 +3491,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 483258680}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 110393281}
-        m_TargetAssemblyTypeName: TowerSelectUI, Assembly-CSharp
-        m_MethodName: SelectHippo
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &483258680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3555,6 +3543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerDragButton
   towerPrefab: {fileID: 1946327560234758262, guid: 842089e1d78f95b4fa998889e8572cbe, type: 3}
+  dimmedAlpha: 0.45
 --- !u!1 &490588548
 GameObject:
   m_ObjectHideFlags: 0
@@ -13643,19 +13632,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1796693373}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 110393281}
-        m_TargetAssemblyTypeName: TowerSelectUI, Assembly-CSharp
-        m_MethodName: SelectMonkey
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1796693373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13707,6 +13684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerDragButton
   towerPrefab: {fileID: 342170415055187682, guid: 46f218e4da143cc43b4fa2c5723197ef, type: 3}
+  dimmedAlpha: 0.45
 --- !u!1 &1812241272
 GameObject:
   m_ObjectHideFlags: 0
@@ -14049,19 +14027,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1814510718}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 110393281}
-        m_TargetAssemblyTypeName: TowerSelectUI, Assembly-CSharp
-        m_MethodName: SelectTiger
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1814510718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14113,6 +14079,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerDragButton
   towerPrefab: {fileID: 1564398317561726871, guid: 418e6f7398d7c3942bba9021e30740d1, type: 3}
+  dimmedAlpha: 0.45
 --- !u!1 &1820744461
 GameObject:
   m_ObjectHideFlags: 0
