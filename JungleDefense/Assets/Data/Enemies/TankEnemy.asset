@@ -17,7 +17,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   maxHealth: 70
   speed: 0.9
-  reward: 15
+  reward: 10
   damageToBase: 2
   directDamageMultiplier: 1
   splashDamageMultiplier: 0.7

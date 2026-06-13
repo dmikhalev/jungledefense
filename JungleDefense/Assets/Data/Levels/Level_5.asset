@@ -28,7 +28,7 @@ MonoBehaviour:
   - 1PPPPP1
   - 1P11111
   - 1PPPPPP
-  startMoney: 220
+  startMoney: 240
   waves:
   - {fileID: 11400000, guid: 563047460626c2dcf402c4566d3bc723, type: 2}
   - {fileID: 11400000, guid: 0c265cde7cb81e29c4e8ea27e0ccc81d, type: 2}

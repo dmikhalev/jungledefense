@@ -18,17 +18,17 @@ MonoBehaviour:
   sellRefundPercent: 50
   projectilePrefab: {fileID: 8100876565920421516, guid: 2a516567182e64e638fcfba35a29f66e, type: 3}
   levels:
-  - damage: 1
+  - damage: 2
     range: 2
     fireRate: 2.5
     upgradeCost: 60
     sprite: {fileID: -7183867382000652918, guid: 99f111df9703b4fcbb90f64873851936, type: 3}
-  - damage: 2
+  - damage: 3
     range: 2.5
     fireRate: 3.2
     upgradeCost: 100
     sprite: {fileID: -1803344219818340821, guid: 9cd22bb79bfc6466cbd1f48e8ee20e2b, type: 3}
-  - damage: 3
+  - damage: 4
     range: 3
     fireRate: 4
     upgradeCost: 0

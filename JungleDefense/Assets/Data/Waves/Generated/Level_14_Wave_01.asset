@@ -18,4 +18,4 @@ MonoBehaviour:
     delayBetweenEnemies: 1.08
   - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
     count: 10
-    delayBetweenEnemies: 0.48
+    delayBetweenEnemies: 0.5

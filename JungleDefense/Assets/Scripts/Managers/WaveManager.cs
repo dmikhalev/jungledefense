@@ -12,7 +12,7 @@ public class WaveManager : MonoBehaviour
 
     [Header("Scaling")]
     [SerializeField]
-    private float waveHealthScaling = 1.12f;
+    private float waveHealthScaling = 1.15f;
 
     private LevelData currentLevel;
     private int currentWaveIndex;

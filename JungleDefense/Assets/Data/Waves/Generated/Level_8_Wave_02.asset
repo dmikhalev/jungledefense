@@ -15,4 +15,4 @@ MonoBehaviour:
   enemyGroups:
   - enemyPrefab: {fileID: 3816809235310866407, guid: 1325f5e71be8245f58dddaa48640d8a0, type: 3}
     count: 8
-    delayBetweenEnemies: 1.0
+    delayBetweenEnemies: 1
