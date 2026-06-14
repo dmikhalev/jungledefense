@@ -46,3 +46,10 @@ DerivedData/
 !*.unity
 !*.prefab
 !*.asset
+
+Assets/Art/**/*.png
+Assets/Art/**/*.jpg
+Assets/Art/**/*.jpeg
+Assets/Art/**/*.psd
+
+!Assets/Art/**/*.meta

@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: Gorilla Boss
   enemyType: 3
   sprite: {fileID: 0}
-  maxHealth: 900
+  maxHealth: 850
   speed: 0.8
   reward: 25
   damageToBase: 5
