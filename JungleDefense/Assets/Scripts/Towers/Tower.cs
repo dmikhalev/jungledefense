@@ -55,7 +55,7 @@ public class Tower : MonoBehaviour
     public float rangeIncrease = 0.5f;
     public float fireRateIncrease = 0.3f;
 
-    const float enemyRadiusCompensation = 0.3f;
+    const float enemyRadiusCompensation = 0.2f;
 
     private float fireCooldown;
     private Enemy target;
@@ -66,7 +66,7 @@ public class Tower : MonoBehaviour
     public bool IsMaxLevel => level >= maxLevel;
     public int Cost => towerData != null ? towerData.Cost : cost;
     public float PlacementRange => GetConfiguredRangeForLevel(1);
-    public int SellRefund => Mathf.RoundToInt(Cost * GetSellRefundPercent() / 100f);
+    public int SellRefund => Mathf.RoundToInt(GetTotalInvestedCost() * GetSellRefundPercent() / 100f);
     public Sprite Icon => towerData != null ? towerData.Icon : null;
 
     private void Awake()
@@ -553,5 +553,27 @@ public class Tower : MonoBehaviour
         return spriteRenderer != null
             ? spriteRenderer.sprite
             : null;
+    }
+
+    private int GetTotalInvestedCost()
+    {
+        int total = Cost;
+
+        if (towerData == null)
+        {
+            return total;
+        }
+
+        for (int levelNumber = 1; levelNumber < level; levelNumber++)
+        {
+            TowerLevelData levelData = towerData.GetLevel(levelNumber);
+
+            if (levelData != null)
+            {
+                total += levelData.upgradeCost;
+            }
+        }
+
+        return total;
     }
 }
