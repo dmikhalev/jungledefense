@@ -26,6 +26,14 @@ public class EnemyData : ScriptableObject
     [Min(0f)] public float stunDurationMultiplier = 1f;
 
 
+    [Header("Shadow Movement")]
+    [Min(0.1f)] public float shadowPauseDuration = 2f;
+    [Min(0.1f)] public float shadowFinalPauseDuration = 3f;
+    [Min(0f)] public float shadowInvulnerabilityDuration = 0.75f;
+    [Min(0f)] public float shadowPulseScale = 0.12f;
+    [Min(0.1f)] public float shadowPulseSpeed = 1f;
+
+
     [Header("Boss Ability")]
     public BossAbilityType bossAbility = BossAbilityType.None;
 

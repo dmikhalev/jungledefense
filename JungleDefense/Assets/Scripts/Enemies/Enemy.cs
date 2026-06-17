@@ -29,6 +29,13 @@ public class Enemy : MonoBehaviour
     private float regenerationTimer;
     private bool[] triggeredRageThresholds;
 
+    private bool isShadowEnemy;
+    private int[] shadowWaypointIndices;
+    private int shadowSegmentIndex;
+    private float shadowPauseTimer;
+    private float shadowInvulnerabilityTimer;
+    private float shadowPulseTimer;
+
     public Action OnRemoved;
 
     public bool IsAlive => !isDead;
@@ -36,6 +43,7 @@ public class Enemy : MonoBehaviour
     public float CurrentHealth => currentHealth;
     public float MaxHealth => maxHealth;
     public bool IsBoss => data != null && data.enemyType == EnemyType.Boss;
+    public bool IsShadow => data != null && data.enemyType == EnemyType.Shadow;
     public string DisplayName => data != null && !string.IsNullOrWhiteSpace(data.enemyName)
         ? data.enemyName
         : name;
@@ -129,6 +137,7 @@ public class Enemy : MonoBehaviour
         currentSpeed = data.speed;
         regenerationTimer = 0f;
         InitializeBossAbilityRuntimeState();
+        InitializeShadowRuntimeState();
 
         ResetVisualState();
         ApplyDataVisuals();
@@ -160,7 +169,15 @@ public class Enemy : MonoBehaviour
         }
 
         UpdateBossAbilities();
-        MoveAlongPath();
+
+        if (isShadowEnemy)
+        {
+            UpdateShadowMovement();
+        }
+        else
+        {
+            MoveAlongPath();
+        }
     }
 
     public void Stun(float duration)
@@ -190,6 +207,11 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage, DamageType damageType)
     {
         if (isDead)
+        {
+            return;
+        }
+
+        if (isShadowEnemy && shadowInvulnerabilityTimer > 0f)
         {
             return;
         }
@@ -241,6 +263,226 @@ public class Enemy : MonoBehaviour
         HideBossUIIfNeeded();
         NotifyRemoved();
         ReleaseToPool();
+    }
+
+    private void InitializeShadowRuntimeState()
+    {
+        isShadowEnemy = IsShadow;
+        shadowWaypointIndices = null;
+        shadowSegmentIndex = 0;
+        shadowPauseTimer = 0f;
+        shadowInvulnerabilityTimer = 0f;
+        shadowPulseTimer = 0f;
+
+        if (!isShadowEnemy || waypoints == null || waypoints.Count == 0)
+        {
+            return;
+        }
+
+        shadowWaypointIndices = BuildShadowWaypointIndices(waypoints.Count);
+        shadowSegmentIndex = 0;
+        waypointIndex = shadowWaypointIndices[0];
+
+        if (waypoints[waypointIndex] != null)
+        {
+            transform.position = waypoints[waypointIndex].position;
+        }
+
+        FaceNextShadowSegment();
+        shadowPauseTimer = GetShadowPauseDurationForCurrentSegment();
+        SetShadowInvulnerableVisual(false);
+    }
+
+    private int[] BuildShadowWaypointIndices(int waypointCount)
+    {
+        if (waypointCount <= 1)
+        {
+            return new[] { 0 };
+        }
+
+        int finalIndex = waypointCount - 1;
+        int penultimateIndex = Mathf.Max(0, waypointCount - 2);
+
+        List<int> indices = new List<int>
+        {
+            0,
+            Mathf.Clamp(Mathf.RoundToInt(finalIndex * 0.25f), 0, finalIndex),
+            Mathf.Clamp(Mathf.RoundToInt(finalIndex * 0.50f), 0, finalIndex),
+            Mathf.Clamp(Mathf.RoundToInt(finalIndex * 0.75f), 0, finalIndex),
+            penultimateIndex,
+            finalIndex
+        };
+
+        for (int i = indices.Count - 2; i >= 0; i--)
+        {
+            if (indices[i] >= indices[i + 1])
+            {
+                indices.RemoveAt(i);
+            }
+        }
+
+        return indices.ToArray();
+    }
+
+    private void UpdateShadowMovement()
+    {
+        if (shadowWaypointIndices == null || shadowWaypointIndices.Length == 0)
+        {
+            MoveAlongPath();
+            return;
+        }
+
+        UpdateShadowVisuals();
+
+        if (shadowPauseTimer > 0f)
+        {
+            shadowPauseTimer -= Time.deltaTime;
+            return;
+        }
+
+        TeleportToNextShadowSegment();
+    }
+
+    private void TeleportToNextShadowSegment()
+    {
+        int nextSegmentIndex = shadowSegmentIndex + 1;
+
+        if (nextSegmentIndex >= shadowWaypointIndices.Length)
+        {
+            ReachEnd();
+            return;
+        }
+
+        int nextWaypointIndex = shadowWaypointIndices[nextSegmentIndex];
+        waypointIndex = nextWaypointIndex;
+
+        if (waypoints != null &&
+            nextWaypointIndex >= 0 &&
+            nextWaypointIndex < waypoints.Count &&
+            waypoints[nextWaypointIndex] != null)
+        {
+            Vector3 targetPosition = waypoints[nextWaypointIndex].position;
+
+            transform.position = targetPosition;
+
+            int lookAheadSegment = Mathf.Min(
+                nextSegmentIndex + 1,
+                shadowWaypointIndices.Length - 1);
+
+            int lookAheadWaypoint = shadowWaypointIndices[lookAheadSegment];
+
+            if (lookAheadWaypoint >= 0 &&
+                lookAheadWaypoint < waypoints.Count &&
+                waypoints[lookAheadWaypoint] != null)
+            {
+                Vector3 direction =
+                    waypoints[lookAheadWaypoint].position -
+                    transform.position;
+
+                RotateToDirection(direction);
+            }
+        }
+
+        shadowSegmentIndex = nextSegmentIndex;
+
+        if (shadowSegmentIndex >= shadowWaypointIndices.Length - 1)
+        {
+            ReachEnd();
+            return;
+        }
+
+        shadowInvulnerabilityTimer = data != null
+            ? data.shadowInvulnerabilityDuration
+            : 0.75f;
+
+        shadowPauseTimer = GetShadowPauseDurationForCurrentSegment();
+        shadowPulseTimer = 0f;
+
+        SetShadowInvulnerableVisual(shadowInvulnerabilityTimer > 0f);
+    }
+
+    private float GetShadowPauseDurationForCurrentSegment()
+    {
+        if (data == null ||
+            shadowWaypointIndices == null ||
+            shadowWaypointIndices.Length == 0)
+        {
+            return 2f;
+        }
+
+        bool isPenultimateSegment =
+            shadowSegmentIndex == shadowWaypointIndices.Length - 2;
+
+        return isPenultimateSegment
+            ? data.shadowFinalPauseDuration
+            : data.shadowPauseDuration;
+    }
+    private void FaceNextShadowSegment()
+    {
+        if (waypoints == null ||
+            shadowWaypointIndices == null)
+        {
+            return;
+        }
+
+        int nextSegmentIndex = shadowSegmentIndex + 1;
+
+        if (nextSegmentIndex >= shadowWaypointIndices.Length)
+        {
+            return;
+        }
+
+        int lookAheadWaypoint = shadowWaypointIndices[nextSegmentIndex];
+
+        if (lookAheadWaypoint < 0 ||
+            lookAheadWaypoint >= waypoints.Count ||
+            waypoints[lookAheadWaypoint] == null)
+        {
+            return;
+        }
+
+        Vector3 direction =
+            waypoints[lookAheadWaypoint].position -
+            transform.position;
+
+        RotateToDirection(direction);
+    }
+    private void UpdateShadowVisuals()
+    {
+        shadowPulseTimer += Time.deltaTime;
+
+        float pulseSpeed = data != null ? data.shadowPulseSpeed : 1f;
+        float pulseScale = data != null ? data.shadowPulseScale : 0.12f;
+        float pulse = 1f + Mathf.Sin(shadowPulseTimer * Mathf.PI * 2f * pulseSpeed) * pulseScale;
+
+        transform.localScale = originalScale * pulse;
+
+        if (shadowInvulnerabilityTimer > 0f)
+        {
+            shadowInvulnerabilityTimer = Mathf.Max(0f, shadowInvulnerabilityTimer - Time.deltaTime);
+            SetShadowInvulnerableVisual(true);
+        }
+        else
+        {
+            SetShadowInvulnerableVisual(false);
+        }
+    }
+
+    private void SetShadowInvulnerableVisual(bool invulnerable)
+    {
+        float alpha = invulnerable ? 0.45f : 1f;
+
+        for (int i = 0; i < spriteRenderers.Length; i++)
+        {
+            if (spriteRenderers[i] == null)
+            {
+                continue;
+            }
+
+            Color color = originalRendererColors[i];
+            color.a = alpha;
+            spriteRenderers[i].color = color;
+        }
     }
 
     private void MoveAlongPath()
@@ -403,6 +645,12 @@ public class Enemy : MonoBehaviour
         waypoints = null;
         stunTimer = 0f;
         regenerationTimer = 0f;
+        isShadowEnemy = false;
+        shadowWaypointIndices = null;
+        shadowSegmentIndex = 0;
+        shadowPauseTimer = 0f;
+        shadowInvulnerabilityTimer = 0f;
+        shadowPulseTimer = 0f;
         currentSpeed = data != null ? data.speed : currentSpeed;
 
         if (pool != null && sourcePrefab != null)
