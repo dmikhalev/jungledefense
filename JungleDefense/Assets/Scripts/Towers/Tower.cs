@@ -41,7 +41,8 @@ public class Tower : MonoBehaviour
     public float FireRate => currentFireRate;
     public int UpgradeCost => currentUpgradeCost;
 
-    // Compatibility properties for older UI/manager code.
+    // Compatibility properties for existing UI/manager code.
+    // These only expose TowerData/runtime values; they are not fallback configuration.
     public int cost => Cost;
     public int damage => currentDamage;
     public float range => currentRange;
@@ -73,7 +74,6 @@ public class Tower : MonoBehaviour
     private void Update()
     {
         TickCooldown();
-
         FindTarget();
 
         if (target == null || fireCooldown > 0f)
@@ -82,7 +82,6 @@ public class Tower : MonoBehaviour
         }
 
         Shoot();
-
         fireCooldown = GetFireInterval();
     }
 
@@ -129,7 +128,7 @@ public class Tower : MonoBehaviour
         {
             Enemy enemy = enemies[i];
 
-            if (enemy == null || !enemy.IsAlive)
+            if (!IsTargetValid(enemy))
             {
                 continue;
             }
@@ -177,7 +176,6 @@ public class Tower : MonoBehaviour
         }
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
         part.rotation = Quaternion.Euler(0f, 0f, angle + 90f);
     }
 
@@ -338,6 +336,8 @@ public class Tower : MonoBehaviour
 
     public void DeleteTower()
     {
+        int refund = SellRefund;
+
         if (occupiedTile != null)
         {
             occupiedTile.isOccupied = false;
@@ -346,7 +346,7 @@ public class Tower : MonoBehaviour
 
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.AddMoney(SellRefund);
+            GameManager.Instance.AddMoney(refund);
         }
 
         Destroy(gameObject);
