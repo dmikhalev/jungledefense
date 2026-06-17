@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaveData
   enemyGroups:
   - enemyPrefab: {fileID: 3816809235310866407, guid: 1325f5e71be8245f58dddaa48640d8a0, type: 3}
-    count: 12
-    delayBetweenEnemies: 0.96
+    count: 17
+    delayBetweenEnemies: 0.86
+  - enemyPrefab: {fileID: 4071586905742311596, guid: bee2a4b507743444f98222aeeeb7b782, type: 3}
+    count: 1
+    delayBetweenEnemies: 2
