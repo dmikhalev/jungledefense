@@ -50,6 +50,19 @@ public class EnemyData : ScriptableObject
     [Tooltip("Percent of max health restored every regeneration tick. 0.03 = 3%.")]
     [Range(0f, 1f)] public float regenerationPercentOfMaxHealth = 0.03f;
 
+    [Header("Shadow King")]
+    [Tooltip("Boss jumps forward once when HP falls to this percent. 0.7 = 70% HP.")]
+    [Range(0f, 1f)] public float shadowKingTeleportHealthPercent = 0.7f;
+
+    [Tooltip("How much of the route Shadow King skips during the shadow jump. 0.25 = 25% of route.")]
+    [Range(0f, 1f)] public float shadowKingTeleportRoutePercent = 0.25f;
+
+    [Tooltip("Below this HP percent Shadow King periodically becomes invulnerable. 0.15 = 15% HP.")]
+    [Range(0f, 1f)] public float shadowKingInvulnerabilityHealthPercent = 0.15f;
+
+    [Min(0.1f)] public float shadowKingInvulnerabilityInterval = 3f;
+    [Min(0.1f)] public float shadowKingInvulnerabilityDuration = 1f;
+
     public float GetDamageMultiplier(DamageType damageType)
     {
         return damageType == DamageType.Splash

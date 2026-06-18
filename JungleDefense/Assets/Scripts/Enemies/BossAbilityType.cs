@@ -2,5 +2,6 @@ public enum BossAbilityType
 {
     None,
     Rage,
-    Regeneration
+    Regeneration,
+    ShadowKing
 }

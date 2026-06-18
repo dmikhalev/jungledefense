@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boss_RhinoData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Rhino King
-  enemyType: 3
+  enemyType: 4
   sprite: {fileID: 168096733131249983, guid: e9472b381f20a4f9fabd1128479712d1, type: 3}
   maxHealth: 2100
   speed: 0.65
@@ -22,6 +22,11 @@ MonoBehaviour:
   directDamageMultiplier: 1.05
   splashDamageMultiplier: 0.55
   stunDurationMultiplier: 0.25
+  shadowPauseDuration: 2
+  shadowFinalPauseDuration: 3
+  shadowInvulnerabilityDuration: 0.75
+  shadowPulseScale: 0.12
+  shadowPulseSpeed: 1
   bossAbility: 0
   rageHealthThresholds:
   - 0.75
@@ -30,3 +35,8 @@ MonoBehaviour:
   rageSpeedMultiplier: 1.2
   regenerationInterval: 5
   regenerationPercentOfMaxHealth: 0.03
+  shadowKingTeleportHealthPercent: 0.7
+  shadowKingTeleportRoutePercent: 0.25
+  shadowKingInvulnerabilityHealthPercent: 0.15
+  shadowKingInvulnerabilityInterval: 3
+  shadowKingInvulnerabilityDuration: 1

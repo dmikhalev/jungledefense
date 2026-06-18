@@ -28,6 +28,9 @@ public class Enemy : MonoBehaviour
     private float currentSpeed;
     private float regenerationTimer;
     private bool[] triggeredRageThresholds;
+    private bool shadowKingTeleported;
+    private float shadowKingInvulnerabilityTimer;
+    private float shadowKingInvulnerabilityCooldown;
 
     private bool isShadowEnemy;
     private int[] shadowWaypointIndices;
@@ -44,6 +47,10 @@ public class Enemy : MonoBehaviour
     public float MaxHealth => maxHealth;
     public bool IsBoss => data != null && data.enemyType == EnemyType.Boss;
     public bool IsShadow => data != null && data.enemyType == EnemyType.Shadow;
+    private bool IsTemporarilyInvulnerable =>
+        (isShadowEnemy && shadowInvulnerabilityTimer > 0f) ||
+        shadowKingInvulnerabilityTimer > 0f;
+
     public string DisplayName => data != null && !string.IsNullOrWhiteSpace(data.enemyName)
         ? data.enemyName
         : name;
@@ -136,6 +143,9 @@ public class Enemy : MonoBehaviour
         currentHealth = maxHealth;
         currentSpeed = data.speed;
         regenerationTimer = 0f;
+        shadowKingTeleported = false;
+        shadowKingInvulnerabilityTimer = 0f;
+        shadowKingInvulnerabilityCooldown = 0f;
         InitializeBossAbilityRuntimeState();
         InitializeShadowRuntimeState();
 
@@ -211,7 +221,7 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        if (isShadowEnemy && shadowInvulnerabilityTimer > 0f)
+        if (IsTemporarilyInvulnerable)
         {
             return;
         }
@@ -645,6 +655,9 @@ public class Enemy : MonoBehaviour
         waypoints = null;
         stunTimer = 0f;
         regenerationTimer = 0f;
+        shadowKingTeleported = false;
+        shadowKingInvulnerabilityTimer = 0f;
+        shadowKingInvulnerabilityCooldown = 0f;
         isShadowEnemy = false;
         shadowWaypointIndices = null;
         shadowSegmentIndex = 0;
@@ -692,6 +705,126 @@ public class Enemy : MonoBehaviour
         if (data.bossAbility == BossAbilityType.Regeneration)
         {
             UpdateBossRegeneration();
+        }
+
+        if (data.bossAbility == BossAbilityType.ShadowKing)
+        {
+            UpdateShadowKingAbility();
+        }
+    }
+
+    private void UpdateShadowKingAbility()
+    {
+        if (maxHealth <= 0f)
+        {
+            return;
+        }
+
+        float healthPercent = currentHealth / maxHealth;
+
+        if (!shadowKingTeleported &&
+            healthPercent <= data.shadowKingTeleportHealthPercent)
+        {
+            shadowKingTeleported = true;
+            JumpShadowKingForward();
+        }
+
+        UpdateShadowKingInvulnerability(healthPercent);
+    }
+
+    private void JumpShadowKingForward()
+    {
+        if (waypoints == null || waypoints.Count <= 2)
+        {
+            return;
+        }
+
+        int routeJump = Mathf.Max(
+            1,
+            Mathf.RoundToInt((waypoints.Count - 1) * data.shadowKingTeleportRoutePercent));
+
+        int targetWaypointIndex = Mathf.Clamp(
+            waypointIndex + routeJump,
+            0,
+            waypoints.Count - 2);
+
+        if (targetWaypointIndex <= waypointIndex ||
+            waypoints[targetWaypointIndex] == null)
+        {
+            return;
+        }
+
+        waypointIndex = targetWaypointIndex;
+        transform.position = waypoints[targetWaypointIndex].position;
+
+        int lookAheadIndex = Mathf.Min(targetWaypointIndex + 1, waypoints.Count - 1);
+
+        if (waypoints[lookAheadIndex] != null)
+        {
+            RotateToDirection(waypoints[lookAheadIndex].position - transform.position);
+        }
+
+        if (hitFlash != null)
+        {
+            hitFlash.Flash();
+        }
+    }
+
+    private void UpdateShadowKingInvulnerability(float healthPercent)
+    {
+        if (healthPercent > data.shadowKingInvulnerabilityHealthPercent)
+        {
+            shadowKingInvulnerabilityTimer = 0f;
+            shadowKingInvulnerabilityCooldown = 0f;
+            return;
+        }
+
+        if (shadowKingInvulnerabilityTimer > 0f)
+        {
+            shadowKingInvulnerabilityTimer =
+                Mathf.Max(0f, shadowKingInvulnerabilityTimer - Time.deltaTime);
+
+            SetShadowKingInvulnerableVisual(true);
+
+            if (shadowKingInvulnerabilityTimer <= 0f)
+            {
+                SetShadowKingInvulnerableVisual(false);
+            }
+
+            return;
+        }
+
+        shadowKingInvulnerabilityCooldown += Time.deltaTime;
+
+        if (shadowKingInvulnerabilityCooldown < data.shadowKingInvulnerabilityInterval)
+        {
+            return;
+        }
+
+        shadowKingInvulnerabilityCooldown = 0f;
+        shadowKingInvulnerabilityTimer = data.shadowKingInvulnerabilityDuration;
+        SetShadowKingInvulnerableVisual(true);
+    }
+
+    private void SetShadowKingInvulnerableVisual(bool invulnerable)
+    {
+        if (isShadowEnemy)
+        {
+            return;
+        }
+
+        float alpha = invulnerable ? 0.45f : 1f;
+
+        for (int i = 0; i < spriteRenderers.Length; i++)
+        {
+            if (spriteRenderers[i] == null)
+            {
+                continue;
+            }
+
+            Color color = originalRendererColors[i];
+            color.a = alpha;
+            spriteRenderers[i].color = color;
         }
     }
 

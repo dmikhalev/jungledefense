@@ -15,10 +15,10 @@ MonoBehaviour:
   enemyName: Shadow
   enemyType: 3
   sprite: {fileID: 0}
-  maxHealth: 65
+  maxHealth: 90
   speed: 1
   reward: 10
-  damageToBase: 1
+  damageToBase: 2
   directDamageMultiplier: 1
   splashDamageMultiplier: 0.75
   stunDurationMultiplier: 0.5
@@ -35,3 +35,8 @@ MonoBehaviour:
   rageSpeedMultiplier: 1.2
   regenerationInterval: 5
   regenerationPercentOfMaxHealth: 0.03
+  shadowKingTeleportHealthPercent: 0.7
+  shadowKingTeleportRoutePercent: 0.25
+  shadowKingInvulnerabilityHealthPercent: 0.15
+  shadowKingInvulnerabilityInterval: 3
+  shadowKingInvulnerabilityDuration: 1
