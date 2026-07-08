@@ -15,18 +15,18 @@ MonoBehaviour:
   enemyName: Shadow
   enemyType: 3
   sprite: {fileID: 0}
-  maxHealth: 90
+  maxHealth: 65
   speed: 1
   reward: 10
   damageToBase: 2
   directDamageMultiplier: 1
   splashDamageMultiplier: 0.75
   stunDurationMultiplier: 0.5
-  shadowPauseDuration: 2
-  shadowFinalPauseDuration: 3
-  shadowInvulnerabilityDuration: 0.75
+  shadowPauseDuration: 1.7
+  shadowFinalPauseDuration: 2.6
+  shadowInvulnerabilityDuration: 0.65
   shadowPulseScale: 0.12
-  shadowPulseSpeed: 1
+  shadowPulseSpeed: 1.25
   bossAbility: 0
   rageHealthThresholds:
   - 0.75

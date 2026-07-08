@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f889842e6e7842b7ab93775e96b770a, type: 3}
   m_Name: Boss_ShadowKingData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyName: Gorilla Boss
+  enemyName: Shadow King
   enemyType: 4
   sprite: {fileID: 0}
-  maxHealth: 2000
-  speed: 0.8
-  reward: 50
+  maxHealth: 2850
+  speed: 0.78
+  reward: 45
   damageToBase: 999
   directDamageMultiplier: 1
   splashDamageMultiplier: 0.55
-  stunDurationMultiplier: 0.25
+  stunDurationMultiplier: 0.2
   shadowPauseDuration: 2
   shadowFinalPauseDuration: 3
   shadowInvulnerabilityDuration: 0.75

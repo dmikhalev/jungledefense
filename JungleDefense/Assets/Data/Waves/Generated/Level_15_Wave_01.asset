@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Level_15_Wave_01
   m_EditorClassIdentifier: Assembly-CSharp::WaveData
   enemyGroups:
+  - enemyPrefab: {fileID: 4071586905742311596, guid: 41c2713829f004ac4a2f88ab73f805ac, type: 3}
+    count: 10
+    delayBetweenEnemies: 1
   - enemyPrefab: {fileID: 7486318691096851657, guid: 785f537b5a34340cbb74973a6712c20f, type: 3}
     count: 10
-    delayBetweenEnemies: 0.8
-  - enemyPrefab: {fileID: 3816809235310866407, guid: 1325f5e71be8245f58dddaa48640d8a0, type: 3}
-    count: 14
-    delayBetweenEnemies: 0.9
+    delayBetweenEnemies: 1
+  - enemyPrefab: {fileID: 4071586905742311596, guid: bee2a4b507743444f98222aeeeb7b782, type: 3}
+    count: 1
+    delayBetweenEnemies: 1
