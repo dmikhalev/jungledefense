@@ -19,6 +19,8 @@ public class SaveData
     public int totalLevelsCompleted;
     public int totalMoneyEarnedFromKills;
 
+    public bool tutorialCompleted;
+
     public bool IsLevelCompleted(int levelIndex)
     {
         return completedLevels != null && completedLevels.Contains(levelIndex);

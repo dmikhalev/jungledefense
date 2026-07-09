@@ -414,4 +414,17 @@ public class SaveManager : MonoBehaviour
             Debug.LogWarning("Failed to delete save file: " + path + " | " + exception.Message);
         }
     }
+
+    public bool IsTutorialCompleted()
+    {
+        EnsureData();
+        return saveData.tutorialCompleted;
+    }
+
+    public void CompleteTutorial()
+    {
+        EnsureData();
+        saveData.tutorialCompleted = true;
+        Save();
+    }
 }

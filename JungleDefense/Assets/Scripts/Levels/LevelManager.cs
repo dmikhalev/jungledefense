@@ -35,11 +35,6 @@ public class LevelManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-        LoadLevel(0);
-    }
-
     public void LoadLevel(int levelIndex)
     {
         Time.timeScale = 1f;
@@ -109,7 +104,8 @@ public class LevelManager : MonoBehaviour
         }
 
         FindFirstObjectByType<RestartManager>()?.HideRestart();
-        FindObjectOfType<CurrentLevelLabel>()?.Refresh();
+        FindFirstObjectByType<CurrentLevelLabel>()?.Refresh();
+        TutorialManager.Instance?.StartTutorialForLevel(currentLevelIndex);
     }
 
     public void LoadNextLevel()
