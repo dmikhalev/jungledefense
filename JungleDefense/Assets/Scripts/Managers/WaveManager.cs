@@ -61,6 +61,7 @@ public class WaveManager : MonoBehaviour
         }
 
         EventBus.Raise(new WaveStartedEvent(currentWaveIndex));
+        AudioManager.Instance?.Play(SoundType.WaveStart);
 
         StartCoroutine(SpawnWave(currentLevel.GetWave(currentWaveIndex)));
     }
@@ -166,6 +167,7 @@ public class WaveManager : MonoBehaviour
         HideStartWaveButton();
 
         EventBus.Raise(new LevelCompletedEvent());
+        AudioManager.Instance?.Play(SoundType.Victory);
 
         onLevelCompleted?.Invoke();
     }

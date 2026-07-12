@@ -214,6 +214,7 @@ public class Tower : MonoBehaviour
         }
 
         SpawnProjectile(shotDirection, 0f);
+        AudioManager.Instance?.Play(GetShootSound());
 
         if (ShouldDoubleShot())
         {
@@ -259,6 +260,28 @@ public class Tower : MonoBehaviour
         {
             splashProjectile.SetStunDuration(towerData.SplashStunDuration);
         }
+    }
+
+    private SoundType GetShootSound()
+    {
+        string displayName = DisplayName.ToLowerInvariant();
+
+        if (displayName.Contains("monkey"))
+        {
+            return SoundType.MonkeyShoot;
+        }
+
+        if (displayName.Contains("tiger"))
+        {
+            return SoundType.TigerShoot;
+        }
+
+        if (displayName.Contains("hippo"))
+        {
+            return SoundType.HippoShoot;
+        }
+
+        return SoundType.None;
     }
 
     private int CalculateProjectileDamage()
@@ -314,6 +337,7 @@ public class Tower : MonoBehaviour
 
         if (GameManager.Instance == null || !GameManager.Instance.SpendMoney(currentUpgradeCost))
         {
+            AudioManager.Instance?.Play(SoundType.NotEnoughMoney);
             Debug.Log("Not enough money.");
             return false;
         }
@@ -324,6 +348,7 @@ public class Tower : MonoBehaviour
         ShowRange();
 
         EventBus.Raise(new TowerUpgradedEvent(this, currentLevel));
+        AudioManager.Instance?.Play(SoundType.TowerUpgrade);
 
         Debug.Log("Tower upgraded to level " + currentLevel);
         return true;
@@ -349,6 +374,7 @@ public class Tower : MonoBehaviour
             GameManager.Instance.AddMoney(refund);
         }
 
+        AudioManager.Instance?.Play(SoundType.TowerSell);
         Destroy(gameObject);
     }
 

@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2177e85acc7684c5baa332889a753ffd, type: 3}
+  m_Name: MainSoundLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::SoundLibrary
+  sounds:
+  - type: 1
+    channel: 0
+    clips:
+    - {fileID: 8300000, guid: 5b2c1f47ccd9240e29a2102f6ed99a25, type: 3}
+    volume: 1
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 1, y: 1}
+    minimumInterval: 0
+    loop: 0
+  - type: 2
+    channel: 1
+    clips: []
+    volume: 0
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 0.98, y: 1.02}
+    minimumInterval: 0
+    loop: 0
+  - type: 3
+    channel: 0
+    clips: []
+    volume: 0
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 0.98, y: 1.03}
+    minimumInterval: 0
+    loop: 0
+  - type: 4
+    channel: 0
+    clips: []
+    volume: 0
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 0.98, y: 1.03}
+    minimumInterval: 0
+    loop: 0
+  - type: 5
+    channel: 0
+    clips: []
+    volume: 0
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 0.95, y: 1.03}
+    minimumInterval: 0
+    loop: 0
+  - type: 6
+    channel: 1
+    clips:
+    - {fileID: 8300000, guid: 6855d5794a44747b68b8d437dd38330a, type: 3}
+    volume: 1
+    volumeRange: {x: 0.92, y: 1}
+    pitchRange: {x: 0.94, y: 1.06}
+    minimumInterval: 0
+    loop: 0
+  - type: 7
+    channel: 1
+    clips: []
+    volume: 0
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 0.96, y: 1.04}
+    minimumInterval: 0
+    loop: 0
+  - type: 8
+    channel: 1
+    clips: []
+    volume: 0
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 0.9, y: 1}
+    minimumInterval: 0
+    loop: 0
+  - type: 9
+    channel: 0
+    clips: []
+    volume: 0
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 1, y: 1}
+    minimumInterval: 0
+    loop: 0
+  - type: 10
+    channel: 0
+    clips: []
+    volume: 0
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 1, y: 1}
+    minimumInterval: 0
+    loop: 0
+  - type: 11
+    channel: 0
+    clips: []
+    volume: 0
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 1, y: 1}
+    minimumInterval: 0
+    loop: 0
+  - type: 12
+    channel: 2
+    clips: []
+    volume: 0
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 1, y: 1}
+    minimumInterval: 0
+    loop: 1

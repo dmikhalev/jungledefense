@@ -133,6 +133,13 @@ public class TowerPlacementManager : MonoBehaviour
 
         if (tile == null || !IsTileValidForPlacement(tile) || !CanAffordSelectedTower())
         {
+            if (tile != null &&
+                IsTileValidForPlacement(tile) &&
+                !CanAffordSelectedTower())
+            {
+                AudioManager.Instance?.Play(SoundType.NotEnoughMoney);
+            }
+
             PlayInvalidPreviewFeedback();
             ClearSelection();
             return;
@@ -204,6 +211,7 @@ public class TowerPlacementManager : MonoBehaviour
 
         if (GameManager.Instance == null || !GameManager.Instance.SpendMoney(selectedTowerTemplate.Cost))
         {
+            AudioManager.Instance?.Play(SoundType.NotEnoughMoney);
             PlayInvalidPreviewFeedback();
             return;
         }
@@ -237,6 +245,7 @@ public class TowerPlacementManager : MonoBehaviour
             EventBus.Raise(new TowerPlacedEvent(tower));
         }
 
+        AudioManager.Instance?.Play(SoundType.TowerPlace);
         ClearSelection();
     }
 

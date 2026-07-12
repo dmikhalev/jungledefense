@@ -126,6 +126,7 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0f;
 
+        AudioManager.Instance?.Play(SoundType.Defeat);
         Debug.Log("Game Over");
 
         TowerUpgradeManager towerUpgrade = FindFirstObjectByType<TowerUpgradeManager>();
