@@ -58,6 +58,8 @@ public class PauseManager : MonoBehaviour
             GameStateManager.Instance.SetPaused();
         }
 
+        TutorialManager.Instance?.HideTemporarily();
+
         if (pausePanel != null)
         {
             pausePanel.SetActive(true);
@@ -83,10 +85,17 @@ public class PauseManager : MonoBehaviour
         {
             pausePanel.SetActive(false);
         }
+
+        TutorialManager.Instance?.RestoreIfNeeded();
     }
 
     public void ResetPauseState()
     {
+        if (isPaused)
+        {
+            TutorialManager.Instance?.RestoreIfNeeded();
+        }
+
         isPaused = false;
         cachedTimeScale = 1f;
 
@@ -103,6 +112,11 @@ public class PauseManager : MonoBehaviour
 
     public void HideAll()
     {
+        if (isPaused)
+        {
+            TutorialManager.Instance?.RestoreIfNeeded();
+        }
+
         isPaused = false;
 
         if (pausePanel != null)

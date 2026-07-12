@@ -13,6 +13,7 @@ public class TutorialManager : MonoBehaviour
 
     private int activeLevelIndex = -1;
     private int tutorialStep = -1;
+    private int temporaryHideCount;
     private bool active;
 
     private void Awake()
@@ -53,6 +54,7 @@ public class TutorialManager : MonoBehaviour
             return;
         }
 
+        temporaryHideCount = 0;
         active = true;
         ShowStep(0);
     }
@@ -109,10 +111,7 @@ public class TutorialManager : MonoBehaviour
             tutorialText.text = text;
         }
 
-        if (tutorialPanel != null)
-        {
-            tutorialPanel.SetActive(true);
-        }
+        RefreshVisibility();
     }
 
     private void CompleteTutorial()
@@ -129,11 +128,31 @@ public class TutorialManager : MonoBehaviour
         Invoke(nameof(Hide), 2.5f);
     }
 
+    public void HideTemporarily()
+    {
+        temporaryHideCount++;
+        RefreshVisibility();
+    }
+
+    public void RestoreIfNeeded()
+    {
+        temporaryHideCount = Mathf.Max(0, temporaryHideCount - 1);
+        RefreshVisibility();
+    }
+
     public void Hide()
     {
         if (tutorialPanel != null)
         {
             tutorialPanel.SetActive(false);
+        }
+    }
+
+    private void RefreshVisibility()
+    {
+        if (tutorialPanel != null)
+        {
+            tutorialPanel.SetActive(active && temporaryHideCount == 0);
         }
     }
 }
