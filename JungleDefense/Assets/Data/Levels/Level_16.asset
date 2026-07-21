@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4dc5c51a0619d49a0d24463fac6497, type: 3}
   m_Name: Level_16
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
-  width: 7
+  width: 9
   height: 13
   rows:
   - PPPPP11

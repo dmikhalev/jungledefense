@@ -13,11 +13,14 @@ public enum SoundType
     TigerShoot,
     HippoShoot,
 
+    ShadowTeleport,
+
     WaveStart,
     Victory,
     Defeat,
 
-    GameplayMusic
+    GameplayMusic,
+    MenuMusic
 }
 
 public enum AudioChannel

@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -84,15 +84,15 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -6712255803019568892, guid: deb889c7c8a694c3f87e47e137ef85f8, type: 3}
+  m_Sprite: {fileID: 2442018169266494668, guid: 9532b73dfd1934d759c4fc38eea0f09e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 5.12, y: 4.57}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
 --- !u!114 &8105452346581340071
 MonoBehaviour:
@@ -107,38 +107,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
   towerData: {fileID: 11400000, guid: 18a05c3a4c1b447df968c0fe12551c84, type: 2}
-  cost: 90
-  range: 3
-  fireRate: 1.1
-  damage: 4
-  targetRefreshInterval: 0.15
   shootFeedback: {fileID: -4089563049247155503}
   rotatingPart: {fileID: 3559377170122960889}
-  spriteRenderer: {fileID: 0}
-  projectilePrefab: {fileID: 864307042844028786, guid: 2203706f36de24fe6a5a6f1a235f8321, type: 3}
-  levelSprites:
-  - {fileID: 2442018169266494668, guid: 9532b73dfd1934d759c4fc38eea0f09e, type: 3}
-  - {fileID: 6598039178668822646, guid: 9929032fe560047228c55a76290a0eb8, type: 3}
-  - {fileID: -1161436153388462908, guid: e66c7e583435941a18417d6a02b73ddb, type: 3}
-  enableDoubleShot: 0
-  doubleShotLevel: 3
-  doubleShotChance: 0.3
-  doubleShotOffset: 0.18
-  enableCriticalHit: 1
-  criticalHitLevel: 3
-  criticalChance: 0.25
-  criticalMultiplier: 2
-  enableSplashStun: 0
-  splashStunLevel: 3
-  splashStunDuration: 0.35
-  icon: {fileID: 7698153592123181104, guid: 4fbda39c14d3a40fb8b8db84f167eb28, type: 3}
-  towerName: Tiger Tower
-  level: 1
-  maxLevel: 3
-  upgradeCost: 80
-  damageIncrease: 2
-  rangeIncrease: 0.35
-  fireRateIncrease: 0.25
+  spriteRenderer: {fileID: 4431848639942802947}
 --- !u!58 &1484755100542748264
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -394,6 +394,7 @@ public class Enemy : MonoBehaviour
         }
 
         shadowSegmentIndex = nextSegmentIndex;
+        AudioManager.Instance?.Play(SoundType.ShadowTeleport);
 
         if (shadowSegmentIndex >= shadowWaypointIndices.Length - 1)
         {

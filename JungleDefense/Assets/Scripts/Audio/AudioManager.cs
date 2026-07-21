@@ -29,7 +29,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private float defaultMusicFadeDuration = 0.5f;
 
     [Header("Startup")]
-    [SerializeField] private bool playGameplayMusicOnStart = true;
+    [SerializeField] private bool playMusicOnStart = true;
+    [SerializeField] private SoundType startupMusic = SoundType.MenuMusic;
 
     private readonly Dictionary<SoundType, float> nextAllowedPlayTime = new();
     private readonly Dictionary<SoundType, int> lastClipIndexByType = new();
@@ -58,9 +59,9 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        if (playGameplayMusicOnStart)
+        if (playMusicOnStart && startupMusic != SoundType.None)
         {
-            PlayMusic(SoundType.GameplayMusic);
+            PlayMusic(startupMusic);
         }
     }
 

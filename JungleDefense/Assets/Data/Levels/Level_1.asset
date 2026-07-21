@@ -12,27 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4dc5c51a0619d49a0d24463fac6497, type: 3}
   m_Name: Level_1
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
-  width: 7
+  width: 9
   height: 13
   rows:
-  - PPPPP11
-  - 1111P11
-  - 11PPP11
-  - 11P1111
-  - 11PPPP1
-  - 11111P1
-  - 1PPPPP1
-  - 1P11111
-  - 1PPPPP1
-  - 11111P1
-  - 11PPPP1
-  - 11P1111
-  - 11PPPPP
-  startMoney: 200
+  - PPPPPP110
+  - 01111P110
+  - 011PPP110
+  - 011P11110
+  - 011PPPP10
+  - 011111P10
+  - 01PPPPP10
+  - 01P111110
+  - 01PPPPP10
+  - 011111P10
+  - 011PPPP10
+  - 011P11110
+  - 011PPPPPP
+  startMoney: 2000
   waves:
   - {fileID: 11400000, guid: 2f7141e2a5786accf7cdf236ea7ed918, type: 2}
   - {fileID: 11400000, guid: 1193a261f09798be656e97131c293a51, type: 2}
   - {fileID: 11400000, guid: 88ee289896eb885ffb5fc4934a098a0c, type: 2}
   - {fileID: 11400000, guid: 09645c7b6adb7185f6b9ab918167d4c0, type: 2}
   - {fileID: 11400000, guid: f0df39011254ae6461771bcdebc40c5d, type: 2}
-  backgroundSprite: {fileID: 4400651955071789837, guid: 5ec4a61841b314bd09881fe6547787c1, type: 3}
+  backgroundSprite: {fileID: -5215294921018556061, guid: 58ce644810bd04b6a80f21f213801c2a, type: 3}

@@ -150,6 +150,7 @@ public class PauseManager : MonoBehaviour
     public void OpenLevelSelect()
     {
         Time.timeScale = 0f;
+        AudioManager.Instance?.PlayMusic(SoundType.MenuMusic);
 
         if (pausePanel != null)
         {

@@ -7,6 +7,7 @@ public class LevelSelectPanel : MonoBehaviour
 
     private void OnEnable()
     {
+        AudioManager.Instance?.PlayMusic(SoundType.MenuMusic);
         Refresh();
     }
 
@@ -38,6 +39,7 @@ public class LevelSelectPanel : MonoBehaviour
 
     public void Show()
     {
+        AudioManager.Instance?.PlayMusic(SoundType.MenuMusic);
         gameObject.SetActive(true);
         Refresh();
     }

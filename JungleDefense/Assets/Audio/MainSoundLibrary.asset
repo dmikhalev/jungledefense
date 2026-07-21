@@ -16,7 +16,7 @@ MonoBehaviour:
   - type: 1
     channel: 0
     clips:
-    - {fileID: 8300000, guid: 5b2c1f47ccd9240e29a2102f6ed99a25, type: 3}
+    - {fileID: 8300000, guid: d8db791913c794a5d9dcf38e1613712d, type: 3}
     volume: 1
     volumeRange: {x: 1, y: 1}
     pitchRange: {x: 1, y: 1}
@@ -24,32 +24,40 @@ MonoBehaviour:
     loop: 0
   - type: 2
     channel: 1
-    clips: []
-    volume: 0
+    clips:
+    - {fileID: 8300000, guid: 593f1142e425948c383f1eec90735a72, type: 3}
+    - {fileID: 8300000, guid: d7792c4518d134c7b83a102190ce587e, type: 3}
+    - {fileID: 8300000, guid: b7cafd09db7514456968e224e48e7fea, type: 3}
+    volume: 1
     volumeRange: {x: 1, y: 1}
     pitchRange: {x: 0.98, y: 1.02}
     minimumInterval: 0
     loop: 0
   - type: 3
     channel: 0
-    clips: []
-    volume: 0
+    clips:
+    - {fileID: 8300000, guid: 63ae042055a264d2695645a4f81f49a7, type: 3}
+    - {fileID: 8300000, guid: 13deb51c796bb43298d9765e11fbfa8d, type: 3}
+    volume: 1
     volumeRange: {x: 1, y: 1}
     pitchRange: {x: 0.98, y: 1.03}
     minimumInterval: 0
     loop: 0
   - type: 4
     channel: 0
-    clips: []
-    volume: 0
+    clips:
+    - {fileID: 8300000, guid: ca31fc38c647b4976823bbe45ac4ad14, type: 3}
+    volume: 1
     volumeRange: {x: 1, y: 1}
     pitchRange: {x: 0.98, y: 1.03}
     minimumInterval: 0
     loop: 0
   - type: 5
     channel: 0
-    clips: []
-    volume: 0
+    clips:
+    - {fileID: 8300000, guid: b3a197ce203d0410886bf0c3192124b1, type: 3}
+    - {fileID: 8300000, guid: 664b038bada954c03a5686d4490d61ea, type: 3}
+    volume: 1
     volumeRange: {x: 1, y: 1}
     pitchRange: {x: 0.95, y: 1.03}
     minimumInterval: 0
@@ -65,8 +73,12 @@ MonoBehaviour:
     loop: 0
   - type: 7
     channel: 1
-    clips: []
-    volume: 0
+    clips:
+    - {fileID: 8300000, guid: 58a8e88e57fda40b9bcfedec87c69d38, type: 3}
+    - {fileID: 8300000, guid: 2f7ad407b3417488184c08b60886c75d, type: 3}
+    - {fileID: 8300000, guid: 20f6fbdadf9e2459d8e9d5540821b3d6, type: 3}
+    - {fileID: 8300000, guid: a4fba9d448d914ba2964835647a6d07a, type: 3}
+    volume: 1
     volumeRange: {x: 1, y: 1}
     pitchRange: {x: 0.96, y: 1.04}
     minimumInterval: 0
@@ -74,39 +86,68 @@ MonoBehaviour:
   - type: 8
     channel: 1
     clips: []
-    volume: 0
+    volume: 1
     volumeRange: {x: 1, y: 1}
     pitchRange: {x: 0.9, y: 1}
     minimumInterval: 0
     loop: 0
   - type: 9
     channel: 0
-    clips: []
-    volume: 0
+    clips:
+    - {fileID: 8300000, guid: b18e0ff42206e456eaea03cdf84110cd, type: 3}
+    - {fileID: 8300000, guid: 81798c63819ac4ebc9f118e262297cd6, type: 3}
+    - {fileID: 8300000, guid: 205677d4893a14b008f6c42622bea785, type: 3}
+    - {fileID: 8300000, guid: 72708bad69dea4d53b3b0e844b16836a, type: 3}
+    volume: 1
     volumeRange: {x: 1, y: 1}
     pitchRange: {x: 1, y: 1}
     minimumInterval: 0
     loop: 0
   - type: 10
     channel: 0
-    clips: []
-    volume: 0
+    clips:
+    - {fileID: 8300000, guid: 1b9a49069afca4431bc6e163aa33fa83, type: 3}
+    - {fileID: 8300000, guid: 9fc4e8c153e3e4c45a786ce256ab6486, type: 3}
+    - {fileID: 8300000, guid: c9efc134e851643f7bae404fe5dbee07, type: 3}
+    - {fileID: 8300000, guid: af83e3b84a2f8431d840c8b178ad63b6, type: 3}
+    volume: 1
     volumeRange: {x: 1, y: 1}
     pitchRange: {x: 1, y: 1}
     minimumInterval: 0
     loop: 0
   - type: 11
     channel: 0
-    clips: []
-    volume: 0
+    clips:
+    - {fileID: 8300000, guid: 7c1d91a95d2ef4080afaed2f6721bbc0, type: 3}
+    - {fileID: 8300000, guid: 5edf023cf8eda404997e7988d58cfd11, type: 3}
+    - {fileID: 8300000, guid: cf54e439d26124c41862ff3446ea9c65, type: 3}
+    volume: 1
     volumeRange: {x: 1, y: 1}
     pitchRange: {x: 1, y: 1}
     minimumInterval: 0
     loop: 0
   - type: 12
-    channel: 2
+    channel: 0
     clips: []
-    volume: 0
+    volume: 1
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 1, y: 1}
+    minimumInterval: 0
+    loop: 0
+  - type: 13
+    channel: 2
+    clips:
+    - {fileID: 8300000, guid: 73d60a66c0c3d4954a82eba6060d492a, type: 3}
+    volume: 1
+    volumeRange: {x: 1, y: 1}
+    pitchRange: {x: 1, y: 1}
+    minimumInterval: 0
+    loop: 1
+  - type: 14
+    channel: 2
+    clips:
+    - {fileID: 8300000, guid: 508e336a022f745cda1f6398db48379f, type: 3}
+    volume: 1
     volumeRange: {x: 1, y: 1}
     pitchRange: {x: 1, y: 1}
     minimumInterval: 0

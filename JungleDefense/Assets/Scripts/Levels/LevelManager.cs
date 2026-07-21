@@ -68,6 +68,7 @@ public class LevelManager : MonoBehaviour
 
         currentLevelIndex = levelIndex;
 
+        AudioManager.Instance?.PlayMusic(SoundType.GameplayMusic);
         ClearRuntimeObjects();
 
         LevelData level = levels[currentLevelIndex];

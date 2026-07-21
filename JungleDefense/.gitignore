@@ -53,3 +53,6 @@ Assets/Art/**/*.jpeg
 Assets/Art/**/*.psd
 
 !Assets/Art/**/*.meta
+
+Assets/Audio/**/*.wav
+!Assets/Audio/**/*.meta

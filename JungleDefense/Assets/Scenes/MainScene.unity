@@ -3327,7 +3327,12 @@ MonoBehaviour:
   musicSource: {fileID: 0}
   uiSource: {fileID: 0}
   worldSource: {fileID: 0}
-  playGameplayMusicOnStart: 1
+  masterVolume: 1
+  musicVolume: 0.5
+  sfxVolume: 0.8
+  defaultMusicFadeDuration: 0.5
+  playMusicOnStart: 1
+  startupMusic: 14
 --- !u!1 &319608071
 GameObject:
   m_ObjectHideFlags: 0

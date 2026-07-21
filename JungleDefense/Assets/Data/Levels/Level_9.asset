@@ -12,22 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4dc5c51a0619d49a0d24463fac6497, type: 3}
   m_Name: Level_9
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
-  width: 7
+  width: 9
   height: 13
   rows:
-  - P111111
-  - P111111
-  - PPPPP11
-  - 1111P11
-  - 1111PPP
-  - 111111P
-  - 111111P
-  - 111PPPP
-  - 111P111
-  - PPPP111
-  - P111111
-  - P111111
-  - PPPPPPP
+  - PP1111110
+  - 0P1111110
+  - 0PPPPP110
+  - 01111P110
+  - 01111PPP0
+  - 0111111P0
+  - 0111111P0
+  - 0111PPPP0
+  - 0111P1110
+  - 0PPPP1110
+  - 0P1111110
+  - 0P1111110
+  - 0PPPPPPPP
   startMoney: 230
   waves:
   - {fileID: 11400000, guid: 63e5e80ddbb30a3344aac02b85aa2467, type: 2}
