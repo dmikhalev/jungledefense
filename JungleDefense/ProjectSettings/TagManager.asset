@@ -48,6 +48,9 @@ TagManager:
   - name: Ground
     uniqueID: 1721033235
     locked: 0
+  - name: Path
+    uniqueID: 3377247385
+    locked: 0
   - name: Towers
     uniqueID: 182666643
     locked: 0
